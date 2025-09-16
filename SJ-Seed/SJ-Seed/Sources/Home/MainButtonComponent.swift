@@ -19,6 +19,8 @@ struct MainButtonComponent: View {
                 .frame(width: 130, height: 170)
                 .clipped()
             Text(buttonText)
+                .font(Font.OwnglyphMeetme.regular.font(size: 28))
+                .foregroundColor(.black)
         }
     }
 }
