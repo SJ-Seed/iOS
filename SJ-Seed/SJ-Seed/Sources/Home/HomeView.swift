@@ -18,9 +18,10 @@ struct HomeView: View {
                 Spacer()
                 HStack {
                     MainButtonComponent(buttonImage: Image(.student), buttonText: "도감")
-                    MainButtonComponent(buttonImage: Image(.student), buttonText: "식물")
-                    MainButtonComponent(buttonImage: Image(.student), buttonText: "병원")
+                    MainButtonComponent(buttonImage: Image(.grandma2), buttonText: "식물")
+                    MainButtonComponent(buttonImage: Image(.doctor), buttonText: "병원")
                 }
+                .padding(.bottom, 30)
             }
         }
     }

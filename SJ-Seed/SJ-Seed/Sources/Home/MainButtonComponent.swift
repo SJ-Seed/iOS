@@ -12,15 +12,19 @@ struct MainButtonComponent: View {
     var buttonText: String
     
     var body: some View {
-        VStack {
-            buttonImage
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 130, height: 170)
-                .clipped()
-            Text(buttonText)
-                .font(Font.OwnglyphMeetme.regular.font(size: 28))
-                .foregroundColor(.black)
+        Button(action: {
+            print("\(buttonText) tapped")
+        }) {
+            VStack {
+                buttonImage
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 110, height: 170)
+                
+                Text(buttonText)
+                    .font(Font.OwnglyphMeetme.regular.font(size: 28))
+                    .foregroundColor(.black)
+            }
         }
     }
 }
