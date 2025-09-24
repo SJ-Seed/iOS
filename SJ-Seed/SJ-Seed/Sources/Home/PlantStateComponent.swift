@@ -56,8 +56,8 @@ struct PlantAvatarView: View {
                 Button {
                     // 상세 보기 액션
                 } label: {
-                    Image(systemName: "info.circle")
-                        .foregroundStyle(Color.brown1)
+                    Image(.info)
+                        .offset(y: -1)
                 }
             }
         }
