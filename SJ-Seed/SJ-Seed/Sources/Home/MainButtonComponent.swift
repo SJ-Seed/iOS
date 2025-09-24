@@ -23,7 +23,7 @@ struct MainButtonComponent: View {
                 
                 Text(buttonText)
                     .font(Font.OwnglyphMeetme.regular.font(size: 28))
-                    .foregroundColor(.black)
+                    .foregroundColor(.brown1)
             }
         }
     }
