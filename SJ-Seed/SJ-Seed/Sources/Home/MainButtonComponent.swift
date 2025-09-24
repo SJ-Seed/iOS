@@ -19,7 +19,7 @@ struct MainButtonComponent: View {
                 buttonImage
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 110, height: 170)
+                    .frame(width: 110, height: 150)
                 
                 Text(buttonText)
                     .font(Font.OwnglyphMeetme.regular.font(size: 28))

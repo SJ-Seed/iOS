@@ -16,13 +16,20 @@ struct HomeView: View {
                 .scaledToFill()
             VStack {
                 Spacer()
+                PlantStateComponent()
+                    .padding(.horizontal, 25)
+                    .padding(.bottom)
+                AttendanceComponent()
+                    .padding(.horizontal, 25)
                 HStack {
                     MainButtonComponent(buttonImage: Image(.student), buttonText: "도감")
                     MainButtonComponent(buttonImage: Image(.grandma2), buttonText: "식물")
                     MainButtonComponent(buttonImage: Image(.doctor), buttonText: "병원")
                 }
                 .padding(.bottom, 30)
+                .padding(.top, 15)
             }
+//            .padding()
         }
     }
 }

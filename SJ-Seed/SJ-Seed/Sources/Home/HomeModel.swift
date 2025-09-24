@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import SwiftUI
 
+// MARK: - 출석 정보
 struct Attendance {
     let weekday: Weekday
     var isChecked: Bool
