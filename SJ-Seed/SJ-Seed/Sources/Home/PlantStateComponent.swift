@@ -56,7 +56,7 @@ struct PlantAvatarView: View {
                     .font(Font.OwnglyphMeetme.regular.font(size: 24))
                     .foregroundStyle(Color.brown1)
                 Button {
-                    // 상세 보기 액션
+                    print("info")
                 } label: {
                     Image(.info)
                         .offset(y: -1)
@@ -102,7 +102,7 @@ struct WaterActionButton: View {
         Button(action: action) {
             (needsWater ? Image(.watering) : Image(.nonwatering))
                 .resizable()
-                .frame(width: 140, height: 80)
+                .frame(width: 130, height: 80)
                 .shadow(radius: 2, y: 2)
                 .padding(.bottom)
         }
@@ -119,7 +119,7 @@ struct WaterActionButton: View {
                 iconName: "sprout",
                 vitals: PlantVitals(temperature: 33, humidity: 65, soil: .dry)
             ),
-            statusMessage: "덥고 목말라요😣",
+            statusMessage: "덥고 목말라요 😣",
             shouldWater: true
         )
     )

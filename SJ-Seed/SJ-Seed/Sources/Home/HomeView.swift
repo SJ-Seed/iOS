@@ -15,18 +15,21 @@ struct HomeView: View {
                 onTapMy: { },
                 onTapCoin: { }
             )
-            PlantStateComponent(
-                    viewModel: PlantStateViewModel(
-                        plant: PlantInfo(
-                            name: "토마토",
-                            iconName: "sprout",
-                            vitals: PlantVitals(temperature: 33, humidity: 65, soil: .dry)
-                        ),
-                        statusMessage: "덥고 목말라요😣",
-                        shouldWater: true
-                    )
-                )
-                .padding(.horizontal, 25)
+            PlantStatePager(viewModels: [
+                            PlantStateViewModel(
+                                plant: PlantInfo(name: "토마토", iconName: "sprout",
+                                                 vitals: .init(temperature: 33, humidity: 65, soil: .dry)),
+                                statusMessage: "덥고 목말라요 😣",
+                                shouldWater: true
+                            ),
+                            PlantStateViewModel(
+                                plant: PlantInfo(name: "바질", iconName: "sprout",
+                                                 vitals: .init(temperature: 26, humidity: 55, soil: .normal)),
+                                statusMessage: "상태가 좋아요 🙂",
+                                shouldWater: false
+                            )
+                        ])
+//                .padding(.horizontal, 25)
                 .padding(.bottom)
             AttendanceComponent(
                     attendance: WeeklyAttendance(
