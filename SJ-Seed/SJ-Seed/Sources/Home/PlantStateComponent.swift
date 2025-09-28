@@ -16,13 +16,15 @@ struct PlantStateComponent: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            SpeechBubbleComponent(textString: viewModel.bubbleText)
+            SpeechBubbleComponent(textString: viewModel.statusMessage)
             
             HStack(alignment: .top, spacing: 16) {
                 PlantAvatarView(icon: viewModel.plant.icon, name: viewModel.plant.name)
                 VStack {
                     PlantVitalsView(vitals: viewModel.plant.vitals)
-                    WaterActionButton()
+                    WaterActionButton(needsWater: viewModel.shouldWater) {
+                        // 물주기 액션 (API 호출 등)
+                    }
                 }
             }
         }
@@ -93,18 +95,21 @@ struct VitalRow: View {
 }
 
 struct WaterActionButton: View {
+    var needsWater: Bool
+    var action: () -> Void = {}
+
     var body: some View {
-        Button {
-            // 물주기 액션
-        } label: {
-            Image(.watering)
+        Button(action: action) {
+            (needsWater ? Image(.watering) : Image(.nonwatering))
                 .resizable()
                 .frame(width: 140, height: 80)
                 .shadow(radius: 2, y: 2)
                 .padding(.bottom)
         }
+        .buttonStyle(.plain)
     }
 }
+
 
 #Preview {
     PlantStateComponent(
@@ -113,7 +118,9 @@ struct WaterActionButton: View {
                 name: "토마토",
                 iconName: "sprout",
                 vitals: PlantVitals(temperature: 33, humidity: 65, soil: .dry)
-            )
+            ),
+            statusMessage: "덥고 목말라요😣",
+            shouldWater: true
         )
     )
 }

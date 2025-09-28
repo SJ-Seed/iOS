@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct AttendanceComponent: View {
-    let thisWeekAttendance: [Attendance] = Weekday.allCases.map {
-        Attendance(weekday: $0, isChecked: true)
-    }
+    let attendance: WeeklyAttendance
 
     var body: some View {
         HStack {
@@ -20,21 +18,22 @@ struct AttendanceComponent: View {
                 .padding(.leading)
             
             VStack(alignment: .leading) {
-                Text("오늘의 출석: 50코인 지급 완료")
+                Text("오늘의 출석: \(attendance.todayRewardCoin)코인 지급 완료")
                     .font(Font.OwnglyphMeetme.regular.font(size: 24))
                     .foregroundStyle(Color(.brown1))
+                
                 HStack {
-                    ForEach(thisWeekAttendance, id: \.weekday) { att in
+                    ForEach(attendance.days) { day in
                         Circle()
-                            .fill(att.isChecked ? Color.yellow1 : Color.gray1)
+                            .fill(day.isChecked ? Color.yellow1 : Color.gray1)
                             .overlay(
-                                Text(att.weekday.symbol)
+                                Text(day.weekday.symbol)
                                     .font(Font.OwnglyphMeetme.regular.font(size: 20))
-                                    .foregroundStyle(att.isChecked ? Color.yellow2 : Color.gray2)
+                                    .foregroundStyle(day.isChecked ? Color.yellow2 : Color.gray2)
                             )
                             .overlay(
                                 Circle()
-                                    .stroke(att.isChecked ? Color.yellow2 : .clear, lineWidth: 2)
+                                    .stroke(day.isChecked ? Color.yellow2 : .clear, lineWidth: 2)
                             )
                     }
                 }
@@ -52,5 +51,12 @@ struct AttendanceComponent: View {
 }
 
 #Preview {
-    AttendanceComponent()
+    AttendanceComponent(
+        attendance: WeeklyAttendance(
+            days: Weekday.allCases.map { wd in
+                AttendanceDay(weekday: wd, isChecked: wd == .tue)
+            },
+            todayRewardCoin: 50
+        )
+    )
 }

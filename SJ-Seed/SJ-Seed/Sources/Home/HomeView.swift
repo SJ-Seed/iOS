@@ -15,10 +15,28 @@ struct HomeView: View {
                 onTapMy: { },
                 onTapCoin: { }
             )
-            PlantStateComponent()
+            PlantStateComponent(
+                    viewModel: PlantStateViewModel(
+                        plant: PlantInfo(
+                            name: "토마토",
+                            iconName: "sprout",
+                            vitals: PlantVitals(temperature: 33, humidity: 65, soil: .dry)
+                        ),
+                        statusMessage: "덥고 목말라요😣",
+                        shouldWater: true
+                    )
+                )
                 .padding(.horizontal, 25)
                 .padding(.bottom)
-            AttendanceComponent()
+            AttendanceComponent(
+                    attendance: WeeklyAttendance(
+                        days: Weekday.allCases.map { wd in
+                            // 예시: 오늘 화요일만 체크
+                            AttendanceDay(weekday: wd, isChecked: wd == .tue)
+                        },
+                        todayRewardCoin: 50
+                    )
+                )
                 .padding(.horizontal, 25)
             HStack {
                 MainButtonComponent(buttonImage: Image(.student), buttonText: "도감")
@@ -43,13 +61,13 @@ struct HeaderBarGroup: View {
 
     var body: some View {
         HStack {
-            HeaderPillButton(
+            HeaderButton(
                 icon: Image(.mypage),
                 text: "MY",
                 onTap: onTapMy
             )
             Spacer()
-            HeaderPillButton(
+            HeaderButton(
                 icon: Image(.coin),
                 text: "\(coin)",
                 onTap: onTapCoin
@@ -59,7 +77,7 @@ struct HeaderBarGroup: View {
     }
 }
 
-struct HeaderPillButton: View {
+struct HeaderButton: View {
     let icon: Image
     let text: String
     var onTap: () -> Void = {}

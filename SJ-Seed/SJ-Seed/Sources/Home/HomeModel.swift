@@ -8,13 +8,8 @@
 import Foundation
 import SwiftUI
 
-// MARK: - 출석 정보
-struct Attendance {
-    let weekday: Weekday
-    var isChecked: Bool
-}
-
-enum Weekday: Int, CaseIterable {
+// MARK: - 요일
+enum Weekday: Int, CaseIterable, Codable {
     case sun = 0, mon, tue, wed, thu, fri, sat
     
     var symbol: String {
@@ -27,5 +22,24 @@ enum Weekday: Int, CaseIterable {
         case .fri: return "금"
         case .sat: return "토"
         }
+    }
+}
+
+// MARK: - 출석(하루)
+struct AttendanceDay: Identifiable, Equatable, Codable {
+    let weekday: Weekday
+    var isChecked: Bool
+    var id: Weekday { weekday }
+}
+
+// MARK: - 출석(주간) + 오늘 코인
+struct WeeklyAttendance: Equatable, Codable {
+    var days: [AttendanceDay]
+    var todayRewardCoin: Int
+    
+    init(days: [AttendanceDay] = Weekday.allCases.map { .init(weekday: $0, isChecked: false) },
+         todayRewardCoin: Int = 0) {
+        self.days = days
+        self.todayRewardCoin = todayRewardCoin
     }
 }
