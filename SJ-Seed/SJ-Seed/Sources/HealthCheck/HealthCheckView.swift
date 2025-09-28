@@ -22,7 +22,7 @@ struct HealthCheckView: View {
             Group {
                 if let model = vm.model {
                     Text("Server Status: \(model.status)")
-                        .font(.headline)
+                        .font(Font.OwnglyphMeetme.regular.font(size: 28))
                 } else if let err = vm.errorMessage {
                     Text("Error: \(err)")
                         .foregroundStyle(.red)

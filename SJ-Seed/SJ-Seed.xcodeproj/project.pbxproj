@@ -15,9 +15,22 @@
 		63D894002E65DBDB00335C72 /* SJ-Seed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SJ-Seed.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		637F88762E78FC6700424EDD /* Exceptions for "SJ-Seed" folder in "SJ-Seed" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 63D893FF2E65DBDB00335C72 /* SJ-Seed */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		63D894022E65DBDB00335C72 /* SJ-Seed */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				637F88762E78FC6700424EDD /* Exceptions for "SJ-Seed" folder in "SJ-Seed" target */,
+			);
 			path = "SJ-Seed";
 			sourceTree = "<group>";
 		};
@@ -266,6 +279,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"SJ-Seed/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SJ-Seed/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -294,6 +308,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"SJ-Seed/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SJ-Seed/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
