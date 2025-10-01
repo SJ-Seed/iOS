@@ -45,12 +45,7 @@ struct PlantAvatarView: View {
 
     var body: some View {
         VStack {
-            ZStack {
-                Image(.cloudCircle)
-                    .resizable()
-                    .frame(width: 130, height: 130)
-                icon
-            }
+            CloudPlantComponent(icon: icon)
             HStack {
                 Text(name)
                     .font(Font.OwnglyphMeetme.regular.font(size: 24))
@@ -59,6 +54,7 @@ struct PlantAvatarView: View {
                     print("info")
                 } label: {
                     Image(.info)
+                        .foregroundStyle(Color(.brown1))
                         .offset(y: -1)
                 }
             }
