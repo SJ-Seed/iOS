@@ -16,6 +16,7 @@ struct CharacterComponent: View {
                 .resizable()
                 .scaledToFit()
                 .padding(.horizontal, 90)
+                .padding(.bottom)
         }
         .background(
             Image(.background)
