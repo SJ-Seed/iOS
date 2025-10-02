@@ -16,7 +16,7 @@ struct PlantStateComponent: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            SpeechBubbleComponent(textString: viewModel.statusMessage)
+            BrownBubbleComponent(textString: viewModel.statusMessage)
             
             HStack(alignment: .top, spacing: 16) {
                 PlantAvatarView(icon: viewModel.plant.icon, name: viewModel.plant.name)
