@@ -20,7 +20,7 @@ struct LetsWaterView: View {
                 Button(action: { print("물을 줬어요") }) {
                     Text("물을 줬어요")
                         .font(Font.OwnglyphMeetme.regular.font(size: 18))
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .padding(.horizontal, 40)
                         .padding(.vertical, 10)
                         .background(Color.brown1)
