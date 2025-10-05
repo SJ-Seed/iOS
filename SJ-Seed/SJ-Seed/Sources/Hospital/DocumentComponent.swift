@@ -10,12 +10,15 @@ import SwiftUI
 struct DocumentComponent: View {
     var body: some View {
         HStack {
+//            Spacer()
             CloudPlantComponent(icon: Image(.sprout))
                 .padding()
+                .padding(.trailing, 30)
+//            Spacer()
             VStack(alignment: .leading) {
                 HStack {
                     Text("토마토")
-                        .font(Font.OwnglyphMeetme.regular.font(size: 28))
+                        .font(Font.OwnglyphMeetme.regular.font(size: 30))
                         .foregroundStyle(Color.green1)
                     Button {
                         print("info")
@@ -31,7 +34,8 @@ struct DocumentComponent: View {
                 }
                 .font(Font.OwnglyphMeetme.regular.font(size: 20))
             }
-            .padding()
+            .padding(.trailing, 30)
+//            Spacer()
         }
         .padding()
         .background(
