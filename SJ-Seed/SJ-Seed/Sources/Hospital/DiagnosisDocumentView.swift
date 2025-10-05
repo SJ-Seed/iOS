@@ -13,7 +13,7 @@ struct DiagnosisDocumentView: View {
             // MARK: - 반복되는 구름 배경
             GeometryReader { geometry in
                 VStack(spacing: 0) {
-                    ForEach(0..<2) { _ in // 충분히 긴 반복 수
+                    ForEach(0..<2) { _ in
                         Image(.cloudBG)
                             .resizable()
                             .scaledToFill()
@@ -22,20 +22,30 @@ struct DiagnosisDocumentView: View {
                 }
             }
             .ignoresSafeArea()
-
+            
             // MARK: - ScrollView 콘텐츠
             ScrollView {
-                VStack/*(spacing: 20)*/ {
+                VStack {
                     Spacer().padding(.top, 80)
                     ForEach(0..<6) { _ in
                         DocumentComponent()
+                            .padding(.bottom, 10)
                     }
                     Spacer()
+                    
                     // 맨 밑 잔디 배경
-                    Image(.grassBG)
-                        .resizable()
-                        .scaledToFit()
-                        .padding(.top, 40)
+                    ZStack {
+                        Image(.grassBG)
+                            .resizable()
+                            .scaledToFit()
+                            .padding(.top, 40)
+                        HStack {
+                            Image(.doctor)
+                                .padding(.top, 50)
+                            IvorySpeechBubbleComponent(textString: "지금까지의\n진료기록이란다.")
+                                .padding(.bottom, 150)
+                        }
+                    }
                 }
 //                .padding(.vertical, 20)
             }
