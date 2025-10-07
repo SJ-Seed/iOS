@@ -8,16 +8,18 @@
 import SwiftUI
 
 struct DocumentComponent: View {
+    let record: MedicalRecord
+    
     var body: some View {
         HStack {
 //            Spacer()
-            CloudPlantComponent(icon: Image(.sprout))
+            CloudPlantComponent(icon: record.icon)
                 .padding()
                 .padding(.trailing, 30)
 //            Spacer()
             VStack(alignment: .leading) {
                 HStack {
-                    Text("토마토")
+                    Text(record.plantName)
                         .font(Font.OwnglyphMeetme.regular.font(size: 30))
                         .foregroundStyle(Color.green1)
                     Button {
@@ -29,23 +31,24 @@ struct DocumentComponent: View {
                     }
                 }
                 Group {
-                    Text("2025.09.03")
-                    Text("정상")
+                    Text(record.date)
+                    Text(record.diagnosis.displayText)
                 }
                 .font(Font.OwnglyphMeetme.regular.font(size: 20))
             }
             .padding(.trailing, 30)
 //            Spacer()
         }
-        .padding()
+        .frame(width: 350, height: 180)
         .background(
             RoundedRectangle(cornerRadius: 20)
-                .fill(Color.ivory1)
+                .fill(record.diagnosis.backgroundColor)
                 .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
         )
     }
 }
 
 #Preview {
-    DocumentComponent()
+    let record = MedicalRecord(plantName: "또마똥", date: "2025.09.03", diagnosis: .disease("점무늬병"), icon: Image(.sprout))
+    DocumentComponent(record: record)
 }

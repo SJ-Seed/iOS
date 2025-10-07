@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct DiagnosisDocumentView: View {
+    let records: [MedicalRecord]
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             // MARK: - 반복되는 구름 배경
@@ -27,9 +29,9 @@ struct DiagnosisDocumentView: View {
             ScrollView {
                 VStack {
                     Spacer().padding(.top, 80)
-                    ForEach(0..<6) { _ in
-                        DocumentComponent()
-                            .padding(.bottom, 10)
+                    ForEach(records) { record in
+                        DocumentComponent(record: record)
+                            .padding(.bottom, 8)
                     }
                     Spacer()
                     
@@ -39,12 +41,7 @@ struct DiagnosisDocumentView: View {
                             .resizable()
                             .scaledToFit()
                             .padding(.top, 40)
-                        HStack {
-                            Image(.doctor)
-                                .padding(.top, 50)
-                            IvorySpeechBubbleComponent(textString: "지금까지의\n진료기록이란다.")
-                                .padding(.bottom, 150)
-                        }
+                        CharacterSpeechComponent(characterImage: .doctor, textString: "지금까지의\n진료기록이란다.")
                     }
                 }
 //                .padding(.vertical, 20)
@@ -55,5 +52,10 @@ struct DiagnosisDocumentView: View {
 }
 
 #Preview {
-    DiagnosisDocumentView()
+    let sampleRecords = [
+        MedicalRecord(plantName: "똥맛토", date: "2025.09.03", diagnosis: .normal, icon: Image(.sprout)),
+        MedicalRecord(plantName: "토맛똥", date: "2025.09.07", diagnosis: .disease("점무늬병"), icon: Image(.sprout)),
+        MedicalRecord(plantName: "고추", date: "2025.09.10", diagnosis: .normal, icon: Image(.sprout))
+    ]
+    DiagnosisDocumentView(records: sampleRecords)
 }
