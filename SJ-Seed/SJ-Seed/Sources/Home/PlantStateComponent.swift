@@ -19,7 +19,7 @@ struct PlantStateComponent: View {
             BrownSpeechBubbleComponent(textString: viewModel.statusMessage)
             
             HStack(alignment: .top, spacing: 16) {
-                PlantAvatarView(icon: viewModel.plant.icon, name: viewModel.plant.name)
+                PlantAvatarView(icon: viewModel.plant.plantProfile.icon, name: viewModel.plant.plantProfile.name)
                 VStack {
                     PlantVitalsView(vitals: viewModel.plant.vitals)
                     WaterActionButton(needsWater: viewModel.shouldWater) {
@@ -111,8 +111,7 @@ struct WaterActionButton: View {
     PlantStateComponent(
         viewModel: PlantStateViewModel(
             plant: PlantInfo(
-                name: "토마토",
-                iconName: "sprout",
+                plantProfile: .init(id: UUID(), name: "토마토", iconName: "tomatoIcon"),
                 vitals: PlantVitals(temperature: 33, humidity: 65, soil: .dry)
             ),
             statusMessage: "덥고 목말라요 😣",
