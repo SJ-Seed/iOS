@@ -8,19 +8,21 @@
 import SwiftUI
 
 struct CloudPlantComponent: View {
+    var bg: Image = Image(.cloudCircle)
     let icon: Image
     var size: CGFloat = 130
 
     var body: some View {
         ZStack {
-            Image(.cloudCircle)
-                .resizable()
+            bg.resizable()
                 .frame(width: size, height: size)
-            icon
+            icon.resizable()
+                .frame(width: size/1.5, height: size/1.5)
+                .offset(y: 5)
         }
     }
 }
 
 #Preview {
-    CloudPlantComponent(icon: Image(.sprout))
+    CloudPlantComponent(bg: Image(.clearCircle), icon: Image(.sprout))
 }
