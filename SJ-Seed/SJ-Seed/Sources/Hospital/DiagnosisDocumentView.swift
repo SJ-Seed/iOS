@@ -41,7 +41,7 @@ struct DiagnosisDocumentView: View {
                             .resizable()
                             .scaledToFit()
                             .padding(.top, 40)
-                        CharacterSpeechComponent(characterImage: .doctor, textString: "지금까지의\n진료기록이란다.")
+                        CharacterSpeechComponent(characterImage: .doctor1, textString: "지금까지의\n진료기록이란다.")
                     }
                 }
 //                .padding(.vertical, 20)
@@ -53,9 +53,9 @@ struct DiagnosisDocumentView: View {
 
 #Preview {
     let sampleRecords = [
-        MedicalRecord(plantName: "똥맛토", date: "2025.09.03", diagnosis: .normal, icon: Image(.sprout)),
-        MedicalRecord(plantName: "토맛똥", date: "2025.09.07", diagnosis: .disease("점무늬병"), icon: Image(.sprout)),
-        MedicalRecord(plantName: "고추", date: "2025.09.10", diagnosis: .normal, icon: Image(.sprout))
+        MedicalRecord(plantName: "똥맛토", date: "2025.09.03", diagnosis: .normal, icon: Image(.tomato)),
+        MedicalRecord(plantName: "토맛똥", date: "2025.09.07", diagnosis: .disease("점무늬병"), icon: Image(.tomato)),
+        MedicalRecord(plantName: "고추", date: "2025.09.10", diagnosis: .normal, icon: Image(.basil))
     ]
     DiagnosisDocumentView(records: sampleRecords)
 }

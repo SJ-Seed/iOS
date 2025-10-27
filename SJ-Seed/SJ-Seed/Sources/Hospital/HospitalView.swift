@@ -60,7 +60,7 @@ struct HospitalView: View {
 //                }
                 
                 CharacterSpeechComponent(
-                    characterImage: .doctor,
+                    characterImage: .doctor1,
                     textString: "혹시 모르니\n진료 한 번 받아볼래?"
                 )
                 .padding(.top, 10)

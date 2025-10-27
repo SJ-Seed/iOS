@@ -30,7 +30,7 @@ struct CharacterSpeechComponent: View {
 
 #Preview {
     CharacterSpeechComponent(
-        characterImage: .doctor,
+        characterImage: .doctor1,
         textString: "지금까지의\n진료기록이란다."
     )
 }

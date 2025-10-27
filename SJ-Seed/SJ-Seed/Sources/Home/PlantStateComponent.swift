@@ -46,18 +46,7 @@ struct PlantAvatarView: View {
     var body: some View {
         VStack {
             CloudPlantComponent(icon: icon)
-            HStack {
-                Text(name)
-                    .font(Font.OwnglyphMeetme.regular.font(size: 24))
-                    .foregroundStyle(Color.brown1)
-                Button {
-                    print("info")
-                } label: {
-                    Image(.info)
-                        .foregroundStyle(Color(.brown1))
-                        .offset(y: -1)
-                }
-            }
+            PlantInfoButton(name: name)
         }
     }
 }
@@ -111,7 +100,7 @@ struct WaterActionButton: View {
     PlantStateComponent(
         viewModel: PlantStateViewModel(
             plant: PlantInfo(
-                plantProfile: .init(id: UUID(), name: "토마토", iconName: "tomatoIcon"),
+                plantProfile: .init(id: UUID(), name: "토마토", iconName: "tomato"),
                 vitals: PlantVitals(temperature: 33, humidity: 65, soil: .dry)
             ),
             statusMessage: "덥고 목말라요 😣",
