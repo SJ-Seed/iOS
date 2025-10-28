@@ -9,17 +9,17 @@ import Foundation
 import SwiftUI
 
 final class PlantStateViewModel: ObservableObject {
-    @Published var plant: PlantInfo
+    @Published var plant: PlantHomeInfo
     @Published var statusMessage: String          // ← 서버/로직에서 그대로 주는 문자열
     @Published var shouldWater: Bool              // ← 물주기 필요 여부
 
     init(
-        plant: PlantInfo? = nil,
+        plant: PlantHomeInfo? = nil,
         statusMessage: String = "상태가 좋아요 🙂",
         shouldWater: Bool? = nil
     ) {
         // 기본값 설정 (초기 화면용 등)
-        let defaultPlant = PlantInfo(
+        let defaultPlant = PlantHomeInfo(
             plantProfile: PlantProfile(
                 id: UUID(),
                 name: "토마토",

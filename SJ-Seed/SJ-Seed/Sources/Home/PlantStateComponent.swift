@@ -99,7 +99,7 @@ struct WaterActionButton: View {
 #Preview {
     PlantStateComponent(
         viewModel: PlantStateViewModel(
-            plant: PlantInfo(
+            plant: PlantHomeInfo(
                 plantProfile: .init(id: UUID(), name: "토마토", iconName: "tomato"),
                 vitals: PlantVitals(temperature: 33, humidity: 65, soil: .dry)
             ),

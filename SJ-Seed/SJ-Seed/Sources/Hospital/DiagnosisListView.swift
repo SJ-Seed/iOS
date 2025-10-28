@@ -1,5 +1,5 @@
 //
-//  DiagnosisDocumentView.swift
+//  DiagnosisListView.swift
 //  SJ-Seed
 //
 //  Created by 김나영 on 9/30/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DiagnosisDocumentView: View {
+struct DiagnosisListView: View {
     let records: [MedicalRecord]
     
     var body: some View {
@@ -30,7 +30,7 @@ struct DiagnosisDocumentView: View {
                 VStack {
                     Spacer().padding(.top, 80)
                     ForEach(records) { record in
-                        DocumentComponent(record: record)
+                        ListComponent(item: record)
                             .padding(.bottom, 8)
                     }
                     Spacer()
@@ -52,10 +52,16 @@ struct DiagnosisDocumentView: View {
 }
 
 #Preview {
-    let sampleRecords = [
-        MedicalRecord(plantName: "똥맛토", date: "2025.09.03", diagnosis: .normal, icon: Image(.tomato)),
-        MedicalRecord(plantName: "토맛똥", date: "2025.09.07", diagnosis: .disease("점무늬병"), icon: Image(.tomato)),
-        MedicalRecord(plantName: "고추", date: "2025.09.10", diagnosis: .normal, icon: Image(.basil))
+    let sampleProfiles = [
+        PlantProfile(id: UUID(), name: "똥맛토", iconName: "tomato"),
+        PlantProfile(id: UUID(), name: "토맛똥", iconName: "tomato"),
+        PlantProfile(id: UUID(), name: "고추", iconName: "basil")
     ]
-    DiagnosisDocumentView(records: sampleRecords)
+    
+    let sampleRecords = [
+        MedicalRecord(plantProfile: sampleProfiles[0], dateText: "2025.09.03", diagnosis: .normal),
+        MedicalRecord(plantProfile: sampleProfiles[1], dateText: "2025.09.07", diagnosis: .disease("점무늬병")),
+        MedicalRecord(plantProfile: sampleProfiles[2], dateText: "2025.09.10", diagnosis: .normal)
+    ]
+    DiagnosisListView(records: sampleRecords)
 }
