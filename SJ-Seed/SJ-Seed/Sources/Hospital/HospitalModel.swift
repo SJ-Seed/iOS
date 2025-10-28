@@ -10,10 +10,9 @@ import SwiftUI
 
 struct MedicalRecord: Identifiable {
     let id = UUID()
-    let plantName: String
-    let date: String
+    let plantProfile: PlantProfile
+    let dateText: String
     let diagnosis: DiagnosisType
-    let icon: Image
 }
 
 enum DiagnosisType {

@@ -8,8 +8,17 @@
 import Foundation
 import SwiftUI
 
-// MARK: - 식물 정보
-struct PlantInfo: Equatable, Codable {
+protocol PlantDisplayable {
+    var plantProfile: PlantProfile { get }
+    var dateText: String { get }
+    var diagnosis: DiagnosisType { get }
+}
+
+extension MedicalRecord: PlantDisplayable {}
+extension PlantInfo: PlantDisplayable {}
+
+// MARK: - 홈 정보
+struct PlantHomeInfo: Equatable, Codable {
     var plantProfile: PlantProfile
     var vitals: PlantVitals
 }
@@ -29,4 +38,12 @@ struct PlantVitals: Equatable, Codable {
     var temperature: Double
     var humidity: Double
     var soil: SoilMoistureLevel
+}
+
+// MARK: - 식물 정보
+struct PlantInfo: Identifiable {
+    let id = UUID()
+    let plantProfile: PlantProfile
+    let dateText: String
+    let diagnosis: DiagnosisType
 }
