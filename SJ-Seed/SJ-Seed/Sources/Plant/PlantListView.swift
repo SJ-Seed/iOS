@@ -44,7 +44,7 @@ struct PlantListView: View {
                                     .opacity(0.3)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 20)
-                                            .stroke(Color.green1, lineWidth: 5)
+                                            .stroke(Color.green1, lineWidth: 4)
                                     )
                             )
                     }
