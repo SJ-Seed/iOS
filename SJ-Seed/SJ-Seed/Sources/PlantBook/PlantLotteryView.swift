@@ -63,7 +63,6 @@ struct PlantLotteryView: View {
                     .foregroundStyle(.brown1)
                     .font(Font.OwnglyphMeetme.regular.font(size: 28))
                     .offset(y: 150)
-                    .transition(.opacity.combined(with: .scale))
             }
         }
     }
