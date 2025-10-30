@@ -12,3 +12,10 @@ struct PlantBookModel: Identifiable, Codable, Equatable {
     var plant: PlantProfile
     var rarity: Int
 }
+
+struct PlantDetailModel {
+    let description: String
+    let growthProcess: String
+    let goodEnvironment: String
+    let watering: String
+}

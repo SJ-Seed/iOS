@@ -21,6 +21,9 @@ struct PlantBookComponent: View {
             HStack(spacing: 0) {
                 ForEach(0..<plant.rarity, id: \.self) { _ in
                     Image(.star)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 20, height: 20)
                 }
             }
         }

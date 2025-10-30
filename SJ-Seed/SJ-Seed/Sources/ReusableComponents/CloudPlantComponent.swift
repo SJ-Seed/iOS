@@ -19,7 +19,6 @@ struct CloudPlantComponent: View {
             icon.resizable()
                 .scaledToFit()
                 .frame(width: size/1.8)
-                .offset(y: 5)
         }
     }
 }

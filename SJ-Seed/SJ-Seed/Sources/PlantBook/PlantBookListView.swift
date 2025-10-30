@@ -22,7 +22,7 @@ struct PlantBookListView: View {
     ]
     let columns = [
         GridItem(.flexible(), spacing: 2),
-        GridItem(.flexible(), spacing: 16)
+        GridItem(.flexible(), spacing: 2)
     ]
     
     var body: some View {
