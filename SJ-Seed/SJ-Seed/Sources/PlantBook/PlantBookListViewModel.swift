@@ -19,12 +19,12 @@ final class PlantBookListViewModel: ObservableObject {
 //    ]
     
     func fetchPlantList(memberId: Int) {
-        service.fetchPieceList(memberId: memberId) { [weak self] (result: Result<[PieceListItem], Error>) in
+        service.getPieceList(memberId: memberId) { [weak self] (result: Result<[PieceListItem], Error>) in
             guard let self = self else { return }
             
             switch result {
             case .success(let items):
-//                _ = Set(items.map { $0.name })
+                _ = Set(items.map { $0.name })
                 
                 // 🔹 PlantAssets.all 기반으로 도감 완성
                 let fullList: [PlantBookModel] = PlantAssets.all.map { asset in

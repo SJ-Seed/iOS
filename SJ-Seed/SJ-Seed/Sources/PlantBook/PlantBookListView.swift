@@ -8,18 +8,6 @@
 import SwiftUI
 
 struct PlantBookListView: View {
-    let plantList: [PlantBookModel] = [
-        PlantBookModel(id: UUID(), plant: PlantProfile(id: UUID(), name: "토마토", iconName: "tomato"), rarity: 2),
-        PlantBookModel(id: UUID(), plant: PlantProfile(id: UUID(), name: "상추", iconName: "lettuce"), rarity: 1),
-        PlantBookModel(id: UUID(), plant: PlantProfile(id: UUID(), name: "바질", iconName: "basil"), rarity: 1),
-        PlantBookModel(id: UUID(), plant: PlantProfile(id: UUID(), name: "딸기", iconName: "strawberry"), rarity: 2),
-        PlantBookModel(id: UUID(), plant: PlantProfile(id: UUID(), name: "바질", iconName: "basil"), rarity: 1),
-        PlantBookModel(id: UUID(), plant: PlantProfile(id: UUID(), name: "딸기", iconName: "strawberry"), rarity: 2),
-        PlantBookModel(id: UUID(), plant: PlantProfile(id: UUID(), name: "토마토", iconName: "tomato"), rarity: 2),
-        PlantBookModel(id: UUID(), plant: PlantProfile(id: UUID(), name: "상추", iconName: "lettuce"), rarity: 1),
-        PlantBookModel(id: UUID(), plant: PlantProfile(id: UUID(), name: "딸기", iconName: "strawberry"), rarity: 2),
-        PlantBookModel(id: UUID(), plant: PlantProfile(id: UUID(), name: "토마토", iconName: "tomato"), rarity: 2)
-    ]
     @StateObject private var viewModel = PlantBookListViewModel()
     let columns = [
         GridItem(.flexible(), spacing: 2),

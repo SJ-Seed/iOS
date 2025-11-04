@@ -15,7 +15,7 @@ final class CollectionService {
     init() {}
     
     // MARK: - 1. 랜덤 뽑기
-    func fetchRandom(memberId: Int, completion: @escaping (Result<RandomResult, Error>) -> Void) {
+    func getRandom(memberId: Int, completion: @escaping (Result<RandomResult, Error>) -> Void) {
         provider.request(.random(memberId: memberId)) { result in
             switch result {
             case .success(let response):
@@ -34,7 +34,7 @@ final class CollectionService {
     }
     
     // MARK: - 2. 조각 리스트 조회
-    func fetchPieceList(memberId: Int, completion: @escaping (Result<[PieceListItem], Error>) -> Void) {
+    func getPieceList(memberId: Int, completion: @escaping (Result<[PieceListItem], Error>) -> Void) {
         provider.request(.pieceList(memberId: memberId)) { result in
             switch result {
             case .success(let response):
@@ -53,7 +53,7 @@ final class CollectionService {
     }
     
     // MARK: - 3. 조각 상세 정보 조회
-    func fetchPieceDetail(pieceId: Int, completion: @escaping (Result<PieceDetail, Error>) -> Void) {
+    func getPieceDetail(pieceId: Int, completion: @escaping (Result<PieceDetail, Error>) -> Void) {
         provider.request(.piece(pieceId: pieceId)) { result in
             switch result {
             case .success(let response):
