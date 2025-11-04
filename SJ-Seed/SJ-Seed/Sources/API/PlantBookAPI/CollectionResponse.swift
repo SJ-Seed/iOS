@@ -7,12 +7,22 @@
 
 import Foundation
 
-struct IfNotLoseResult: Codable {
+struct RandomResult: Codable {
     let ifNotLose: Bool
     let name: String
+    let pieceId: Int
 }
 
-struct ItemResult: Codable {
+struct PieceListItem: Codable {
     let name: String
     let rarity: Int
+}
+
+struct PieceDetail: Codable {
+    let name: String
+    let properTemp: String
+    let properHum: String
+    let process: String
+    let water: String
+    let description: String
 }

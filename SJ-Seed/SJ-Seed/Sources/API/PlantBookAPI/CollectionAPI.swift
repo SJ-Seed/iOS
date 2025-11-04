@@ -2,7 +2,7 @@
 //  CollectionAPI.swift
 //  SJ-Seed
 //
-//  Created by 김나영 on 11/3/25.
+//  Created by 김나영 on 11/4/25.
 //
 
 import Foundation
@@ -11,6 +11,7 @@ import Moya
 enum CollectionAPI {
     case random(memberId: Int)
     case pieceList(memberId: Int)
+    case piece(pieceId: Int)
 }
 
 extension CollectionAPI: TargetType {
@@ -24,6 +25,8 @@ extension CollectionAPI: TargetType {
             return "/collection/random/\(memberId)"
         case let .pieceList(memberId):
             return "/collection/pieceList/\(memberId)"
+        case let .piece(pieceId):
+            return "/collection/piece/\(pieceId)"
         }
     }
     
@@ -31,22 +34,22 @@ extension CollectionAPI: TargetType {
         switch self {
         case .random:
             return .post
-        case .pieceList:
+        case .pieceList, .piece:
             return .get
         }
     }
     
     var task: Task {
         switch self {
-        case .random, .pieceList:
+        case .random, .pieceList, .piece:
             return .requestPlain
         }
     }
     
     var headers: [String : String]? {
         return [
+            "accept": "*/*",
             "Content-Type": "application/json",
-            "Accept": "*/*",
             "Authorization": "Bearer \(AuthManager.shared.accessToken)"
         ]
     }

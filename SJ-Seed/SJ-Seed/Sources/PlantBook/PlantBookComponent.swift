@@ -18,13 +18,20 @@ struct PlantBookComponent: View {
                 .foregroundStyle(.green1)
                 .font(Font.OwnglyphMeetme.regular.font(size: 28))
             
-            HStack(spacing: 0) {
-                ForEach(0..<plant.rarity, id: \.self) { _ in
-                    Image(.star)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 20, height: 20)
+            if plant.rarity > 0 {
+                HStack(spacing: 0) {
+                    ForEach(0..<plant.rarity, id: \.self) { _ in
+                        Image(.star)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 20, height: 20)
+                    }
                 }
+                .frame(height: 24)
+            } else {
+                // rarity == 0 → 별 없을 때도 동일 높이 확보
+                Color.clear
+                    .frame(height: 24)
             }
         }
     }

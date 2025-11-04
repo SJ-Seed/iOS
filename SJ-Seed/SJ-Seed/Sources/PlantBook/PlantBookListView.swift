@@ -20,6 +20,7 @@ struct PlantBookListView: View {
         PlantBookModel(id: UUID(), plant: PlantProfile(id: UUID(), name: "딸기", iconName: "strawberry"), rarity: 2),
         PlantBookModel(id: UUID(), plant: PlantProfile(id: UUID(), name: "토마토", iconName: "tomato"), rarity: 2)
     ]
+    @StateObject private var viewModel = PlantBookListViewModel()
     let columns = [
         GridItem(.flexible(), spacing: 2),
         GridItem(.flexible(), spacing: 2)
@@ -45,8 +46,8 @@ struct PlantBookListView: View {
                 VStack {
                     Spacer().padding(.top, 80)
                     LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(plantList) { p in
-                            PlantBookComponent(plant: p)
+                        ForEach(viewModel.plantList) { plant in
+                            PlantBookComponent(plant: plant)
                         }
                     }
                     .padding(.vertical, 25)
@@ -70,6 +71,9 @@ struct PlantBookListView: View {
                 }
             }
             .ignoresSafeArea()
+        }
+        .task {
+            viewModel.fetchPlantList(memberId: 1) // 예시로 memberId = 1
         }
     }
 }
