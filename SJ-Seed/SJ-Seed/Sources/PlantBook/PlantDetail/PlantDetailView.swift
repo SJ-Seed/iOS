@@ -10,6 +10,9 @@ import SwiftUI
 struct PlantDetailView: View {
     let plant: PlantBookModel
     let detail: PlantDetailModel
+    let pieceId: Int = 5 // 현재는 하드코딩
+    
+    @StateObject private var viewModel = PlantDetailViewModel()
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -26,40 +29,58 @@ struct PlantDetailView: View {
             }
             .ignoresSafeArea()
             
-            ScrollView {
-                VStack(spacing: 24) {
-                    // MARK: - 상단 식물 정보
-                    PlantInfoHeader(plant: plant)
-                        .padding(.top, 80)
-                    
-                    // MARK: - 섹션별 정보
-                    VStack {
-                        PlantInfoSection(title: "설명", content: detail.description)
-                        PlantInfoSection(title: "식물이 자라는 과정", content: detail.growthProcess)
-                        PlantInfoSection(title: "식물이 자라는 좋은 환경", content: detail.goodEnvironment)
-                        PlantInfoSection(title: "물은 언제 주나요?", content: detail.watering)
-                    }
-                    .padding(.vertical, 15)
-                    .background(
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.ivory1)
-                            .padding(.horizontal, 30)
-                            .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
-                    )
-                    
-                    // MARK: - 하단 캐릭터 & 배경
-                    ZStack {
-                        Image(.grassBG)
-                            .resizable()
-                            .scaledToFit()
-                        CharacterSpeechComponent(
-                            characterImage: .student,
-                            textString: "열심히 키워서\n예쁜 열매를 맺어봐요!"
+            // MARK: - 로딩 중 표시
+            if viewModel.isLoading {
+                ProgressView("불러오는 중...")
+                    .font(Font.OwnglyphMeetme.regular.font(size: 24))
+                    .foregroundColor(.brown1)
+            }
+            // MARK: - 에러 표시
+            else if let error = viewModel.errorMessage {
+                Text(error)
+                    .foregroundColor(.red)
+                    .font(.headline)
+            }
+            
+            else if let detail = viewModel.detail {
+                ScrollView {
+                    VStack(spacing: 24) {
+                        // MARK: - 상단 식물 정보
+                        PlantInfoHeader(plant: plant)
+                            .padding(.top, 80)
+                        
+                        // MARK: - 섹션별 정보
+                        VStack {
+                            PlantInfoSection(title: "설명", content: detail.description)
+                            PlantInfoSection(title: "식물이 자라는 과정", content: detail.growthProcess)
+                            PlantInfoSection(title: "식물이 자라는 좋은 환경", content: detail.goodEnvironment)
+                            PlantInfoSection(title: "물은 언제 주나요?", content: detail.watering)
+                        }
+                        .padding(.vertical, 15)
+                        .background(
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(Color.ivory1)
+                                .padding(.horizontal, 30)
+                                .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
                         )
+                        
+                        // MARK: - 하단 캐릭터 & 배경
+                        ZStack {
+                            Image(.grassBG)
+                                .resizable()
+                                .scaledToFit()
+                            CharacterSpeechComponent(
+                                characterImage: .student,
+                                textString: "열심히 키워서\n예쁜 열매를 맺어봐요!"
+                            )
+                        }
                     }
                 }
+                .ignoresSafeArea()
             }
-            .ignoresSafeArea()
+        }
+        .task {
+            viewModel.fetchPlantDetail(pieceId: pieceId)
         }
     }
 }

@@ -52,6 +52,7 @@ struct PlantLotteryView: View {
                 Button(action: {
                     withAnimation(.easeInOut) {
                         viewModel.drawPlant()
+                        // TODO: -1000코인 지불 api 연결 필요
                     }
                 }) {
                     Text("1000코인 지불 후 뽑기")
