@@ -10,7 +10,7 @@ import Moya
 
 final class AuthService {
     static let shared = AuthService()
-    private init() {}
+    init() {}
     
     private let provider = MoyaProvider<AuthAPI>()
     

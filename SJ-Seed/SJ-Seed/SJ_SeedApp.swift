@@ -9,9 +9,58 @@ import SwiftUI
 
 @main
 struct SJ_SeedApp: App {
+    @StateObject private var router = AppRouter()
+    @StateObject private var container: DIContainer
+    
+    @Environment(\.scenePhase) private var scenePhase
+    
+    init() {
+        let router = AppRouter()
+        self._router = StateObject(wrappedValue: router)
+        self._container = StateObject(wrappedValue: DIContainer(router: router))
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack(path: $router.path) {
+                PlantBookListView() // 시작 화면 수정 필요
+                
+                    .navigationDestination(for: Route.self) { route in
+                        switch route {
+                        case .login:
+                            let _ = print("로그인뷰나중에구현할게")
+//                            LoginView()
+                        case .home:
+                            HomeView()
+                        case .hospital:
+                            HospitalView()
+                        case .plantBook:
+                            PlantBookListView()
+                        case .plantDetail/*(let pieceId)*/:
+                            PlantDetailView(/*pieceId: pieceId*/)
+                        case .lottery:
+                            PlantLotteryView()
+                        }
+                    }
+            }
+            .environmentObject(container)
+            .environment(\.diContainer, container)
+            .alert(isPresented: $container.router.showAlert) {
+                Alert(
+                    title: Text("알림"),
+                    message: Text(container.router.alertMessage),
+                    dismissButton: .default(Text("확인")) {
+                        container.router.alertAction?()
+                        container.router.alertAction = nil
+                    }
+                )
+            }
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
+                // 토큰 만료 체크나 자동 로그인 등 관리 가능
+                print("🌱 App 활성화됨")
+            }
         }
     }
 }
