@@ -14,11 +14,11 @@ final class PlantDetailViewModel: ObservableObject {
     
     private let service = CollectionService.shared
     
-    func fetchPlantDetail(pieceId: Int) {
+    func fetchPlantDetail(speciesId: Int) {
         isLoading = true
         errorMessage = nil
         
-        service.getPieceDetail(pieceId: pieceId) { [weak self] result in
+        service.getPieceDetail(speciesId: speciesId) { [weak self] result in
             DispatchQueue.main.async {
                 self?.isLoading = false
                 switch result {

@@ -11,7 +11,7 @@ final class PlantLotteryViewModel: ObservableObject {
     @Published var isAnimating = false
     @Published var showText = false
     @Published var resultName: String? = nil
-    @Published var resultPieceId: Int = 0
+//    @Published var resultPieceId: Int = 0
     
     private let service = CollectionService.shared
     private let memberId = 1 // 임시 하드코딩 (로그인 연동 후 교체)
@@ -39,9 +39,9 @@ final class PlantLotteryViewModel: ObservableObject {
                     print("🌱 뽑기 결과 (ifNotLose):", data.ifNotLose)
                     
                     // ‼️ 옵셔널 바인딩으로 안전하게 처리
-                    if let name = data.name, let pieceId = data.pieceId {
+                    if let name = data.name, data.pieceId != nil {
                         self?.resultName = name
-                        self?.resultPieceId = pieceId
+//                        self?.resultPieceId = pieceId
                     } else {
                         // 꽝인 경우 (ifNotLose가 false인 경우)
                         self?.resultName = nil // 또는 "꽝"으로 설정
@@ -53,7 +53,7 @@ final class PlantLotteryViewModel: ObservableObject {
                     self?.showText = false
                 case .failure(let error):
                     print("❌ 랜덤 뽑기 실패:", error)
-                    self?.resultName = "실패했어요 😢"
+                    self?.resultName = nil
 //                    self?.resultPieceId = -1
                     self?.isAnimating = false
                     self?.showText = false

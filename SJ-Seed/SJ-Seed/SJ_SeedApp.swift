@@ -36,11 +36,11 @@ struct SJ_SeedApp: App {
                         case .hospital:
                             HospitalView()
                                 .navigationBarBackButtonHidden(true)
-                        case .plantBook:
+                        case .plantBookList:
                             PlantBookListView()
                                 .navigationBarBackButtonHidden(true)
-                        case .plantDetail(let pieceId):
-                            PlantDetailView(pieceId: pieceId)
+                        case .plantDetail(let speciesId):
+                            PlantDetailView(speciesId: speciesId)
                                 .navigationBarBackButtonHidden(true)
                         case .plantLottery:
                             PlantLotteryView()

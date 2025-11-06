@@ -11,7 +11,7 @@ import Moya
 enum CollectionAPI {
     case random(memberId: Int)
     case pieceList(memberId: Int)
-    case piece(pieceId: Int)
+    case piece(speciesId: Int)
 }
 
 extension CollectionAPI: TargetType {
@@ -25,8 +25,8 @@ extension CollectionAPI: TargetType {
             return "/collection/random/\(memberId)"
         case let .pieceList(memberId):
             return "/collection/pieceList/\(memberId)"
-        case let .piece(pieceId):
-            return "/collection/piece/\(pieceId)"
+        case let .piece(speciesId):
+            return "/collection/piece/\(speciesId)"
         }
     }
     

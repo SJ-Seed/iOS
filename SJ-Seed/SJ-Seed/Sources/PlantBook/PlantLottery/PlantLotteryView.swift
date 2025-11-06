@@ -12,8 +12,7 @@ struct PlantLotteryView: View {
     
     @StateObject private var viewModel = PlantLotteryViewModel()
     @State private var showFirst = false
-//    @State private var isAnimating = false   // 애니메이션 시작 여부
-//    @State private var showText = false      // "두근두근..." 텍스트 표시
+    
     let timer = Timer.publish(every: 0.4, on: .main, in: .common).autoconnect()
     
     var body: some View {
@@ -89,7 +88,15 @@ struct PlantLotteryView: View {
         .ignoresSafeArea(edges: .bottom)
         .onChange(of: viewModel.resultName) {
             if let name = viewModel.resultName {
-                di.router.push(.plantDetail(pieceId: viewModel.resultPieceId))
+                // 'name'을 이용해 'PlantAssets'에서 'speciesId'를 찾음
+                if let speciesId = PlantAssets.findSpeciesId(by: name) {
+                    
+                    // 'speciesId'를 DetailView로 전달
+                    di.router.push(.plantDetail(speciesId: speciesId))
+                    
+                } else {
+                    print("❌ PlantLotteryView: '\(name)'에 해당하는 speciesId를 PlantAssets에서 찾을 수 없습니다.")
+                }
             }
         }
     }

@@ -19,6 +19,9 @@ final class CollectionService {
         provider.request(.random(memberId: memberId)) { result in
             switch result {
             case .success(let response):
+                if let responseString = String(data: response.data, encoding: .utf8) {
+                    print("📄 랜덤 뽑기 원본 데이터: \(responseString)")
+                }
                 do {
                     let decoded = try JSONDecoder().decode(APIResponse<RandomResult>.self, from: response.data)
                     completion(.success(decoded.result))
@@ -53,8 +56,8 @@ final class CollectionService {
     }
     
     // MARK: - 3. 조각 상세 정보 조회
-    func getPieceDetail(pieceId: Int, completion: @escaping (Result<PieceDetail, Error>) -> Void) {
-        provider.request(.piece(pieceId: pieceId)) { result in
+    func getPieceDetail(speciesId: Int, completion: @escaping (Result<PieceDetail, Error>) -> Void) {
+        provider.request(.piece(speciesId: speciesId)) { result in
             switch result {
             case .success(let response):
                 do {

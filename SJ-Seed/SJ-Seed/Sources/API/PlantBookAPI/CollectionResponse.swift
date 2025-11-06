@@ -25,5 +25,5 @@ struct PieceDetail: Codable {
     let process: String
     let water: String
     let description: String
-    let rarity: Int // 임시
+    let rarity: Int
 }

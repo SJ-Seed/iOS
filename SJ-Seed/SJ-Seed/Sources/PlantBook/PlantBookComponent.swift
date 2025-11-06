@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PlantBookComponent: View {
-    var plant: PlantBookModel = PlantBookModel(id: UUID(), plant: PlantProfile(id: UUID(), name: "토마토", iconName: "tomato"), rarity: 2)
+    var plant: PlantBookModel = PlantBookModel(id: UUID(), plant: PlantProfile(id: UUID(), name: "토마토", iconName: "tomato"), rarity: 2, speciesId: 0)
     
     var body: some View {
         VStack(spacing: 0) {
