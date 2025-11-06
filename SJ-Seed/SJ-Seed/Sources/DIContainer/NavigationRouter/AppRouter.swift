@@ -13,7 +13,7 @@ enum Route: Hashable {
     case hospital
     case plantBook
     case plantDetail(pieceId: Int, plantName: String)
-    case lottery
+    case plantLottery
 }
 
 final class AppRouter: ObservableObject {

@@ -23,7 +23,7 @@ struct SJ_SeedApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $router.path) {
-                PlantBookListView() // 시작 화면 수정 필요
+                HomeView() // 시작 화면 수정 필요
                 
                     .navigationDestination(for: Route.self) { route in
                         switch route {
@@ -32,14 +32,19 @@ struct SJ_SeedApp: App {
 //                            LoginView()
                         case .home:
                             HomeView()
+                                .navigationBarBackButtonHidden(true)
                         case .hospital:
                             HospitalView()
+                                .navigationBarBackButtonHidden(true)
                         case .plantBook:
                             PlantBookListView()
+                                .navigationBarBackButtonHidden(true)
                         case .plantDetail/*(let pieceId)*/:
                             PlantDetailView(/*pieceId: pieceId*/)
-                        case .lottery:
+                                .navigationBarBackButtonHidden(true)
+                        case .plantLottery:
                             PlantLotteryView()
+                                .navigationBarBackButtonHidden(true)
                         }
                     }
             }

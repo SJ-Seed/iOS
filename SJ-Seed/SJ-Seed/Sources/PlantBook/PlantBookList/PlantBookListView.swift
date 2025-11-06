@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct PlantBookListView: View {
+    @Environment(\.diContainer) private var di
+    
     @StateObject private var viewModel = PlantBookListViewModel()
     let columns = [
         GridItem(.flexible(), spacing: 2),
@@ -34,7 +36,7 @@ struct PlantBookListView: View {
                 VStack {
                     ZStack {
                         HStack {
-                            Button(action: { /*di.router.pop()*/ }) {
+                            Button(action: { di.router.pop() }) {
                                 Image("chevronLeft")
                                     .foregroundStyle(.brown1)
                                     .padding(.leading)
@@ -42,12 +44,19 @@ struct PlantBookListView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
                             Spacer()
-                            Button(action: { /*di.router.pop()*/ }) {
+                            Button(action: { di.router.push(.plantLottery) }) {
                                 Text("뽑기")
                                     .font(Font.OwnglyphMeetme.regular.font(size: 20))
-                                    .foregroundStyle(.brown1)
-                                    .padding(.trailing)
+                                    .foregroundStyle(.white)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 8)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .fill(Color.brown1)
+                                            .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
+                                    )
                             }
+                            .padding(.trailing, 24)
                         }
                         
                         // 인덱스 중앙

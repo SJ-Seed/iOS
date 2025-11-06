@@ -10,10 +10,11 @@ import SwiftUI
 struct MainButtonComponent: View {
     var buttonImage: Image
     var buttonText: String
+    var moveTo: () -> Void = {}
     
     var body: some View {
         Button(action: {
-            print("\(buttonText) tapped")
+            moveTo()
         }) {
             VStack {
                 buttonImage
