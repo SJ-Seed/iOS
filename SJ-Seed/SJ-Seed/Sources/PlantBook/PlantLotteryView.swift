@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct PlantLotteryView: View {
+    @StateObject private var viewModel = PlantLotteryViewModel()
     @State private var showFirst = false
-    @State private var isAnimating = false   // 애니메이션 시작 여부
-    @State private var showText = false      // "두근두근..." 텍스트 표시
+//    @State private var isAnimating = false   // 애니메이션 시작 여부
+//    @State private var showText = false      // "두근두근..." 텍스트 표시
     let timer = Timer.publish(every: 0.4, on: .main, in: .common).autoconnect()
     
     var body: some View {
@@ -26,26 +27,31 @@ struct PlantLotteryView: View {
                 .frame(width: 350)
                 .offset(y: -50)
                 .onReceive(timer) { _ in
-                    guard isAnimating else { return }
+                    guard viewModel.isAnimating else { return }
                     withAnimation(.easeInOut(duration: 0.3)) {
                         showFirst.toggle()
                     }
                 }
             
-            if !isAnimating {
+            if let name = viewModel.resultName {
+                VStack {
+                    Text("🌱 뽑힌 식물 🌱")
+                        .font(Font.OwnglyphMeetme.regular.font(size: 26))
+                        .foregroundColor(.brown1)
+                        .padding(.bottom, 4)
+                    
+                    Text(name)
+                        .font(Font.OwnglyphMeetme.regular.font(size: 36))
+                        .foregroundColor(.green1)
+                }
+                .offset(y: 180)
+                .transition(.opacity.combined(with: .scale))
+            }
+            
+            if !viewModel.isAnimating && viewModel.resultName == nil {
                 Button(action: {
                     withAnimation(.easeInOut) {
-                        isAnimating = true
-                        showText = true
-                    }
-                    
-                    // 3초 뒤 애니메이션 종료
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        withAnimation {
-                            isAnimating = false
-                            showText = false
-                            // TODO: 다음 단계 (ex. 결과 뽑기 화면으로 전환)
-                        }
+                        viewModel.drawPlant()
                     }
                 }) {
                     Text("1000코인 지불 후 뽑기")
@@ -58,7 +64,7 @@ struct PlantLotteryView: View {
                         )
                 }
                 .offset(y: 150)
-            } else if showText {
+            } else if viewModel.showText {
                 Text("두근두근...")
                     .foregroundStyle(.brown1)
                     .font(Font.OwnglyphMeetme.regular.font(size: 28))
