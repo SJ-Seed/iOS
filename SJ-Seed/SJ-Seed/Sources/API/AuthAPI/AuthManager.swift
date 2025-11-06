@@ -11,8 +11,8 @@ final class AuthManager {
     static let shared = AuthManager()
     private init() {}
 
-    // ⚙️ 개발용 하드코딩 토큰
-    private let devToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmciLCJpYXQiOjE3NjI0MzU3MDAsImV4cCI6MTc2MjUyMjEwMH0.RjqkiAiyFUCdcjsIslj31Ns3LfAtnPVhYd9oPUhiELw"
+    // 개발용 하드코딩 토큰
+    private let devToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmciLCJpYXQiOjE3NjI0MzcxNzgsImV4cCI6MTc2MjUyMzU3OH0.O-LRnrZpq63DJx-Dk-M_3-CV4ZZzEqJG5o6o15AZiBQ"
 
     // 현재 토큰 (실제 로그인 시에는 여기 업데이트)
     var accessToken: String {

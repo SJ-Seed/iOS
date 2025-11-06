@@ -49,7 +49,7 @@ struct PlantDetailView: View {
                             ProgressView("불러오는 중...")
                                 .font(Font.OwnglyphMeetme.regular.font(size: 24))
                                 .foregroundColor(.brown1)
-                                .padding(.top, 100)
+                                .padding(.top, 300)
                         }
                         else if let error = viewModel.errorMessage {
                             Text(error)

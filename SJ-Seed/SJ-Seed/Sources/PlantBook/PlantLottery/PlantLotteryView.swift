@@ -61,7 +61,7 @@ struct PlantLotteryView: View {
                         }
                     }
                 
-                if !viewModel.isAnimating {
+                if !viewModel.isAnimating && !viewModel.showText {
                     Button(action: {
                         withAnimation(.easeInOut) {
                             viewModel.drawPlant()
@@ -77,8 +77,12 @@ struct PlantLotteryView: View {
                                     .frame(width: 220, height: 50)
                             )
                     }
-                } else if viewModel.showText {
+                } else if viewModel.isAnimating { // 뽑는 중
                     Text("두근두근...")
+                        .foregroundStyle(.brown1)
+                        .font(Font.OwnglyphMeetme.regular.font(size: 28))
+                } else if !viewModel.isAnimating && viewModel.showText { // 꽝 나옴
+                    Text("꽝이에요 😢")
                         .foregroundStyle(.brown1)
                         .font(Font.OwnglyphMeetme.regular.font(size: 28))
                 }

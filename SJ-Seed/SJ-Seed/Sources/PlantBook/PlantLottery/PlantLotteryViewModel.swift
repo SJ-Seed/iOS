@@ -33,30 +33,22 @@ final class PlantLotteryViewModel: ObservableObject {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let data):
-//                    print("🌱 뽑힌 식물: \(data.name)")
-//                    self?.resultName = data.name
-                    // 서버가 ifNotLose: false를 보내면, data.name은 nil입니다.
+                    // 서버가 ifNotLose: false를 보내면, data.name은 nil
                     print("🌱 뽑기 결과 (ifNotLose):", data.ifNotLose)
                     
-                    // ‼️ 옵셔널 바인딩으로 안전하게 처리
                     if let name = data.name, data.pieceId != nil {
                         self?.resultName = name
-//                        self?.resultPieceId = pieceId
-                    } else {
-                        // 꽝인 경우 (ifNotLose가 false인 경우)
-                        self?.resultName = nil // 또는 "꽝"으로 설정
-                        // resultPieceId는 0으로 유지
+                        self?.isAnimating = false
+                        self?.showText = false
+                    } else { // 꽝인 경우 (ifNotLose가 false인 경우)
+                        self?.resultName = "꽝"
+                        self?.isAnimating = false
                         // TODO: 꽝일 때의 UI 처리 (예: 알림창)
                     }
-                    
-                    self?.isAnimating = false
-                    self?.showText = false
                 case .failure(let error):
                     print("❌ 랜덤 뽑기 실패:", error)
                     self?.resultName = nil
-//                    self?.resultPieceId = -1
                     self?.isAnimating = false
-                    self?.showText = false
                 }
             }
         }
