@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
+    @Environment(\.diContainer) private var di
+    
     var body: some View {
         VStack {
             HeaderBarGroup(
@@ -43,7 +45,7 @@ struct HomeView: View {
                 )
                 .padding(.horizontal, 25)
             HStack {
-                MainButtonComponent(buttonImage: Image(.student), buttonText: "도감")
+                MainButtonComponent(buttonImage: Image(.student), buttonText: "도감", moveTo: {di.router.push(.plantBookList)})
                 MainButtonComponent(buttonImage: Image(.grandma2), buttonText: "식물")
                 MainButtonComponent(buttonImage: Image(.doctor1), buttonText: "병원")
             }
@@ -73,8 +75,7 @@ struct HeaderBarGroup: View {
             Spacer()
             HeaderButton(
                 icon: Image(.coin),
-                text: "\(coin)",
-                onTap: onTapCoin
+                text: "\(coin)"
             )
         }
         .padding(.horizontal)

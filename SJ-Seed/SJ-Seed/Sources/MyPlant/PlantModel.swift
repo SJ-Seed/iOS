@@ -47,3 +47,9 @@ struct PlantInfo: Identifiable {
     let dateText: String
     let diagnosis: DiagnosisType
 }
+
+struct PlantAsset {
+    let name: String       // 한글 이름
+    let iconName: String   // 이미지 에셋 이름
+    let rarity: Int
+}
