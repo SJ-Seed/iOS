@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct PlantLotteryView: View {
+    @Environment(\.diContainer) private var di
+    
     @StateObject private var viewModel = PlantLotteryViewModel()
     @State private var showFirst = false
 //    @State private var isAnimating = false   // 애니메이션 시작 여부
@@ -15,61 +17,93 @@ struct PlantLotteryView: View {
     let timer = Timer.publish(every: 0.4, on: .main, in: .common).autoconnect()
     
     var body: some View {
-        ZStack {
+        ZStack(alignment: .top) {
             Image(.background)
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
             
-            Image(showFirst ? "gacha1" : "gacha2")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 350)
-                .offset(y: -50)
-                .onReceive(timer) { _ in
-                    guard viewModel.isAnimating else { return }
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        showFirst.toggle()
+            ZStack {
+                HStack {
+                    Button(action: { di.router.pop() }) {
+                        Image("chevronLeft")
+                            .foregroundStyle(.ivory1)
+                            .padding(.leading)
                     }
-                }
-            
-            if let name = viewModel.resultName {
-                VStack {
-                    Text("🌱 뽑힌 식물 🌱")
-                        .font(Font.OwnglyphMeetme.regular.font(size: 26))
-                        .foregroundColor(.brown1)
-                        .padding(.bottom, 4)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
                     
-                    Text(name)
-                        .font(Font.OwnglyphMeetme.regular.font(size: 36))
-                        .foregroundColor(.green1)
+                    Spacer()
+                    
+                    HeaderButton(
+                        icon: Image(.coin),
+                        text: "1200"
+                        // TODO: - 코인 api 연결해야함
+                    )
+                    .padding(.trailing)
                 }
-                .offset(y: 180)
-                .transition(.opacity.combined(with: .scale))
-            }
-            
-            if !viewModel.isAnimating && viewModel.resultName == nil {
-                Button(action: {
-                    withAnimation(.easeInOut) {
-                        viewModel.drawPlant()
-                        // TODO: -1000코인 지불 api 연결 필요
-                    }
-                }) {
-                    Text("1000코인 지불 후 뽑기")
-                        .foregroundStyle(.ivory1)
-                        .font(Font.OwnglyphMeetme.regular.font(size: 22))
-                        .background(
-                            RoundedRectangle(cornerRadius: 20)
-                                .fill(Color.brown1)
-                                .frame(width: 220, height: 50)
-                        )
-                }
-                .offset(y: 150)
-            } else if viewModel.showText {
-                Text("두근두근...")
-                    .foregroundStyle(.brown1)
+                Text("뽑기")
                     .font(Font.OwnglyphMeetme.regular.font(size: 28))
-                    .offset(y: 150)
+                    .foregroundStyle(.ivory1)
+            }
+            .padding(.top, 40)
+            
+            VStack {
+                Spacer()
+                Image(showFirst ? "gacha1" : "gacha2")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 350)
+                    .offset(y: -50)
+                    .onReceive(timer) { _ in
+                        guard viewModel.isAnimating else { return }
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            showFirst.toggle()
+                        }
+                    }
+                
+//                if let name = viewModel.resultName {
+//                    VStack {
+//                        Text("🌱 뽑힌 식물 🌱")
+//                            .font(Font.OwnglyphMeetme.regular.font(size: 26))
+//                            .foregroundColor(.brown1)
+//                            .padding(.bottom, 4)
+//                        
+//                        Text(name)
+//                            .font(Font.OwnglyphMeetme.regular.font(size: 36))
+//                            .foregroundColor(.green1)
+//                    }
+//                    .transition(.opacity.combined(with: .scale))
+//                }
+                
+                if !viewModel.isAnimating {
+                    Button(action: {
+                        withAnimation(.easeInOut) {
+                            viewModel.drawPlant()
+                            // TODO: -1000코인 지불 api 연결 필요
+                        }
+                    }) {
+                        Text("1000코인 지불 후 뽑기")
+                            .foregroundStyle(.ivory1)
+                            .font(Font.OwnglyphMeetme.regular.font(size: 22))
+                            .background(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .fill(Color.brown1)
+                                    .frame(width: 220, height: 50)
+                            )
+                    }
+                } else if viewModel.showText {
+                    Text("두근두근...")
+                        .foregroundStyle(.brown1)
+                        .font(Font.OwnglyphMeetme.regular.font(size: 28))
+                }
+                Spacer()
+            }
+        }
+        .ignoresSafeArea(edges: .bottom)
+        .onChange(of: viewModel.resultName) {
+            if let name = viewModel.resultName {
+                di.router.push(.plantDetail/*(pieceId: viewModel.resultPieceId)*/)
             }
         }
     }

@@ -75,8 +75,7 @@ struct HeaderBarGroup: View {
             Spacer()
             HeaderButton(
                 icon: Image(.coin),
-                text: "\(coin)",
-                onTap: onTapCoin
+                text: "\(coin)"
             )
         }
         .padding(.horizontal)

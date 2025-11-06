@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct PlantDetailView: View {
+    @Environment(\.diContainer) private var di
+    
 //    let plant: PlantBookModel
     let plant = PlantBookModel(
         id: UUID(),
@@ -51,7 +53,7 @@ struct PlantDetailView: View {
                 ScrollView {
                     VStack {
                         HStack {
-                            Button(action: { /*di.router.pop()*/ }) {
+                            Button(action: { di.router.pop() }) {
                                 Image("chevronLeft")
                                     .foregroundStyle(.brown1)
                                     .padding(.leading)
