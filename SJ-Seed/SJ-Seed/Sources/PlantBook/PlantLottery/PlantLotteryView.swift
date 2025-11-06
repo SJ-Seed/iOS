@@ -62,20 +62,6 @@ struct PlantLotteryView: View {
                         }
                     }
                 
-//                if let name = viewModel.resultName {
-//                    VStack {
-//                        Text("🌱 뽑힌 식물 🌱")
-//                            .font(Font.OwnglyphMeetme.regular.font(size: 26))
-//                            .foregroundColor(.brown1)
-//                            .padding(.bottom, 4)
-//                        
-//                        Text(name)
-//                            .font(Font.OwnglyphMeetme.regular.font(size: 36))
-//                            .foregroundColor(.green1)
-//                    }
-//                    .transition(.opacity.combined(with: .scale))
-//                }
-                
                 if !viewModel.isAnimating {
                     Button(action: {
                         withAnimation(.easeInOut) {
@@ -103,7 +89,7 @@ struct PlantLotteryView: View {
         .ignoresSafeArea(edges: .bottom)
         .onChange(of: viewModel.resultName) {
             if let name = viewModel.resultName {
-                di.router.push(.plantDetail/*(pieceId: viewModel.resultPieceId)*/)
+                di.router.push(.plantDetail(pieceId: viewModel.resultPieceId))
             }
         }
     }

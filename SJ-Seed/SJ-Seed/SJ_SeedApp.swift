@@ -39,8 +39,8 @@ struct SJ_SeedApp: App {
                         case .plantBook:
                             PlantBookListView()
                                 .navigationBarBackButtonHidden(true)
-                        case .plantDetail/*(let pieceId)*/:
-                            PlantDetailView(/*pieceId: pieceId*/)
+                        case .plantDetail(let pieceId):
+                            PlantDetailView(pieceId: pieceId)
                                 .navigationBarBackButtonHidden(true)
                         case .plantLottery:
                             PlantLotteryView()

@@ -9,8 +9,8 @@ import Foundation
 
 struct RandomResult: Codable {
     let ifNotLose: Bool
-    let name: String
-    let pieceId: Int
+    let name: String?
+    let pieceId: Int?
 }
 
 struct PieceListItem: Codable {
@@ -25,4 +25,5 @@ struct PieceDetail: Codable {
     let process: String
     let water: String
     let description: String
+    let rarity: Int // 임시
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 final class PlantDetailViewModel: ObservableObject {
-    @Published var detail: PlantDetailModel? = nil
+    @Published var detail: PieceDetail? = nil
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
     
@@ -24,12 +24,13 @@ final class PlantDetailViewModel: ObservableObject {
                 switch result {
                 case .success(let data):
                     print("🌱 상세 정보 불러오기 성공:", data.name)
-                    self?.detail = PlantDetailModel(
-                        description: data.description,
-                        growthProcess: data.process,
-                        goodEnvironment: "온도: \(data.properTemp)\n습도: \(data.properHum)",
-                        watering: data.water
-                    )
+                    self?.detail = data
+//                    self?.detail = PlantDetailModel(
+//                        description: data.description,
+//                        growthProcess: data.process,
+//                        goodEnvironment: "온도: \(data.properTemp)\n습도: \(data.properHum)",
+//                        watering: data.water
+//                    )
                 case .failure(let error):
                     print("❌ 상세 정보 불러오기 실패:", error)
                     self?.errorMessage = "불러오기에 실패했어요 😢"

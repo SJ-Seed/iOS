@@ -12,7 +12,7 @@ enum Route: Hashable {
     case home
     case hospital
     case plantBook
-    case plantDetail/*(pieceId: Int)*/
+    case plantDetail(pieceId: Int)
     case plantLottery
 }
 

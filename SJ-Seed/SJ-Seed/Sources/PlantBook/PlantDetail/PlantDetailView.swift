@@ -9,15 +9,7 @@ import SwiftUI
 
 struct PlantDetailView: View {
     @Environment(\.diContainer) private var di
-    
-//    let plant: PlantBookModel
-    let plant = PlantBookModel(
-        id: UUID(),
-        plant: PlantProfile(id: UUID(), name: "토마토", iconName: "tomato"),
-        rarity: 2
-    )
-//    let detail: PlantDetailModel
-    let pieceId: Int = 6 // 현재는 하드코딩
+    let pieceId: Int
     
     @StateObject private var viewModel = PlantDetailViewModel()
     
@@ -47,9 +39,11 @@ struct PlantDetailView: View {
                 Text(error)
                     .foregroundColor(.red)
                     .font(.headline)
+                Button("돌아가기") { di.router.pop() }
             }
             
             else if let detail = viewModel.detail {
+                let staticAsset = PlantAssets.find(by: detail.name)
                 ScrollView {
                     VStack {
                         HStack {
@@ -63,15 +57,24 @@ struct PlantDetailView: View {
                             Spacer()
                         }
                         
+                        let headerModel = PlantBookModel(
+                            id: UUID(), // 임시 ID
+                            plant: PlantProfile(
+                                id: UUID(), // 임시 ID
+                                name: detail.name,
+                                iconName: staticAsset?.iconName ?? "sprout"
+                            ),
+                            rarity: detail.rarity
+                        )
                         // MARK: - 상단 식물 정보
-                        PlantInfoHeader(plant: plant)
+                        PlantInfoHeader(plant: headerModel)
                         
                         // MARK: - 섹션별 정보
                         VStack {
                             PlantInfoSection(title: "설명", content: detail.description)
-                            PlantInfoSection(title: "식물이 자라는 과정", content: detail.growthProcess)
-                            PlantInfoSection(title: "식물이 자라는 좋은 환경", content: detail.goodEnvironment)
-                            PlantInfoSection(title: "물은 언제 주나요?", content: detail.watering)
+                            PlantInfoSection(title: "식물이 자라는 과정", content: detail.process)
+                            PlantInfoSection(title: "식물이 자라는 좋은 환경", content: "온도: \(detail.properTemp), 습도: \(detail.properHum)")
+                            PlantInfoSection(title: "물은 언제 주나요?", content: detail.water)
                         }
                         .padding(.vertical, 15)
                         .background(
@@ -98,6 +101,7 @@ struct PlantDetailView: View {
         .task {
             viewModel.fetchPlantDetail(pieceId: pieceId)
         }
+        
     }
 }
 
@@ -106,7 +110,7 @@ struct PlantInfoHeader: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            CloudPlantComponent(icon: Image("tomato"))
+            CloudPlantComponent(icon: Image(plant.plant.iconName))
                 .padding(.bottom, 8)
             
             Text(plant.plant.name)
@@ -149,19 +153,5 @@ struct PlantInfoSection: View {
 }
 
 #Preview {
-    // 예시용 프리뷰 데이터
-//    let plant = PlantBookModel(
-//        id: UUID(),
-//        plant: PlantProfile(id: UUID(), name: "토마토", iconName: "tomato"),
-//        rarity: 2
-//    )
-    
-//    let detail = PlantDetailModel(
-//        description: "토마토는 빨갛고 동그란 열매로, 새콤달콤한 맛 때문에 샐러드나 주스로 자주 사용돼요. 비타민이 풍부해서 건강에 좋아요!",
-//        growthProcess: "씨앗 → 새싹 → 줄기와 잎 → 꽃 → 열매(토마토)",
-//        goodEnvironment: "온도: 20~25℃\n습도: 50~70%",
-//        watering: "2~3일에 한 번,\n200~300ml 정도 줍니다."
-//    )
-    
-    PlantDetailView()
+    PlantDetailView(pieceId: 6)
 }
