@@ -37,11 +37,9 @@ struct PlantBookListView: View {
                 ProgressView("불러오는 중...")
                     .font(Font.OwnglyphMeetme.regular.font(size: 24))
                     .foregroundStyle(.brown1)
-                    // ZStack 중앙에 오도록 frame 설정
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 
             } else if let error = viewModel.errorMessage {
-                // --- 2. 에러 발생 ---
                 VStack(spacing: 20) {
                     Text(error)
                         .font(Font.OwnglyphMeetme.regular.font(size: 24))
@@ -54,35 +52,36 @@ struct PlantBookListView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 
             } else {
-                ScrollView {
-                    LazyVStack {
-                        headerView
-                        
-                        LazyVGrid(columns: columns, spacing: 20) {
-                            ForEach(viewModel.plantList) { plant in
-                                Button(action: {
-                                    di.router.push(.plantDetail(speciesId: plant.speciesId))
-                                }) {
-                                    PlantBookComponent(plant: plant)
+                VStack {
+                    headerView
+                    ScrollView {
+                        LazyVStack {
+                            LazyVGrid(columns: columns, spacing: 20) {
+                                ForEach(viewModel.plantList) { plant in
+                                    Button(action: {
+                                        di.router.push(.plantDetail(speciesId: plant.speciesId))
+                                    }) {
+                                        PlantBookComponent(plant: plant)
+                                    }
+                                    .disabled(plant.plant.name == "???")
+                                    .buttonStyle(.plain)
                                 }
-                                .disabled(plant.plant.name == "???")
-                                .buttonStyle(.plain)
                             }
+                            .padding(.vertical, 25)
+                            .background(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .fill(Color.ivory1)
+                                    .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
+                            )
+                            .padding(.horizontal, 35)
+                            
+                            Spacer()
+                            
+                            footerView
                         }
-                        .padding(.vertical, 25)
-                        .background(
-                            RoundedRectangle(cornerRadius: 20)
-                                .fill(Color.ivory1)
-                                .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
-                        )
-                        .padding(.horizontal, 35)
-                        
-                        Spacer()
-                        
-                        footerView
                     }
+                    .ignoresSafeArea(edges: .bottom)
                 }
-                .ignoresSafeArea(edges: .bottom)
             }
         }
         .task {

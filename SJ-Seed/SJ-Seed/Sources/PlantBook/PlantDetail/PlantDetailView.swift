@@ -33,73 +33,75 @@ struct PlantDetailView: View {
             .ignoresSafeArea()
             
             if let _ = staticAsset {
-                ScrollView {
-                    LazyVStack {
-                        HStack {
-                            Button(action: { di.router.pop() }) {
-                                Image("chevronLeft")
-                                    .foregroundStyle(.brown1)
-                                    .padding(.leading)
+                VStack {
+                    HStack {
+                        Button(action: { di.router.pop() }) {
+                            Image("chevronLeft")
+                                .foregroundStyle(.brown1)
+                                .padding(.leading)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+                        Spacer()
+                    }
+                    ScrollView {
+                        LazyVStack {
+                            if viewModel.isLoading {
+                                ProgressView("불러오는 중...")
+                                    .font(Font.OwnglyphMeetme.regular.font(size: 24))
+                                    .foregroundColor(.brown1)
+                                    .padding(.top, 300)
                             }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding()
-                            Spacer()
-                        }
-                        if viewModel.isLoading {
-                            ProgressView("불러오는 중...")
-                                .font(Font.OwnglyphMeetme.regular.font(size: 24))
-                                .foregroundColor(.brown1)
-                                .padding(.top, 300)
-                        }
-                        else if let error = viewModel.errorMessage {
-                            Text(error)
-                                .foregroundColor(.red)
-                                .font(.headline)
-                                .padding(.top, 100)
-                            Button("돌아가기") { di.router.pop() }
-                        }
-                        else if let detail = viewModel.detail {
-                            let headerModel = PlantBookModel(
-                                id: UUID(),
-                                plant: PlantProfile(
+                            else if let error = viewModel.errorMessage {
+                                Text(error)
+                                    .foregroundColor(.red)
+                                    .font(.headline)
+                                    .padding(.top, 100)
+                                Button("돌아가기") { di.router.pop() }
+                            }
+                            else if let detail = viewModel.detail {
+                                let headerModel = PlantBookModel(
                                     id: UUID(),
-                                    name: detail.name,
-                                    iconName: staticAsset?.iconName ?? "sprout"
-                                ),
-                                rarity: detail.rarity,
-                                speciesId: speciesId
-                            )
-                            // MARK: - 상단 식물 정보
-                            PlantInfoHeader(plant: headerModel)
-                            
-                            // MARK: - 섹션별 정보
-                            VStack {
-                                PlantInfoSection(title: "설명", content: detail.description)
-                                PlantInfoSection(title: "식물이 자라는 과정", content: detail.process)
-                                PlantInfoSection(title: "식물이 자라는 좋은 환경", content: "온도: \(detail.properTemp), 습도: \(detail.properHum)")
-                                PlantInfoSection(title: "물은 언제 주나요?", content: detail.water)
-                            }
-                            .padding(.vertical, 15)
-                            .background(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(Color.ivory1)
-                                    .padding(.horizontal, 30)
-                                    .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
-                            )
-                            
-                            ZStack {
-                                Image(.grassBG)
-                                    .resizable()
-                                    .scaledToFit()
-                                CharacterSpeechComponent(
-                                    characterImage: .student,
-                                    textString: "열심히 키워서\n예쁜 열매를 맺어봐요!"
+                                    plant: PlantProfile(
+                                        id: UUID(),
+                                        name: detail.name,
+                                        iconName: staticAsset?.iconName ?? "sprout"
+                                    ),
+                                    rarity: detail.rarity,
+                                    speciesId: speciesId
                                 )
+                                // MARK: - 상단 식물 정보
+                                PlantInfoHeader(plant: headerModel)
+                                
+                                // MARK: - 섹션별 정보
+                                VStack {
+                                    PlantInfoSection(title: "설명", content: detail.description)
+                                    PlantInfoSection(title: "식물이 자라는 과정", content: detail.process)
+                                    PlantInfoSection(title: "식물이 자라는 좋은 환경", content: "온도: \(detail.properTemp), 습도: \(detail.properHum)")
+                                    PlantInfoSection(title: "물은 언제 주나요?", content: detail.water)
+                                }
+                                .padding(.vertical, 15)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .fill(Color.ivory1)
+                                        .padding(.horizontal, 30)
+                                        .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
+                                )
+                                
+                                ZStack {
+                                    Image(.grassBG)
+                                        .resizable()
+                                        .scaledToFit()
+                                    CharacterSpeechComponent(
+                                        characterImage: .student,
+                                        textString: "열심히 키워서\n예쁜 열매를 맺어봐요!"
+                                    )
+                                }
                             }
                         }
                     }
+                    .ignoresSafeArea(edges: .bottom)
                 }
-                .ignoresSafeArea(edges: .bottom)
             }
             else {
                 VStack {

@@ -12,7 +12,6 @@ struct PlantRegisterBubbleText: View {
     var userName: String
     @Binding var plantCode: String
     @Binding var plantName: String
-    var foundPlant: String
     
     var isLoading: Bool
     var errorMessage: String?
@@ -35,10 +34,10 @@ struct PlantRegisterBubbleText: View {
                 Button(action: onNext) {
                     Text("확인")
                         .foregroundStyle(.ivory1)
+                        .frame(width: 240, height: 40)
                         .background(
                             RoundedRectangle(cornerRadius: 20)
                                 .fill(Color.brown1)
-                                .frame(width: 240, height: 40)
                         )
                 }
                 
@@ -50,20 +49,20 @@ struct PlantRegisterBubbleText: View {
                     .cornerRadius(20)
                     .padding(.bottom, 8)
                 
-                // 2. ‼️ 로딩 중이 아닐 때만 버튼 표시
+                // 로딩 중이 아닐 때만 버튼 표시
                 if !isLoading {
                     Button(action: onNext) {
                         Text("확인")
                             .foregroundStyle(.ivory1)
+                            .frame(width: 240, height: 40)
                             .background(
                                 RoundedRectangle(cornerRadius: 20)
                                     .fill(Color.brown1)
-                                    .frame(width: 240, height: 40)
                             )
                     }
                 }
                 
-                // 3. ‼️ 로딩 및 에러 메시지 표시
+                //  로딩 및 에러 메시지 표시
                 if isLoading {
                     ProgressView()
                 } else if let error = errorMessage {
@@ -80,10 +79,10 @@ struct PlantRegisterBubbleText: View {
                 Button(action: onComplete) {
                     Text("확인")
                         .foregroundStyle(.ivory1)
+                        .frame(width: 240, height: 40)
                         .background(
                             RoundedRectangle(cornerRadius: 20)
                                 .fill(Color.brown1)
-                                .frame(width: 240, height: 40)
                         )
                 }
             }

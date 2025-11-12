@@ -13,8 +13,7 @@ struct PlantRegisterView: View {
     @State private var step: RegisterStep = .enterCode
     @State private var plantCode: String = ""
     @State private var plantName: String = ""
-    @State private var userName: String = "쑥쑥"
-    @State private var foundPlant: String = "토마토"
+    @State private var userName: String = "친구"
     
     @StateObject private var viewModel = PlantRegisterViewModel()
     
@@ -30,7 +29,6 @@ struct PlantRegisterView: View {
                 userName: userName,
                 plantCode: $plantCode,
                 plantName: $plantName,
-                foundPlant: foundPlant,
                 isLoading: viewModel.isLoading,
                 errorMessage: viewModel.errorMessage,
                 registeredPlantUserName: viewModel.registeredPlantUserName,
@@ -57,8 +55,6 @@ struct PlantRegisterView: View {
         case .enterCode:
             guard !plantCode.isEmpty else { return } // TODO: 코드 비어있을 때 알림
             step = .enterName
-//        case .confirmPlant:
-//            step = .enterName
         case .enterName:
             if viewModel.errorMessage != nil {
                 step = .enterCode
