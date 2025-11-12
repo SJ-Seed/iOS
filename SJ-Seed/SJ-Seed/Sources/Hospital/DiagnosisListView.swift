@@ -30,7 +30,7 @@ struct DiagnosisListView: View {
                 VStack {
                     Spacer().padding(.top, 80)
                     ForEach(records) { record in
-                        ListComponent(item: record)
+                        ListComponent(item: record, onInfoTap: { print("info" )})
                             .padding(.bottom, 8)
                     }
                     Spacer()

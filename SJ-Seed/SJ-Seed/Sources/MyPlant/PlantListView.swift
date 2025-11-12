@@ -52,7 +52,9 @@ struct PlantListView: View {
                     ScrollView {
                         LazyVStack {
                             ForEach(viewModel.plantList) { record in
-                                ListComponent(item: record)
+                                ListComponent(item: record) {
+                                    di.router.push(.plantDetail(speciesId: record.speciesId))
+                                }
                                     .padding(.bottom, 8)
                             }
                             Button(action: { di.router.push(.plantRegister) }) {
