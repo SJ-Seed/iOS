@@ -36,7 +36,7 @@ struct PlantRegisterView: View {
                 registeredPlantUserName: viewModel.registeredPlantUserName,
                 registeredPlantSpeciesName: viewModel.registeredPlantSpeciesName,
                 onNext: handleNext,
-                onPrevious: handlePrevious
+                onComplete: { di.router.pop() }
             )
             .multilineTextAlignment(.center)
             .padding(.bottom, 270)
@@ -56,9 +56,9 @@ struct PlantRegisterView: View {
         switch step {
         case .enterCode:
             guard !plantCode.isEmpty else { return } // TODO: 코드 비어있을 때 알림
-            step = .confirmPlant
-        case .confirmPlant:
             step = .enterName
+//        case .confirmPlant:
+//            step = .enterName
         case .enterName:
             if viewModel.errorMessage != nil {
                 step = .enterCode
@@ -80,25 +80,13 @@ struct PlantRegisterView: View {
                 }
             }
         case .complete:
-            di.router.pop()
             break
         }
     }
-    
-    // 이전 단계로 이동
-    func handlePrevious() {
-            switch step {
-            case .confirmPlant:
-                step = .enterCode
-            default:
-                break
-            }
-        }
 }
 
 enum RegisterStep {
     case enterCode
-    case confirmPlant
     case enterName
     case complete
 }
