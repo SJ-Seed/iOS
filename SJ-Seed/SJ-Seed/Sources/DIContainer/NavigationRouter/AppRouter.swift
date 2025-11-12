@@ -11,6 +11,8 @@ enum Route: Hashable {
     case login
     case home
     case hospital
+    case myPlant
+    case plantRegister
     case plantBookList
     case plantDetail(speciesId: Int)
     case plantLottery

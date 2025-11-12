@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ListComponent<T: PlantDisplayable>: View {
     let item: T
+    var onInfoTap: () -> Void
     
     var body: some View {
         HStack {
@@ -23,7 +24,7 @@ struct ListComponent<T: PlantDisplayable>: View {
                         .font(Font.OwnglyphMeetme.regular.font(size: 30))
                         .foregroundStyle(Color.green1)
                     Button {
-                        print("info")
+                        onInfoTap()
                     } label: {
                         Image("info")
                             .foregroundStyle(Color(.green1))
@@ -35,6 +36,7 @@ struct ListComponent<T: PlantDisplayable>: View {
                     Text(item.diagnosis.displayText)
                 }
                 .font(Font.OwnglyphMeetme.regular.font(size: 20))
+                .foregroundStyle(Color.brown1)
             }
             .padding(.trailing, 30)
 //            Spacer()
@@ -51,5 +53,7 @@ struct ListComponent<T: PlantDisplayable>: View {
 #Preview {
     let sample = PlantProfile(id: UUID(), name: "똥맛토", iconName: "tomato")
     let record = MedicalRecord(plantProfile: sample, dateText: "2025.09.03", diagnosis: .normal)
-    ListComponent(item: record)
+    ListComponent(item: record, onInfoTap: {
+        print("Preview info tap")
+    })
 }

@@ -46,6 +46,7 @@ struct PlantInfo: Identifiable {
     let plantProfile: PlantProfile
     let dateText: String
     let diagnosis: DiagnosisType
+    let speciesId: Int
 }
 
 struct PlantAsset {
