@@ -46,7 +46,7 @@ struct HomeView: View {
                 .padding(.horizontal, 25)
             HStack {
                 MainButtonComponent(buttonImage: Image(.student), buttonText: "도감", moveTo: {di.router.push(.plantBookList)})
-                MainButtonComponent(buttonImage: Image(.grandma2), buttonText: "식물")
+                MainButtonComponent(buttonImage: Image(.grandma2), buttonText: "식물", moveTo: {di.router.push(.myPlant)})
                 MainButtonComponent(buttonImage: Image(.doctor1), buttonText: "병원")
             }
             .padding(.top, 30)

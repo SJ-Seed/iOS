@@ -13,6 +13,12 @@ struct PlantRegisterBubbleText: View {
     @Binding var plantCode: String
     @Binding var plantName: String
     var foundPlant: String
+    
+    var isLoading: Bool
+    var errorMessage: String?
+    var registeredPlantUserName: String
+    var registeredPlantSpeciesName: String
+    
     var onNext: () -> Void
     var onPrevious: () -> Void
     
@@ -38,7 +44,7 @@ struct PlantRegisterBubbleText: View {
                 
             case .confirmPlant:
                 VStack {
-                    Text("\(userName)이 등록하려는 식물이\n“\(foundPlant)” 맞니?")
+                    Text("\(userName)이 등록하려는 식물이\n“\(registeredPlantSpeciesName)” 맞니?")
                     Button(action: onNext) {
                         Text("맞아요")
                             .foregroundStyle(.ivory1)
@@ -67,18 +73,32 @@ struct PlantRegisterBubbleText: View {
                     .frame(width: 240)
                     .cornerRadius(20)
                     .padding(.bottom, 8)
-                Button(action: onNext) {
-                    Text("확인")
-                        .foregroundStyle(.ivory1)
-                        .background(
-                            RoundedRectangle(cornerRadius: 20)
-                                .fill(Color.brown1)
-                                .frame(width: 240, height: 40)
-                        )
+                
+                // 2. ‼️ 로딩 중이 아닐 때만 버튼 표시
+                if !isLoading {
+                    Button(action: onNext) {
+                        Text("확인")
+                            .foregroundStyle(.ivory1)
+                            .background(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .fill(Color.brown1)
+                                    .frame(width: 240, height: 40)
+                            )
+                    }
+                }
+                
+                // 3. ‼️ 로딩 및 에러 메시지 표시
+                if isLoading {
+                    ProgressView()
+                } else if let error = errorMessage {
+                    Text(error)
+                        .font(Font.OwnglyphMeetme.regular.font(size: 18))
+                        .foregroundStyle(.red)
+                        .padding(.top, 5)
                 }
                 
             case .complete:
-                Text("해당 식물을\n\(userName)의 식물로 등록했단다.\n잘 돌봐주도록 해!")
+                Text("\(registeredPlantUserName) (\(registeredPlantSpeciesName)) 을\n\(userName)의 식물로 등록했단다.\n잘 돌봐주도록 해!")
             }
         }
         .padding()

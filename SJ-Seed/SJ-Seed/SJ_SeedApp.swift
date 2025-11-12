@@ -36,6 +36,12 @@ struct SJ_SeedApp: App {
                         case .hospital:
                             HospitalView()
                                 .navigationBarBackButtonHidden(true)
+                        case .myPlant:
+                            PlantListView()
+                                .navigationBarBackButtonHidden(true)
+                        case .plantRegister:
+                            PlantRegisterView()
+                                .navigationBarBackButtonHidden(true)
                         case .plantBookList:
                             PlantBookListView()
                                 .navigationBarBackButtonHidden(true)

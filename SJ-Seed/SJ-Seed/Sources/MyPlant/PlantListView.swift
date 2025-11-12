@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlantListView: View {
 //    let plantList: [PlantInfo]
+    @Environment(\.diContainer) private var di
     @StateObject private var viewModel = PlantListViewModel()
     
     var body: some View {
@@ -53,7 +54,7 @@ struct PlantListView: View {
                             ListComponent(item: record)
                                 .padding(.bottom, 8)
                         }
-                        Button(action: { print("식물추가") }) {
+                        Button(action: { di.router.push(.plantRegister) }) {
                             Text("식물을 추가하려면 누르세요")
                                 .font(Font.OwnglyphMeetme.regular.font(size: 30))
                                 .foregroundStyle(Color.green1)
@@ -79,13 +80,11 @@ struct PlantListView: View {
                             CharacterSpeechComponent(characterImage: .grandma2, textString: "식물을 확인하거나\n등록할 수 있단다.")
                         }
                     }
-    //                .padding(.vertical, 20)
                 }
                 .ignoresSafeArea()
             }
         }
         .task {
-            // 뷰가 나타날 때 ViewModel의 함수 호출
             viewModel.fetchPlantList(memberId: 1) // 예시 memberId (로그인 ID로 교체 필요)
         }
     }
