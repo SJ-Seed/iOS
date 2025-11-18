@@ -77,7 +77,7 @@ struct PlantDetailView: View {
                                 VStack {
                                     PlantInfoSection(title: "설명", content: detail.description)
                                     PlantInfoSection(title: "식물이 자라는 과정", content: detail.process)
-                                    PlantInfoSection(title: "식물이 자라는 좋은 환경", content: "온도: \(detail.properTemp), 습도: \(detail.properHum)")
+                                    PlantInfoSection(title: "식물이 자라기 좋은 환경", content: "온도: \(detail.properTemp)℃\n습도: \(detail.properHum)%")
                                     PlantInfoSection(title: "물은 언제 주나요?", content: detail.water)
                                 }
                                 .padding(.vertical, 15)
