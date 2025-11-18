@@ -140,29 +140,6 @@ struct PlantInfoDetailVerHeader: View {
     }
 }
 
-//struct PlantInfoSection: View {
-//    let title: String
-//    let content: String
-//    
-//    var body: some View {
-//        VStack(alignment: .center, spacing: 10) {
-//            Text(title)
-//                .multilineTextAlignment(.center)
-//                .font(Font.OwnglyphMeetme.regular.font(size: 28))
-//                .foregroundStyle(.green1)
-//            
-//            Text(content)
-//                .multilineTextAlignment(.center)
-//                .font(Font.OwnglyphMeetme.regular.font(size: 22))
-//                .foregroundStyle(.brown1)
-//                .lineSpacing(4)
-//        }
-//        .padding()
-//        .padding(.horizontal, 60)
-//        
-//    }
-//}
-
 #Preview {
     MyPlantDetailView(plantId: 2) // 테스트용 ID
 }

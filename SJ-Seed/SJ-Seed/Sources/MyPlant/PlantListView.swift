@@ -51,12 +51,6 @@ struct PlantListView: View {
                     headerView
                     ScrollView {
                         LazyVStack {
-                            ForEach(viewModel.plantList) { record in
-                                ListComponent(item: record) {
-                                    di.router.push(.plantDetail(speciesId: record.speciesId))
-                                }
-                                    .padding(.bottom, 8)
-                            }
                             Button(action: { di.router.push(.plantRegister) }) {
                                 Text("식물을 추가하려면 누르세요")
                                     .font(Font.OwnglyphMeetme.regular.font(size: 30))
@@ -71,6 +65,13 @@ struct PlantListView: View {
                                                     .stroke(Color.green1, lineWidth: 4)
                                             )
                                     )
+                            }
+                            .padding(.vertical, 8)
+                            ForEach(viewModel.plantList) { record in
+                                ListComponent(item: record) {
+                                    di.router.push(.myPlantDetail(plantId: record.plantId))
+                                }
+                                    .padding(.bottom, 8)
                             }
                             Spacer()
                             

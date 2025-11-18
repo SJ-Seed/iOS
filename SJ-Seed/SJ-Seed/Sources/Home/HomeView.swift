@@ -9,13 +9,13 @@ import SwiftUI
 
 struct HomeView: View {
     @Environment(\.diContainer) private var di
+    @StateObject private var viewModel = HomeViewModel()
     
     var body: some View {
         VStack {
             HeaderBarGroup(
-                coin: 1200,
-                onTapMy: { },
-                onTapCoin: { }
+                coin: viewModel.coin,
+                onTapMy: { }
             )
             PlantStatePager(viewModels: [
                             PlantStateViewModel(
@@ -34,16 +34,20 @@ struct HomeView: View {
                             )
                         ])
                 .padding(.bottom)
-            AttendanceComponent(
-                    attendance: WeeklyAttendance(
-                        days: Weekday.allCases.map { wd in
-                            // 예시: 오늘 화요일만 체크
-                            AttendanceDay(weekday: wd, isChecked: wd == .tue)
-                        },
-                        todayRewardCoin: 50
-                    )
+            
+            if viewModel.isLoading {
+                ProgressView()
+                    .frame(height: 100) // AttendanceComponent 높이만큼
+            } else if let error = viewModel.errorMessage {
+                Text(error)
+                    .foregroundStyle(.red)
+                    .frame(height: 100)
+            } else {
+                AttendanceComponent(
+                    attendance: viewModel.attendance
                 )
                 .padding(.horizontal, 25)
+            }
             HStack {
                 MainButtonComponent(buttonImage: Image(.student), buttonText: "도감", moveTo: {di.router.push(.plantBookList)})
                 MainButtonComponent(buttonImage: Image(.grandma2), buttonText: "식물", moveTo: {di.router.push(.myPlant)})
@@ -57,13 +61,17 @@ struct HomeView: View {
                 .ignoresSafeArea()
                 .scaledToFill()
         )
+        .onReceive(
+            NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
+        ) { _ in
+            viewModel.refreshData()
+        }
     }
 }
 
 struct HeaderBarGroup: View {
     var coin: Int
     var onTapMy: () -> Void = {}
-    var onTapCoin: () -> Void = {}
 
     var body: some View {
         HStack {
