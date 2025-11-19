@@ -57,4 +57,25 @@ final class PlantService {
             }
         }
     }
+    
+    // MARK: - 3. 내 식물 상태 목록 조회 (GET /member/plants/{memberId})
+    func getMemberPlants(memberId: Int, completion: @escaping (Result<[MemberPlantResult], Error>) -> Void) {
+            provider.request(.getMemberPlants(memberId: memberId)) { result in
+                switch result {
+                case .success(let response):
+                    do {
+                        // 1. 공통 래퍼(APIResponse)로 디코딩 (result가 [MemberPlantResult] 타입)
+                        let decoded = try JSONDecoder().decode(APIResponse<[MemberPlantResult]>.self, from: response.data)
+                        // 2. 'result' 내부의 배열을 전달
+                        completion(.success(decoded.result))
+                    } catch {
+                        print("❌ 내 식물 상태 목록 디코딩 실패:", error)
+                        completion(.failure(error))
+                    }
+                case .failure(let error):
+                    print("❌ 내 식물 상태 목록 요청 실패:", error)
+                    completion(.failure(error))
+                }
+            }
+        }
 }
