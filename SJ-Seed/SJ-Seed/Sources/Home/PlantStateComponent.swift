@@ -26,7 +26,7 @@ struct PlantStateComponent: View {
         VStack(alignment: .leading) {
             BrownSpeechBubbleComponent(textString: viewModel.statusMessage)
             
-            HStack(alignment: .top, spacing: 16) {
+            HStack(alignment: .top, spacing: 12) {
                 PlantAvatarView(
                     icon: viewModel.plant.plantProfile.icon,
                     name: viewModel.plant.plantProfile.name,
@@ -43,7 +43,7 @@ struct PlantStateComponent: View {
             }
         }
         .padding(.horizontal)
-        .padding(.top)
+//        .padding(.top)
         .frame(maxWidth: .infinity, alignment: .center)
 //        .background(
 //            RoundedRectangle(cornerRadius: 20)
@@ -73,7 +73,7 @@ struct PlantVitalsView: View {
         VStack(alignment: .leading, spacing: 12) {
             VitalRow(title: "온도", value: "\(Int(vitals.temperature))℃")
             VitalRow(title: "습도", value: "\(Int(vitals.humidity))%")
-            VitalRow(title: "토양", value: vitals.soil.rawValue)
+//            VitalRow(title: "토양", value: vitals.soil.rawValue)
         }
     }
 }

@@ -22,46 +22,46 @@ struct PlantStatePager: View {
     var body: some View {
         VStack(spacing: 0) { // VStack으로 감싸서 상단 Picker 공간 확보
             // MARK: - 1. 상단 식물 목록 Picker
-            HStack {
-                Text("식물 목록")
-                    .font(Font.OwnglyphMeetme.regular.font(size: 24))
-                    .foregroundStyle(.brown1)
-                
-                // 현재 선택된 식물 이름 표시 & 드롭다운 버튼
-                Menu {
-                    ForEach(viewModels.indices, id: \.self) { index in
-                        Button {
-                            withAnimation {
-                                selection = index
-                            }
-                        } label: {
-                            HStack {
-                                Text(viewModels[index].plant.plantProfile.name)
-                                if selection == index {
-                                    Image(systemName: "checkmark")
-                                }
-                            }
-                        }
-                    }
-                } label: {
-                    HStack(spacing: 4) {
-                        Text(viewModels.isEmpty ? "" : viewModels[selection].plant.plantProfile.name)
-                            .font(Font.OwnglyphMeetme.regular.font(size: 20))
-                            .foregroundStyle(.brown1)
-                            .underline() // 선택 가능하다는 힌트
-                        
-                        Image(systemName: "chevron.down")
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundStyle(.brown1)
-                    }
-//                    .padding(.vertical, 4)
-                    .padding(.horizontal, 8)
-                    .background(Color.ivory1.opacity(0.5))
-                    .cornerRadius(8)
-                }
-            }
-//            .padding(.bottom, 10)
-            .zIndex(1) // Pager보다 위에 오도록 설정
+//            HStack {
+//                Text("식물 목록")
+//                    .font(Font.OwnglyphMeetme.regular.font(size: 24))
+//                    .foregroundStyle(.brown1)
+//                
+//                // 현재 선택된 식물 이름 표시 & 드롭다운 버튼
+//                Menu {
+//                    ForEach(viewModels.indices, id: \.self) { index in
+//                        Button {
+//                            withAnimation {
+//                                selection = index
+//                            }
+//                        } label: {
+//                            HStack {
+//                                Text(viewModels[index].plant.plantProfile.name)
+//                                if selection == index {
+//                                    Image(systemName: "checkmark")
+//                                }
+//                            }
+//                        }
+//                    }
+//                } label: {
+//                    HStack(spacing: 4) {
+//                        Text(viewModels.isEmpty ? "" : viewModels[selection].plant.plantProfile.name)
+//                            .font(Font.OwnglyphMeetme.regular.font(size: 20))
+//                            .foregroundStyle(.brown1)
+//                            .underline() // 선택 가능하다는 힌트
+//                        
+//                        Image(systemName: "chevron.down")
+//                            .font(.system(size: 14, weight: .bold))
+//                            .foregroundStyle(.brown1)
+//                    }
+////                    .padding(.vertical, 4)
+//                    .padding(.horizontal, 8)
+//                    .background(Color.ivory1.opacity(0.5))
+//                    .cornerRadius(8)
+//                }
+//            }
+//            .padding(.top, 15)
+//            .zIndex(1) // Pager보다 위에 오도록 설정
             
             ZStack {
                 // 스와이프 가능한 페이지
@@ -112,7 +112,7 @@ struct PlantStatePager: View {
                 .fill(Color.ivory1)
                 .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
                 .padding(.horizontal, 25)
-                .frame(height: 370)
+                .frame(height: 330)
         )
     }
 }
