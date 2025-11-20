@@ -45,11 +45,11 @@ struct PlantStateComponent: View {
         .padding(.horizontal)
         .padding(.top)
         .frame(maxWidth: .infinity, alignment: .center)
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.ivory1)
-                .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
-        )
+//        .background(
+//            RoundedRectangle(cornerRadius: 20)
+//                .fill(Color.ivory1)
+//                .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
+//        )
     }
 }
 

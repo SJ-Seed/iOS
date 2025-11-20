@@ -53,7 +53,7 @@ struct HomeView: View {
                         di.router.push(.letsWater(plantId: plantId))
                     }
                 )
-                    .padding(.bottom)
+                .padding(.bottom)
             }
             
             if viewModel.isLoading {
@@ -74,7 +74,7 @@ struct HomeView: View {
                 MainButtonComponent(buttonImage: Image(.grandma2), buttonText: "식물", moveTo: {di.router.push(.myPlant)})
                 MainButtonComponent(buttonImage: Image(.doctor1), buttonText: "병원")
             }
-            .padding(.top, 30)
+            .padding(.top, 15)
         }
         .background(
             Image(.background)
