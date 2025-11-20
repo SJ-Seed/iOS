@@ -49,7 +49,8 @@ final class PlantListViewModel: ObservableObject {
                             plantProfile: profile,
                             dateText: dateText,
                             diagnosis: diagnosis,
-                            speciesId: item.speciesId
+                            speciesId: item.speciesId,
+                            plantId: item.id
                         )
                     }
                 case .failure(let error):

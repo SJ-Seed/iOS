@@ -39,6 +39,12 @@ struct SJ_SeedApp: App {
                         case .myPlant:
                             PlantListView()
                                 .navigationBarBackButtonHidden(true)
+                        case .letsWater(let plantId):
+                            LetsWaterView(plantId: plantId)
+                                .navigationBarBackButtonHidden(true)
+                        case .myPlantDetail(let plantId):
+                            MyPlantDetailView(plantId: plantId)
+                                .navigationBarBackButtonHidden(true)
                         case .plantRegister:
                             PlantRegisterView()
                                 .navigationBarBackButtonHidden(true)

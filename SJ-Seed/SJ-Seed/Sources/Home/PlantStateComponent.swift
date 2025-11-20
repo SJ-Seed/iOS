@@ -9,44 +9,59 @@ import SwiftUI
 
 struct PlantStateComponent: View {
     @StateObject var viewModel: PlantStateViewModel
+    var onInfoTap: () -> Void
+    var onWaterTap: () -> Void/* = {}*/
     
-    init(viewModel: PlantStateViewModel = PlantStateViewModel()) {
+    init(
+        viewModel: PlantStateViewModel = PlantStateViewModel(),
+        onInfoTap: @escaping () -> Void = {},
+        onWaterTap: @escaping () -> Void = {}
+    ) {
         _viewModel = StateObject(wrappedValue: viewModel)
+        self.onInfoTap = onInfoTap
+        self.onWaterTap = onWaterTap
     }
 
     var body: some View {
         VStack(alignment: .leading) {
             BrownSpeechBubbleComponent(textString: viewModel.statusMessage)
             
-            HStack(alignment: .top, spacing: 16) {
-                PlantAvatarView(icon: viewModel.plant.plantProfile.icon, name: viewModel.plant.plantProfile.name)
+            HStack(alignment: .top, spacing: 12) {
+                PlantAvatarView(
+                    icon: viewModel.plant.plantProfile.icon,
+                    name: viewModel.plant.plantProfile.name,
+                    onInfoTap: onInfoTap
+                )
                 VStack {
                     PlantVitalsView(vitals: viewModel.plant.vitals)
                     WaterActionButton(needsWater: viewModel.shouldWater) {
-                        // 물주기 액션 (API 호출 등)
+                        if viewModel.shouldWater {
+                            onWaterTap()
+                        }
                     }
                 }
             }
         }
         .padding(.horizontal)
-        .padding(.top)
+//        .padding(.top)
         .frame(maxWidth: .infinity, alignment: .center)
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.ivory1)
-                .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
-        )
+//        .background(
+//            RoundedRectangle(cornerRadius: 20)
+//                .fill(Color.ivory1)
+//                .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
+//        )
     }
 }
 
 struct PlantAvatarView: View {
     let icon: Image
     let name: String
+    var onInfoTap: () -> Void = {}
 
     var body: some View {
         VStack {
             CloudPlantComponent(icon: icon)
-            PlantInfoButton(name: name)
+            PlantInfoButton(name: name, action: onInfoTap)
         }
     }
 }
@@ -58,7 +73,7 @@ struct PlantVitalsView: View {
         VStack(alignment: .leading, spacing: 12) {
             VitalRow(title: "온도", value: "\(Int(vitals.temperature))℃")
             VitalRow(title: "습도", value: "\(Int(vitals.humidity))%")
-            VitalRow(title: "토양", value: vitals.soil.rawValue)
+//            VitalRow(title: "토양", value: vitals.soil.rawValue)
         }
     }
 }
@@ -81,7 +96,7 @@ struct VitalRow: View {
 
 struct WaterActionButton: View {
     var needsWater: Bool
-    var action: () -> Void = {}
+    var action: () -> Void = { }
 
     var body: some View {
         Button(action: action) {

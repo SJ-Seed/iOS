@@ -39,7 +39,7 @@ struct DiseaseExplainView: View {
                     Spacer().padding(.top, 80)
                     BrownSpeechBubbleComponent(textString: "병에 걸렸어요 . . .")
                     CloudPlantComponent(bg: Image(.cloudCircle), icon: selectedProfile.icon, size: 170)
-                    PlantInfoButton(name: selectedProfile.name)
+//                    PlantInfoButton(name: selectedProfile.name, action: <#() -> Void#>)
                     
                     DiseaseDetailCard(
                         diseaseName: "점무늬병",

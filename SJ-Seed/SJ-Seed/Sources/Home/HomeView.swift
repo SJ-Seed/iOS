@@ -9,47 +9,72 @@ import SwiftUI
 
 struct HomeView: View {
     @Environment(\.diContainer) private var di
+    @StateObject private var viewModel = HomeViewModel()
     
     var body: some View {
         VStack {
             HeaderBarGroup(
-                coin: 1200,
-                onTapMy: { },
-                onTapCoin: { }
+                coin: viewModel.coin,
+                onTapMy: { }
             )
-            PlantStatePager(viewModels: [
-                            PlantStateViewModel(
-                                plant:PlantHomeInfo(
-                                    plantProfile: .init(id: UUID(), name: "토마토", iconName: "sprout"),
-                                                 vitals: .init(temperature: 33, humidity: 65, soil: .dry)),
-                                statusMessage: "덥고 목말라요 😣",
-                                shouldWater: true
-                            ),
-                            PlantStateViewModel(
-                                plant: PlantHomeInfo(
-                                    plantProfile: .init(id: UUID(), name: "바질", iconName: "sprout"),
-                                                 vitals: .init(temperature: 26, humidity: 55, soil: .normal)),
-                                statusMessage: "상태가 좋아요 🙂",
-                                shouldWater: false
-                            )
-                        ])
+            // 1. 로딩 중인지 가장 먼저 확인
+            if viewModel.isLoading {
+                VStack {
+                    Spacer()
+                    ProgressView()
+                        .controlSize(.large)
+                        .tint(.brown1)
+                    Spacer()
+                }
+                .frame(height: 300) // Pager와 같은 높이 확보
+                
+            }
+            // 2. 로딩이 끝났는데 비어있는지 확인
+            else if viewModel.plantStateViewModels.isEmpty {
+                // 식물이 없을 때 (또는 로딩 전) 표시할 뷰
+                VStack {
+                    Spacer()
+                    Text("등록된 식물이 없어요 🌱")
+                        .font(Font.OwnglyphMeetme.regular.font(size: 24))
+                        .foregroundStyle(.brown1)
+                    Spacer()
+                }
+                .frame(height: 300) // Pager 높이만큼 확보
+                
+            } else {
+                // API로 받아온 ViewModel 목록 전달
+                PlantStatePager(
+                    viewModels: viewModel.plantStateViewModels,
+                    onInfoTap: { plantId in
+                        di.router.push(.myPlantDetail(plantId: plantId))
+                    },
+                    // 물주기 성공 이벤트 처리 (Pager에도 이 클로저 파라미터 추가 필요)
+                    onWaterTap: { plantId in
+                        di.router.push(.letsWater(plantId: plantId))
+                    }
+                )
                 .padding(.bottom)
-            AttendanceComponent(
-                    attendance: WeeklyAttendance(
-                        days: Weekday.allCases.map { wd in
-                            // 예시: 오늘 화요일만 체크
-                            AttendanceDay(weekday: wd, isChecked: wd == .tue)
-                        },
-                        todayRewardCoin: 50
-                    )
+            }
+            
+            if viewModel.isLoading {
+                ProgressView()
+                    .frame(height: 100) // AttendanceComponent 높이만큼
+            } else if let error = viewModel.errorMessage {
+                Text(error)
+                    .foregroundStyle(.red)
+                    .frame(height: 100)
+            } else {
+                AttendanceComponent(
+                    attendance: viewModel.attendance
                 )
                 .padding(.horizontal, 25)
+            }
             HStack {
                 MainButtonComponent(buttonImage: Image(.student), buttonText: "도감", moveTo: {di.router.push(.plantBookList)})
                 MainButtonComponent(buttonImage: Image(.grandma2), buttonText: "식물", moveTo: {di.router.push(.myPlant)})
                 MainButtonComponent(buttonImage: Image(.doctor1), buttonText: "병원")
             }
-            .padding(.top, 30)
+            .padding(.top, 15)
         }
         .background(
             Image(.background)
@@ -57,13 +82,17 @@ struct HomeView: View {
                 .ignoresSafeArea()
                 .scaledToFill()
         )
+        .onReceive(
+            NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
+        ) { _ in
+            viewModel.refreshData()
+        }
     }
 }
 
 struct HeaderBarGroup: View {
     var coin: Int
     var onTapMy: () -> Void = {}
-    var onTapCoin: () -> Void = {}
 
     var body: some View {
         HStack {
