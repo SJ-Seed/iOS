@@ -10,13 +10,16 @@ import SwiftUI
 struct PlantStateComponent: View {
     @StateObject var viewModel: PlantStateViewModel
     var onInfoTap: () -> Void
+    var onWaterTap: () -> Void/* = {}*/
     
     init(
         viewModel: PlantStateViewModel = PlantStateViewModel(),
-        onInfoTap: @escaping () -> Void = {}
+        onInfoTap: @escaping () -> Void = {},
+        onWaterTap: @escaping () -> Void = {}
     ) {
         _viewModel = StateObject(wrappedValue: viewModel)
         self.onInfoTap = onInfoTap
+        self.onWaterTap = onWaterTap
     }
 
     var body: some View {
@@ -32,7 +35,9 @@ struct PlantStateComponent: View {
                 VStack {
                     PlantVitalsView(vitals: viewModel.plant.vitals)
                     WaterActionButton(needsWater: viewModel.shouldWater) {
-                        // 물주기 액션 (API 호출 등)
+                        if viewModel.shouldWater {
+                            onWaterTap()
+                        }
                     }
                 }
             }
@@ -91,7 +96,7 @@ struct VitalRow: View {
 
 struct WaterActionButton: View {
     var needsWater: Bool
-    var action: () -> Void = {}
+    var action: () -> Void = { }
 
     var body: some View {
         Button(action: action) {

@@ -47,6 +47,10 @@ struct HomeView: View {
                     viewModels: viewModel.plantStateViewModels,
                     onInfoTap: { plantId in
                         di.router.push(.myPlantDetail(plantId: plantId))
+                    },
+                    // 물주기 성공 이벤트 처리 (Pager에도 이 클로저 파라미터 추가 필요)
+                    onWaterTap: { plantId in
+                        di.router.push(.letsWater(plantId: plantId))
                     }
                 )
                     .padding(.bottom)

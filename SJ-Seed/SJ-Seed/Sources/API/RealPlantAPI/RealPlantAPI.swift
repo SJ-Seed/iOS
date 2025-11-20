@@ -13,6 +13,7 @@ enum PlantAPI {
     case getPlantDetail(plantId: Int)
     case checkIfNeedWater(plantId: Int)
     case getMemberPlants(memberId: Int)
+    case checkIfWatered(plantId: Int)
 }
 
 extension PlantAPI: TargetType {
@@ -31,13 +32,15 @@ extension PlantAPI: TargetType {
             return "/plant/ifNeedWater/\(plantId)"
         case .getMemberPlants(let memberId):
             return "/member/plants/\(memberId)"
+        case .checkIfWatered(let plantId):
+            return "/plant/ifWatered/\(plantId)"
         }
     }
     
     // 4. 두 API 모두 GET 방식
     var method: Moya.Method {
         switch self {
-        case .getPlantDetail, .checkIfNeedWater, .getMemberPlants:
+        case .getPlantDetail, .checkIfNeedWater, .getMemberPlants, .checkIfWatered:
             return .get
         }
     }
@@ -45,7 +48,7 @@ extension PlantAPI: TargetType {
     // 5. 요청 본문(body)이 없는 'requestPlain'
     var task: Task {
         switch self {
-        case .getPlantDetail, .checkIfNeedWater, .getMemberPlants:
+        case .getPlantDetail, .checkIfNeedWater, .getMemberPlants, .checkIfWatered:
             return .requestPlain
         }
     }

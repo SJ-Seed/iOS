@@ -60,22 +60,47 @@ final class PlantService {
     
     // MARK: - 3. 내 식물 상태 목록 조회 (GET /member/plants/{memberId})
     func getMemberPlants(memberId: Int, completion: @escaping (Result<[MemberPlantResult], Error>) -> Void) {
-            provider.request(.getMemberPlants(memberId: memberId)) { result in
-                switch result {
-                case .success(let response):
-                    do {
-                        // 1. 공통 래퍼(APIResponse)로 디코딩 (result가 [MemberPlantResult] 타입)
-                        let decoded = try JSONDecoder().decode(APIResponse<[MemberPlantResult]>.self, from: response.data)
-                        // 2. 'result' 내부의 배열을 전달
-                        completion(.success(decoded.result))
-                    } catch {
-                        print("❌ 내 식물 상태 목록 디코딩 실패:", error)
-                        completion(.failure(error))
-                    }
-                case .failure(let error):
-                    print("❌ 내 식물 상태 목록 요청 실패:", error)
+        provider.request(.getMemberPlants(memberId: memberId)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    // 1. 공통 래퍼(APIResponse)로 디코딩 (result가 [MemberPlantResult] 타입)
+                    let decoded = try JSONDecoder().decode(APIResponse<[MemberPlantResult]>.self, from: response.data)
+                    // 2. 'result' 내부의 배열을 전달
+                    completion(.success(decoded.result))
+                } catch {
+                    print("❌ 내 식물 상태 목록 디코딩 실패:", error)
                     completion(.failure(error))
                 }
+            case .failure(let error):
+                print("❌ 내 식물 상태 목록 요청 실패:", error)
+                completion(.failure(error))
             }
         }
+    }
+
+    // MARK: - 4. 오늘 물 주기 여부 확인 (GET /plant/ifWatered/{plantId})
+    func checkIfWatered(plantId: Int, completion: @escaping (Result<Bool, Error>) -> Void) {
+        provider.request(.checkIfWatered(plantId: plantId)) { result in
+            switch result {
+            case .success(let response):
+                let responseString = String(data: response.data, encoding: .utf8) ?? "데이터 없음"
+                print("📄 [물주기확인] ID: \(plantId) | 상태코드: \(response.statusCode)")
+                print("📄 [물주기확인] 응답 데이터: \(responseString)")
+                do {
+                    // 여기서 APIResponse<Bool>.self 로 디코딩합니다.
+                    let decoded = try JSONDecoder().decode(APIResponse<Bool>.self, from: response.data)
+                    
+                    // decoded.result는 true 또는 false가 됩니다.
+                    completion(.success(decoded.result))
+                } catch {
+                    print("❌ 오늘 물 주기 여부 디코딩 실패:", error)
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                print("❌ 오늘 물 주기 여부 요청 실패:", error)
+                completion(.failure(error))
+            }
+        }
+    }
 }

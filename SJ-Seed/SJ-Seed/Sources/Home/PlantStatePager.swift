@@ -11,6 +11,7 @@ struct PlantStatePager: View {
     let viewModels: [PlantStateViewModel]
     @State private var selection: Int = 0
     var onInfoTap: (Int) -> Void
+    var onWaterTap: (Int) -> Void
 
     var body: some View {
         ZStack {
@@ -19,7 +20,8 @@ struct PlantStatePager: View {
                 ForEach(viewModels.indices, id: \.self) { i in
                     PlantStateComponent(
                         viewModel: viewModels[i],
-                        onInfoTap: { onInfoTap(viewModels[i].plantId) }
+                        onInfoTap: { onInfoTap(viewModels[i].plantId) },
+                        onWaterTap: { onWaterTap(viewModels[i].plantId) }
                     )
                     .padding(.horizontal, 25)
                     .tag(i)
