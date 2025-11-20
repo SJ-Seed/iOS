@@ -17,23 +17,40 @@ struct HomeView: View {
                 coin: viewModel.coin,
                 onTapMy: { }
             )
-            PlantStatePager(viewModels: [
-                            PlantStateViewModel(
-                                plant:PlantHomeInfo(
-                                    plantProfile: .init(id: UUID(), name: "토마토", iconName: "sprout"),
-                                                 vitals: .init(temperature: 33, humidity: 65, soil: .dry)),
-                                statusMessage: "덥고 목말라요 😣",
-                                shouldWater: true
-                            ),
-                            PlantStateViewModel(
-                                plant: PlantHomeInfo(
-                                    plantProfile: .init(id: UUID(), name: "바질", iconName: "sprout"),
-                                                 vitals: .init(temperature: 26, humidity: 55, soil: .normal)),
-                                statusMessage: "상태가 좋아요 🙂",
-                                shouldWater: false
-                            )
-                        ])
-                .padding(.bottom)
+            // 1. 로딩 중인지 가장 먼저 확인
+            if viewModel.isLoading {
+                VStack {
+                    Spacer()
+                    ProgressView()
+                        .controlSize(.large)
+                        .tint(.brown1)
+                    Spacer()
+                }
+                .frame(height: 300) // Pager와 같은 높이 확보
+                
+            }
+            // 2. 로딩이 끝났는데 비어있는지 확인
+            else if viewModel.plantStateViewModels.isEmpty {
+                // 식물이 없을 때 (또는 로딩 전) 표시할 뷰
+                VStack {
+                    Spacer()
+                    Text("등록된 식물이 없어요 🌱")
+                        .font(Font.OwnglyphMeetme.regular.font(size: 24))
+                        .foregroundStyle(.brown1)
+                    Spacer()
+                }
+                .frame(height: 300) // Pager 높이만큼 확보
+                
+            } else {
+                // API로 받아온 ViewModel 목록 전달
+                PlantStatePager(
+                    viewModels: viewModel.plantStateViewModels,
+                    onInfoTap: { plantId in
+                        di.router.push(.myPlantDetail(plantId: plantId))
+                    }
+                )
+                    .padding(.bottom)
+            }
             
             if viewModel.isLoading {
                 ProgressView()

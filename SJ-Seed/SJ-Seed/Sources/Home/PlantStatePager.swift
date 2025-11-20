@@ -10,15 +10,19 @@ import SwiftUI
 struct PlantStatePager: View {
     let viewModels: [PlantStateViewModel]
     @State private var selection: Int = 0
+    var onInfoTap: (Int) -> Void
 
     var body: some View {
         ZStack {
             // 스와이프 가능한 페이지
             TabView(selection: $selection) {
                 ForEach(viewModels.indices, id: \.self) { i in
-                    PlantStateComponent(viewModel: viewModels[i])
-                        .padding(.horizontal, 25)
-                        .tag(i)
+                    PlantStateComponent(
+                        viewModel: viewModels[i],
+                        onInfoTap: { onInfoTap(viewModels[i].plantId) }
+                    )
+                    .padding(.horizontal, 25)
+                    .tag(i)
                 }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))

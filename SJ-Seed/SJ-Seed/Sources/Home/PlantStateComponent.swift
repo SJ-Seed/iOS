@@ -9,9 +9,14 @@ import SwiftUI
 
 struct PlantStateComponent: View {
     @StateObject var viewModel: PlantStateViewModel
+    var onInfoTap: () -> Void
     
-    init(viewModel: PlantStateViewModel = PlantStateViewModel()) {
+    init(
+        viewModel: PlantStateViewModel = PlantStateViewModel(),
+        onInfoTap: @escaping () -> Void = {}
+    ) {
         _viewModel = StateObject(wrappedValue: viewModel)
+        self.onInfoTap = onInfoTap
     }
 
     var body: some View {
@@ -19,7 +24,11 @@ struct PlantStateComponent: View {
             BrownSpeechBubbleComponent(textString: viewModel.statusMessage)
             
             HStack(alignment: .top, spacing: 16) {
-                PlantAvatarView(icon: viewModel.plant.plantProfile.icon, name: viewModel.plant.plantProfile.name)
+                PlantAvatarView(
+                    icon: viewModel.plant.plantProfile.icon,
+                    name: viewModel.plant.plantProfile.name,
+                    onInfoTap: onInfoTap
+                )
                 VStack {
                     PlantVitalsView(vitals: viewModel.plant.vitals)
                     WaterActionButton(needsWater: viewModel.shouldWater) {
@@ -42,11 +51,12 @@ struct PlantStateComponent: View {
 struct PlantAvatarView: View {
     let icon: Image
     let name: String
+    var onInfoTap: () -> Void = {}
 
     var body: some View {
         VStack {
             CloudPlantComponent(icon: icon)
-            PlantInfoButton(name: name)
+            PlantInfoButton(name: name, action: onInfoTap)
         }
     }
 }

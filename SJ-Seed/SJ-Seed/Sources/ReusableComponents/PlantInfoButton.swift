@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlantInfoButton: View {
     let name: String
+    var action: () -> Void
     
     var body: some View {
         HStack {
@@ -16,7 +17,7 @@ struct PlantInfoButton: View {
                 .font(Font.OwnglyphMeetme.regular.font(size: 24))
                 .foregroundStyle(Color.brown1)
             Button {
-                print("info")
+                action()
             } label: {
                 Image(.info)
                     .foregroundStyle(Color(.brown1))
@@ -26,6 +27,6 @@ struct PlantInfoButton: View {
     }
 }
 
-#Preview {
-    PlantInfoButton(name: "토마토")
-}
+//#Preview {
+//    PlantInfoButton(name: "토마토")
+//}

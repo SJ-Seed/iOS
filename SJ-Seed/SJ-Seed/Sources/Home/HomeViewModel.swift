@@ -17,7 +17,10 @@ final class HomeViewModel: ObservableObject {
     @Published var isLoading = true
     @Published var errorMessage: String? = nil
     
+    @Published var plantStateViewModels: [PlantStateViewModel] = []
+    
     private let attendService = AttendService.shared
+    private let plantService = PlantService.shared
     private let memberId = 1 // 임시 하드코딩
     
     // 1. ‼️ 저장 키 추가 (날짜 저장용, 금액 저장용)
@@ -30,6 +33,7 @@ final class HomeViewModel: ObservableObject {
         
         // 3. API 호출
         performCheckIn(isInitialLoad: true)
+        fetchMemberPlants()
     }
     
     func refreshData() {
@@ -108,5 +112,77 @@ final class HomeViewModel: ObservableObject {
             // 기록 없음
             self.attendance.todayRewardCoin = 0
         }
+    }
+    
+    // MARK: - 내 식물 목록 조회 및 상태 업데이트
+    func fetchMemberPlants() {
+        // (식물 로딩은 전체 로딩에 포함시키지 않고 조용히 업데이트하거나 별도 로딩 표시)
+        
+        plantService.getMemberPlants(memberId: memberId) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let plants):
+                // API 응답([MemberPlantResult])을 [PlantStateViewModel]로 변환
+                self.plantStateViewModels = plants.map { plantData in
+                    self.createPlantViewModel(from: plantData)
+                }
+                
+            case .failure(let error):
+                print("❌ 내 식물 목록 로드 실패:", error)
+                // (식물 로드 실패 시 에러 처리는 기획에 따라 추가)
+            }
+        }
+    }
+    
+    // Helper: 개별 식물 데이터로 ViewModel 생성
+    private func createPlantViewModel(from data: MemberPlantResult) -> PlantStateViewModel {
+        
+        // 1. 아이콘 찾기
+        // (speciesId나 이름으로 PlantAssets에서 찾음)
+        let asset = PlantAssets.find(bySpeciesId: data.speciesId)
+        let iconName = asset?.iconName ?? "sprout"
+        
+        // 2. 토양 상태 변환 (0~100 수분량 -> SoilMoistureLevel)
+        // (임의의 기준: 30 미만 건조, 30~70 적정, 70 초과 과습)
+        let soilLevel: SoilMoistureLevel
+        if data.soilWater < 30 { soilLevel = .dry }
+        else if data.soilWater > 70 { soilLevel = .wet }
+        else { soilLevel = .normal }
+        
+        // 3. 기본 정보 구성
+        let plantHomeInfo = PlantHomeInfo(
+            plantProfile: PlantProfile(id: UUID(), name: data.name, iconName: iconName),
+            vitals: PlantVitals(
+                temperature: data.temperature,
+                humidity: data.humidity,
+                soil: soilLevel
+            )
+        )
+        
+        // 4. ViewModel 생성 (초기값)
+        let viewModel = PlantStateViewModel(
+            plantId: data.plantId,
+            plant: plantHomeInfo,
+            statusMessage: "상태를 확인 중이에요...", // 로딩 중 메시지
+            shouldWater: false // 일단 false로 시작
+        )
+        
+        // 5. ‼️ 물주기 필요 여부 API 호출 (비동기 업데이트)
+        plantService.checkIfNeedWater(plantId: data.plantId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let needWater):
+                    viewModel.shouldWater = needWater
+                    // 물주기 필요 여부에 따라 상태 메시지 업데이트
+                    viewModel.statusMessage = needWater ? "목말라요 💦" : "기분이 좋아요 🌿"
+                    
+                case .failure:
+                    viewModel.statusMessage = "상태를 알 수 없어요 😢"
+                }
+            }
+        }
+        
+        return viewModel
     }
 }

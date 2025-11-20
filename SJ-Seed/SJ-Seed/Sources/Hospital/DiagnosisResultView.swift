@@ -29,7 +29,7 @@ struct DiagnosisResultView: View {
             VStack {
                 BrownSpeechBubbleComponent(textString: "저 건강해요!")
                 CloudPlantComponent(bg: Image(.clearCircle), icon: selectedProfile.icon, size: 230)
-                PlantInfoButton(name: selectedProfile.name)
+                PlantInfoButton(name: selectedProfile.name, action: {let _ = print("디테일뷰로이동")})
                 CharacterSpeechComponent(
                     characterImage: .doctor1,
                     textString: "어머나,\n이렇게 튼튼하다니!"
