@@ -16,6 +16,8 @@ struct HospitalView: View {
         ]
     
     @State private var selectedProfile: PlantProfile
+    
+    @StateObject private var viewModel = HospitalViewModel()
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImage: UIImage? = nil
     @State private var showImagePreview = false
@@ -33,11 +35,21 @@ struct HospitalView: View {
             
             VStack(spacing: 20) {
                 ZStack(alignment: .top) {
-                    CloudPlantComponent(bg: Image(.clearCircle), icon: selectedProfile.icon, size: 230)
+                    CloudPlantComponent(bg: Image(.clearCircle), icon: viewModel.selectedPlant.icon, size: 230)
                         .padding(.top, 50)
                     
-                    PlantPicker(selected: $selectedProfile, plants: allProfiles)
+                    if !viewModel.userPlants.isEmpty {
+                        PlantPicker(
+                            selected: $viewModel.selectedPlant,
+                            plants: viewModel.userPlants
+                        )
                         .padding(.horizontal, 120)
+                    } else if viewModel.isLoading {
+                        Text("로딩 중...")
+                            .font(Font.OwnglyphMeetme.regular.font(size: 20))
+                            .foregroundStyle(.brown1)
+                            .padding(.top, 20)
+                    }
                 }
                 
                 PhotosPicker(selection: $selectedItem, matching: .images) {
@@ -66,6 +78,9 @@ struct HospitalView: View {
                 .padding(.top, 10)
             }
             .padding(.top, 100)
+        }
+        .task {
+            viewModel.fetchUserPlants()
         }
 //        .sheet(isPresented: $showImagePreview) {
 //            if let image = selectedImage {
