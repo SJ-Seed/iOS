@@ -7,6 +7,9 @@
 
 import Foundation
 import Combine
+import UIKit
+import PhotosUI
+import SwiftUI
 
 @MainActor
 final class HospitalViewModel: ObservableObject {
@@ -17,15 +20,23 @@ final class HospitalViewModel: ObservableObject {
     // 현재 선택된 식물 (Picker와 바인딩)
     @Published var selectedPlant: PlantProfile
     
+    @Published var selectedItems: [PhotosPickerItem] = []
+    @Published var selectedImage: UIImage? = nil
+    
+    @Published var diagnosisResult: TreatmentResult? = nil
+    @Published var showResultModal = false
+    
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
     
-    private let service = MyPlantService.shared
+    private var originalPlantItems: [PlantListItem] = []
+    
+    private let myPlantService = MyPlantService.shared
+    private let imageService = ImageService.shared
+    private let hospitalService = HospitalService.shared
     private let memberId = 1 // 임시 하드코딩 (로그인 연동 시 변경 필요)
     
     init() {
-        // 초기값: 로딩 전 보여줄 더미 데이터 혹은 빈 값
-        // (PlantProfile은 id가 UUID이므로 임시 객체 생성)
         self.selectedPlant = PlantProfile(id: UUID(), name: "식물을 불러오는 중...", iconName: "sprout")
     }
     
@@ -33,12 +44,13 @@ final class HospitalViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
         
-        service.getPlantList(memberId: memberId) { [weak self] result in
+        myPlantService.getPlantList(memberId: memberId) { [weak self] result in
             guard let self = self else { return }
             self.isLoading = false
             
             switch result {
             case .success(let items):
+                self.originalPlantItems = items
                 // 1. [PlantListItem] -> [PlantProfile] 변환
                 let profiles: [PlantProfile] = items.map { item in
                     
@@ -66,6 +78,64 @@ final class HospitalViewModel: ObservableObject {
             case .failure(let error):
                 print("❌ 병원 뷰 식물 로드 실패:", error)
                 self.errorMessage = "식물 목록을 불러오지 못했어요."
+            }
+        }
+    }
+    
+    func requestDiagnosis() {
+        guard let image = selectedImage else { return }
+        // 현재 선택된 식물의 실제 ID(Int) 찾기
+        guard let targetPlant = originalPlantItems.first(where: { $0.name == selectedPlant.name }) else {
+            self.errorMessage = "선택된 식물의 정보를 찾을 수 없습니다."
+            return
+        }
+        
+        isLoading = true
+        errorMessage = nil
+        
+        // A. 이미지 업로드
+        imageService.uploadImage(image: image) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let imageUrl):
+                print("✅ 이미지 업로드 성공 URL: \(imageUrl)")
+                // B. 진료 API 호출 (업로드된 URL 사용)
+                self.performTreatment(plantId: targetPlant.id, imageUrl: imageUrl)
+                
+            case .failure(let error):
+                print("❌ 이미지 업로드 실패:", error)
+                self.isLoading = false
+                self.errorMessage = "사진 업로드에 실패했어요."
+            }
+        }
+    }
+    
+    private func performTreatment(plantId: Int, imageUrl: String) {
+        hospitalService.treatPlant(memberId: memberId, plantId: plantId, imageUrl: imageUrl) { [weak self] result in
+            guard let self = self else { return }
+            self.isLoading = false
+            
+            switch result {
+            case .success(let data):
+                print("✅ 진료 완료")
+                self.diagnosisResult = data
+                self.showResultModal = true // 결과 화면 띄우기
+                
+            case .failure(let error):
+                print("❌ 진료 요청 실패:", error)
+                self.errorMessage = "진료를 보는데 실패했어요."
+            }
+        }
+    }
+    
+    func loadSelectedImage() {
+        guard let item = selectedItems.first else { return }
+        
+        Task {
+            if let data = try? await item.loadTransferable(type: Data.self),
+               let uiImage = UIImage(data: data) {
+                self.selectedImage = uiImage
             }
         }
     }

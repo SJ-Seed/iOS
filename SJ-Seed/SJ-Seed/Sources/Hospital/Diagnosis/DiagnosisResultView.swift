@@ -2,45 +2,21 @@
 //  DiagnosisResultView.swift
 //  SJ-Seed
 //
-//  Created by 김나영 on 10/27/25.
+//  Created by 김나영 on 11/25/25.
 //
 
 import SwiftUI
 
 struct DiagnosisResultView: View {
-    let allProfiles: [PlantProfile] = [
-            PlantProfile(id: UUID(), name: "토마토", iconName: "tomato"),
-            PlantProfile(id: UUID(), name: "상추", iconName: "lettuce"),
-            PlantProfile(id: UUID(), name: "바질", iconName: "basil")
-        ]
+    let plant: PlantProfile      // 식물 아이콘/이름 표시용
+    let result: TreatmentResult  // API 응답 데이터
     
-    @State private var selectedProfile: PlantProfile
-    
-    init() {
-        _selectedProfile = State(initialValue: allProfiles[0])
-    }
     var body: some View {
-        ZStack {
-            Image(.background)
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-            
-            VStack {
-                BrownSpeechBubbleComponent(textString: "저 건강해요!")
-                CloudPlantComponent(bg: Image(.clearCircle), icon: selectedProfile.icon, size: 230)
-                PlantInfoButton(name: selectedProfile.name, action: {let _ = print("디테일뷰로이동")})
-                CharacterSpeechComponent(
-                    characterImage: .doctor1,
-                    textString: "어머나,\n이렇게 튼튼하다니!"
-                )
-                .padding(.top, 10)
-            }
-            .padding(.top, 100)
+        // 분기 로직: 치료법(cure)이나 원인(cause)이 있으면 '질병', 없으면 '건강'으로 간주
+        if let cure = result.cure, !cure.isEmpty {
+            DiseaseResultView(plant: plant, result: result)
+        } else {
+            HealthyResultView(plant: plant, result: result)
         }
     }
-}
-
-#Preview {
-    DiagnosisResultView()
 }
