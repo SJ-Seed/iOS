@@ -36,14 +36,19 @@ extension ImageAPI: TargetType {
     var task: Task {
         switch self {
         case .upload(let image):
-            guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+            // 1. 이미지 리사이징 (너비를 800px로 줄임 -> 용량 대폭 감소)
+            // (원본이 800보다 작으면 그대로 둠)
+            let resizedImage = image.size.width > 800 ? image.resized(toWidth: 800) : image
+            
+            // 2. JPEG 압축 (0.8 -> 0.5로 낮춤)
+            // 리사이징된 이미지를 사용해야 함
+            guard let finalImage = resizedImage,
+                  let imageData = finalImage.jpegData(compressionQuality: 0.5) else {
                 return .requestPlain
             }
             
-            // 2. MultipartFormData 생성
-            // name: 서버가 요구하는 필드명 ("file")
-            // fileName: 서버에 저장될 파일명 (임의 지정 가능)
-            // mimeType: 파일 타입 ("image/jpeg" 또는 "image/png")
+            // (디버깅용) 줄어든 용량 확인
+            print("📦 업로드 이미지 크기: \(Double(imageData.count) / 1024.0 / 1024.0) MB")
             let formData = MultipartFormData(
                 provider: .data(imageData),
                 name: "file",
