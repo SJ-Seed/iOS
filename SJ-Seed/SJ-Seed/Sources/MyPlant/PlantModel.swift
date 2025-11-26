@@ -23,11 +23,18 @@ struct PlantHomeInfo: Equatable, Codable {
     var vitals: PlantVitals
 }
 
-struct PlantProfile: Identifiable, Codable, Equatable {
+struct PlantProfile: Identifiable, Codable, Equatable, Hashable {
     let id: UUID
     var name: String
     var iconName: String
     var icon: Image { Image(iconName) }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: PlantProfile, rhs: PlantProfile) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
 enum SoilMoistureLevel: String, Equatable, Codable {

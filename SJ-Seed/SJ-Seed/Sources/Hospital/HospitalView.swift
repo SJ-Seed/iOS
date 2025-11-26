@@ -17,6 +17,14 @@ struct HospitalView: View {
     @State private var showImagePreview = false
     
     var body: some View {
+        if viewModel.isDiagnosisLoading {
+            HospitalLoadingView()
+        } else {
+            contentView
+        }
+    }
+    
+    var contentView: some View {
         ZStack {
             // 배경
             Image(.background)
@@ -25,6 +33,20 @@ struct HospitalView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 20) {
+                HStack {
+                    Button(action: { di.router.pop() }) {
+                        Image("chevronLeft")
+                            .foregroundStyle(.ivory1)
+                            .padding(.leading)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                    Spacer()
+                    Button(action: { di.router.push(.diagnosisList)}) {
+                        Image("hospitalList")
+                            .padding(.trailing, 32)
+                    }
+                }
                 if viewModel.selectedImage == nil {
                     // --- 1. 상단 식물 선택 영역 (이미지 없을 때만 보임) ---
                     ZStack(alignment: .top) {
@@ -73,13 +95,8 @@ struct HospitalView: View {
                         Button {
                             viewModel.requestDiagnosis()
                         } label: {
-                            if viewModel.isLoading {
-                                ProgressView()
-                                    .tint(.white)
-                            } else {
-                                Text("뚝딱! 진료 받기")
-                                    .font(Font.OwnglyphMeetme.regular.font(size: 24))
-                            }
+                            Text("뚝딱! 진료 받기")
+                                .font(Font.OwnglyphMeetme.regular.font(size: 24))
                         }
                         .foregroundColor(.white)
                         .padding(.horizontal, 40)
@@ -106,7 +123,6 @@ struct HospitalView: View {
                     .onChange(of: viewModel.selectedItems) { _, _ in
                         viewModel.loadSelectedImage()
                     }
-                    
                 }
                 CharacterSpeechComponent(
                     characterImage: .doctor1,
@@ -116,14 +132,11 @@ struct HospitalView: View {
                 
                 if let error = viewModel.errorMessage { let _ = print(error) }
             }
-            .padding(.top, 100)
         }
         .task {
             viewModel.fetchUserPlants()
-        }
-        .sheet(isPresented: $viewModel.showResultModal) {
-            if let result = viewModel.diagnosisResult {
-                DiagnosisResultView(plant: viewModel.selectedPlant, result: result)
+            viewModel.onDiagnosisComplete = { result in
+                di.router.push(.diagnosisResult(plant: viewModel.selectedPlant, result: result))
             }
         }
     }

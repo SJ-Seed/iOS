@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - 1. 진료 결과 (POST /hospital/treat/...)
-struct TreatmentResult: Codable {
+struct TreatmentResult: Codable, Hashable {
     let photo: Bool
     let state: String?
     let message: String?

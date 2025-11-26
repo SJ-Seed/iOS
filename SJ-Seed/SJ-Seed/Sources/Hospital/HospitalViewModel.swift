@@ -24,9 +24,11 @@ final class HospitalViewModel: ObservableObject {
     @Published var selectedImage: UIImage? = nil
     
     @Published var diagnosisResult: TreatmentResult? = nil
-    @Published var showResultModal = false
+//    @Published var showResultModal = false
+    var onDiagnosisComplete: ((TreatmentResult) -> Void)?
     
     @Published var isLoading = false
+    @Published var isDiagnosisLoading = false
     @Published var errorMessage: String? = nil
     
     private var originalPlantItems: [PlantListItem] = []
@@ -90,7 +92,7 @@ final class HospitalViewModel: ObservableObject {
             return
         }
         
-        isLoading = true
+        isDiagnosisLoading = true
         errorMessage = nil
         
         // A. 이미지 업로드
@@ -105,7 +107,7 @@ final class HospitalViewModel: ObservableObject {
                 
             case .failure(let error):
                 print("❌ 이미지 업로드 실패:", error)
-                self.isLoading = false
+                self.isDiagnosisLoading = false
                 self.errorMessage = "사진 업로드에 실패했어요."
             }
         }
@@ -114,13 +116,16 @@ final class HospitalViewModel: ObservableObject {
     private func performTreatment(plantId: Int, imageUrl: String) {
         hospitalService.treatPlant(memberId: memberId, plantId: plantId, imageUrl: imageUrl) { [weak self] result in
             guard let self = self else { return }
-            self.isLoading = false
+            self.isDiagnosisLoading = false
             
             switch result {
             case .success(let data):
                 print("✅ 진료 완료")
                 self.diagnosisResult = data
-                self.showResultModal = true // 결과 화면 띄우기
+                self.onDiagnosisComplete?(data)
+                
+                self.selectedImage = nil
+                self.selectedItems = []
                 
             case .failure(let error):
                 print("❌ 진료 요청 실패:", error)

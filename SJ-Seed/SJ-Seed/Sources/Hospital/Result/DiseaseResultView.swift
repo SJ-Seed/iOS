@@ -41,6 +41,7 @@ struct DiseaseResultView: View {
             
             ScrollView {
                 VStack {
+                    headerView
                     Spacer().padding(.top, 80)
                     BrownSpeechBubbleComponent(textString: "병에 걸렸어요 . . .")
                     CloudPlantComponent(bg: Image(.cloudCircle), icon: plant.icon, size: 170)
@@ -69,6 +70,26 @@ struct DiseaseResultView: View {
             }
             .ignoresSafeArea()
             
+        }
+    }
+    
+    private var headerView: some View {
+        ZStack {
+            HStack {
+                Button(action: { di.router.pop() }) {
+                    Image("chevronLeft")
+                        .foregroundStyle(.brown1)
+                        .padding(.leading)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding()
+                Spacer()
+            }
+            
+            // 인덱스 중앙
+            Text("검사 결과")
+                .font(Font.OwnglyphMeetme.regular.font(size: 28))
+                .foregroundStyle(.brown1)
         }
     }
 }
