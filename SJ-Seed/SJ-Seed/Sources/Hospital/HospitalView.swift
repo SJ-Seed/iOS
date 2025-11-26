@@ -15,12 +15,24 @@ struct HospitalView: View {
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImage: UIImage? = nil
     @State private var showImagePreview = false
+    @State private var showExampleModal = false
     
     var body: some View {
         if viewModel.isDiagnosisLoading {
             HospitalLoadingView()
         } else {
-            contentView
+            ZStack {
+                contentView
+                if showExampleModal {
+                    Color.black.opacity(0.4)
+                        .ignoresSafeArea()
+                        .onTapGesture { showExampleModal = false } // 배경 누르면 닫기
+                    
+                    examplePhoto
+                        .padding(40)
+                        .transition(.scale)
+                }
+            }
         }
     }
     
@@ -106,12 +118,11 @@ struct HospitalView: View {
                     }
                     
                 } else {
-                    // MARK: - 2. 이미지가 선택되지 않은 상태 (기본)
-                    PhotosPicker(
-                        selection: $viewModel.selectedItems, // 배열 바인딩
-                        maxSelectionCount: 1, // 1장만 선택 가능 (API 제한)
-                        matching: .images
-                    ) {
+                    Button {
+                        withAnimation {
+                            showExampleModal = true
+                        }
+                    } label: {
                         Text("사진 업로드하기")
                             .font(Font.OwnglyphMeetme.regular.font(size: 24))
                             .foregroundColor(.white)
@@ -120,9 +131,23 @@ struct HospitalView: View {
                             .background(.brown1)
                             .cornerRadius(20)
                     }
-                    .onChange(of: viewModel.selectedItems) { _, _ in
-                        viewModel.loadSelectedImage()
-                    }
+                    // MARK: - 2. 이미지가 선택되지 않은 상태 (기본)
+//                    PhotosPicker(
+//                        selection: $viewModel.selectedItems, // 배열 바인딩
+//                        maxSelectionCount: 1, // 1장만 선택 가능 (API 제한)
+//                        matching: .images
+//                    ) {
+//                        Text("사진 업로드하기")
+//                            .font(Font.OwnglyphMeetme.regular.font(size: 24))
+//                            .foregroundColor(.white)
+//                            .padding(.horizontal, 40)
+//                            .padding(.vertical, 12)
+//                            .background(.brown1)
+//                            .cornerRadius(20)
+//                    }
+//                    .onChange(of: viewModel.selectedItems) { _, _ in
+//                        viewModel.loadSelectedImage()
+//                    }
                 }
                 CharacterSpeechComponent(
                     characterImage: .doctor1,
@@ -137,6 +162,51 @@ struct HospitalView: View {
             viewModel.fetchUserPlants()
             viewModel.onDiagnosisComplete = { result in
                 di.router.push(.diagnosisResult(plant: viewModel.selectedPlant, result: result))
+            }
+        }
+        .onChange(of: viewModel.selectedItems) { _, _ in
+            viewModel.loadSelectedImage()
+        }
+    }
+    
+    var examplePhoto: some View {
+        VStack {
+            Text("정확한 진단을 위해\n사진처럼 잎이 잘 보이게 촬영해줘!\n(어둡지 않고, 선명하게!)")
+                .font(Font.OwnglyphMeetme.regular.font(size: 22))
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.brown1)
+            Image(.examplePhoto)
+                .resizable()
+                .scaledToFit()
+                .frame(height: 180)
+                .padding(.vertical)
+            PhotosPicker(
+                selection: $viewModel.selectedItems,
+                maxSelectionCount: 1,
+                matching: .images
+            ) {
+                Text("확인했어요!")
+                    .font(Font.OwnglyphMeetme.regular.font(size: 24))
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 85)
+                    .padding(.vertical, 12)
+                    .background(Color.brown1)
+                    .cornerRadius(30)
+            }
+        }
+        .padding(30)
+        .padding(.vertical, 15)
+        .background(.ivory1)
+        .cornerRadius(30)
+        .overlay(
+            RoundedRectangle(cornerRadius: 30)
+                .strokeBorder(Color.brown1, lineWidth: 2)
+        )
+        .onChange(of: viewModel.selectedItems) { _, newItems in
+            if !newItems.isEmpty {
+                withAnimation {
+                    showExampleModal = false
+                }
             }
         }
     }

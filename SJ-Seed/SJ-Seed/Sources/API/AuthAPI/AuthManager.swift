@@ -12,7 +12,7 @@ final class AuthManager {
     private init() {}
 
     // 개발용 하드코딩 토큰
-    private let devToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmciLCJpYXQiOjE3NjQxMjg4MTIsImV4cCI6MTc2NDIxNTIxMn0.DOhPB3hIymf2_NEA2eeMKxQCXOcyDjWU4Vno1pVpTmY"
+    private let devToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmciLCJpYXQiOjE3NjQxMzU1MzAsImV4cCI6MTc2NDIyMTkzMH0.XFahNVE9kJiJn4rnj_LrdcEbEPDGkdYo2WFK94eWcgU"
 
     // 현재 토큰 (실제 로그인 시에는 여기 업데이트)
     var accessToken: String {
