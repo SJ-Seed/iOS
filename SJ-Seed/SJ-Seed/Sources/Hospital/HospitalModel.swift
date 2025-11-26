@@ -13,6 +13,8 @@ struct MedicalRecord: Identifiable {
     let plantProfile: PlantProfile
     let dateText: String
     let diagnosis: DiagnosisType
+    let plantId: Int
+    let speciesId: Int
 }
 
 enum DiagnosisType {

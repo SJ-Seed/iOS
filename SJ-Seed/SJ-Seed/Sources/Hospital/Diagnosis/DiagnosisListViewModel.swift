@@ -55,9 +55,7 @@ final class DiagnosisListViewModel: ObservableObject {
         }
         
         // 3. 식물 프로필 생성
-        // 주의: API에 species(종류)가 없으므로 아이콘을 정확히 찾기 어려움.
-        // 이름으로 PlantAssets를 검색해보고, 없으면 기본 아이콘 사용
-        let asset = PlantAssets.find(by: item.plantName)
+        let asset = PlantAssets.find(bySpeciesId: item.speciesId)
         let iconName = asset?.iconName ?? "sprout"
         
         let profile = PlantProfile(
@@ -69,7 +67,9 @@ final class DiagnosisListViewModel: ObservableObject {
         return MedicalRecord(
             plantProfile: profile,
             dateText: dateText,
-            diagnosis: diagnosis
+            diagnosis: diagnosis,
+            plantId: item.plantId,
+            speciesId: item.speciesId
         )
     }
 }

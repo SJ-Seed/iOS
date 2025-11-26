@@ -61,7 +61,7 @@ struct DiagnosisListView: View {
                         LazyVStack {
         //                    Spacer().padding(.top, 80)
                             ForEach(viewModel.records.reversed()) { record in
-                                ListComponent(item: record, onInfoTap: { print("info" )})
+                                ListComponent(item: record, onInfoTap: { di.router.push(.myPlantDetail(plantId: record.plantId)) })
                                     .padding(.bottom, 8)
                             }
                             Spacer()

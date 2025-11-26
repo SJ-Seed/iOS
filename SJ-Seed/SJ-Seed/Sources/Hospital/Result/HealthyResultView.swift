@@ -37,14 +37,14 @@ struct HealthyResultView: View {
                 VStack {
                     BrownSpeechBubbleComponent(textString: result.message ?? "저 건강해요!")
                     CloudPlantComponent(bg: Image(.clearCircle), icon: plant.icon, size: 230)
-                    PlantInfoButton(name: plant.name, action: {let _ = print("디테일뷰로이동")})
+                    PlantInfoButton(name: plant.name, action: {di.router.push(.myPlantDetail(plantId: 1))})
                     CharacterSpeechComponent(
                         characterImage: .doctor1,
                         textString: "어머나,\n이렇게 튼튼하다니!"
                     )
                     .padding(.top, 10)
                 }
-                .padding(.top, 100)
+//                .padding(.top, 100)
             }
         }
     }
@@ -54,7 +54,7 @@ struct HealthyResultView: View {
             HStack {
                 Button(action: { di.router.pop() }) {
                     Image("chevronLeft")
-                        .foregroundStyle(.brown1)
+                        .foregroundStyle(.ivory1)
                         .padding(.leading)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -65,11 +65,11 @@ struct HealthyResultView: View {
             // 인덱스 중앙
             Text("검사 결과")
                 .font(Font.OwnglyphMeetme.regular.font(size: 28))
-                .foregroundStyle(.brown1)
+                .foregroundStyle(.ivory1)
         }
     }
 }
 
 #Preview {
-//    HealthyResultView()
+    HealthyResultView(plant: PlantProfile(id: UUID(), name: "토마토", iconName: "tomato"), result: TreatmentResult(photo: true, state: "", message: "", explain: "", cause: "", cure: ""))
 }

@@ -25,10 +25,15 @@ struct TreatmentListItem: Codable, Identifiable {
     let date: String
     let disease: String? // 질병이 없거나(null) 식별 불가일 수 있음
     
+    let plantId: Int
+    let speciesId: Int
+    
     // CodingKeys를 사용하여 id는 디코딩에서 제외
     enum CodingKeys: String, CodingKey {
         case plantName
         case date
         case disease
+        case plantId
+        case speciesId
     }
 }

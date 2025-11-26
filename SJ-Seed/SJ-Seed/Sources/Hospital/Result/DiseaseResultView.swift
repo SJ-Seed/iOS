@@ -38,37 +38,36 @@ struct DiseaseResultView: View {
                 }
             }
             .ignoresSafeArea()
-            
-            ScrollView {
-                VStack {
-                    headerView
-                    Spacer().padding(.top, 80)
-                    BrownSpeechBubbleComponent(textString: "병에 걸렸어요 . . .")
-                    CloudPlantComponent(bg: Image(.cloudCircle), icon: plant.icon, size: 170)
-//                    PlantInfoButton(name: selectedProfile.name, action: <#() -> Void#>)
-                    
-                    DiseaseDetailCard(
-                        diseaseName: result.state ?? "진단명 없음",
-                        symptom: result.explain ?? "증상 정보가 없습니다.",
-                        cause: result.cause ?? "원인 정보가 없습니다.",
-                        treatment: result.cure ?? "치료법 정보가 없습니다."
-                    )
-                    
-                    ZStack {
-                        Image(.grassBG)
-                            .resizable()
-                            .scaledToFit()
-                            .padding(.top, 40)
-                        VStack {
-                            CharacterSpeechComponent(
-                                characterImage: .doctor1,
-                                textString: "아이쿠!\n치료가 필요하겠는걸?"
-                            )
+            VStack {
+                headerView
+                ScrollView {
+                    LazyVStack {
+                        BrownSpeechBubbleComponent(textString: "병에 걸렸어요 . . .")
+                        CloudPlantComponent(bg: Image(.cloudCircle), icon: plant.icon, size: 170)
+                        PlantInfoButton(name: plant.name, action: {})
+                        DiseaseDetailCard(
+                            diseaseName: result.state ?? "진단명 없음",
+                            symptom: result.explain ?? "증상 정보가 없습니다.",
+                            cause: result.cause ?? "원인 정보가 없습니다.",
+                            treatment: result.cure ?? "치료법 정보가 없습니다."
+                        )
+                        
+                        ZStack {
+                            Image(.grassBG)
+                                .resizable()
+                                .scaledToFit()
+                                .padding(.top, 40)
+                            VStack {
+                                CharacterSpeechComponent(
+                                    characterImage: .doctor1,
+                                    textString: "아이쿠!\n치료가 필요하겠는걸?"
+                                )
+                            }
                         }
                     }
                 }
+                .ignoresSafeArea()
             }
-            .ignoresSafeArea()
             
         }
     }
@@ -95,5 +94,5 @@ struct DiseaseResultView: View {
 }
 
 #Preview {
-//    DiseaseResultView()
+    DiseaseResultView(plant: PlantProfile(id: UUID(), name: "토마토", iconName: "tomato"), result: TreatmentResult(photo: true, state: "", message: "", explain: "", cause: "", cure: ""))
 }
