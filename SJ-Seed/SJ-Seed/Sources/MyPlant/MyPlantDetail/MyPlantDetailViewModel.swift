@@ -23,6 +23,7 @@ final class MyPlantDetailViewModel: ObservableObject {
      * 상세 정보를 가져옵니다.
      */
     func fetchDetail(plantId: Int) {
+        print("🚀 MyPlantDetailViewModel: 식물 상세 정보 요청 시작 (ID: \(plantId))")
         isLoading = true
         errorMessage = nil
         
@@ -34,6 +35,7 @@ final class MyPlantDetailViewModel: ObservableObject {
             switch result {
             case .success(let data):
                 // 'data'는 'PlantDetailResult' 타입입니다.
+                print("✅ 식물 상세 정보 로드 성공: \(data.name)")
                 self.detail = data
                 
             case .failure(let error):
