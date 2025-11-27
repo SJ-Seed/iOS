@@ -39,7 +39,7 @@ struct PlantListView: View {
                         .font(Font.OwnglyphMeetme.regular.font(size: 24))
                         .foregroundColor(.red)
                     Button("다시 시도") {
-                        viewModel.fetchPlantList(memberId: 1) // 예시 memberId
+                        viewModel.fetchPlantList() // 예시 memberId
                     }
                     .buttonStyle(.borderedProminent)
                 }
@@ -90,7 +90,7 @@ struct PlantListView: View {
             }
         }
         .task {
-            viewModel.fetchPlantList(memberId: 1) // 예시 memberId (로그인 ID로 교체 필요)
+            viewModel.fetchPlantList() // 예시 memberId (로그인 ID로 교체 필요)
         }
     }
     

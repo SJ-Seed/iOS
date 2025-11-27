@@ -8,7 +8,10 @@
 import SwiftUI
 
 enum Route: Hashable {
-    case login
+    case loginMain
+    case loginInput
+    case signUp
+    case myPage
     case home
     case hospital
     case diagnosisResult(plant: PlantProfile, result: TreatmentResult)

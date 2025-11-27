@@ -23,13 +23,22 @@ struct SJ_SeedApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $router.path) {
-                HomeView() // 시작 화면 수정 필요
+                LoginMainView() // 시작 화면 수정 필요
                 
                     .navigationDestination(for: Route.self) { route in
                         switch route {
-                        case .login:
-                            let _ = print("로그인뷰나중에구현할게")
-//                            LoginView()
+                        case .loginMain:
+                            LoginMainView()
+                                .navigationBarBackButtonHidden(true)
+                        case .loginInput:
+                            LoginInputView()
+                                .navigationBarBackButtonHidden(true)
+                        case .signUp:
+                            SignUpView()
+                                .navigationBarBackButtonHidden(true)
+                        case .myPage:
+                            MyPageView()
+                                .navigationBarBackButtonHidden(true)
                         case .home:
                             HomeView()
                                 .navigationBarBackButtonHidden(true)

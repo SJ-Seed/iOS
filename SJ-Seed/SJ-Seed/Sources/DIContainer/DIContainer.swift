@@ -15,8 +15,8 @@ final class DIContainer: ObservableObject {
     var router: AppRouter
     
     // MARK: - Services
-    let authService: AuthService
-    let collectionService: CollectionService
+//    let authService: AuthService
+//    let collectionService: CollectionService
     
     // MARK: - Published Properties
     @Published var selectedTab: String = "홈"
@@ -25,8 +25,8 @@ final class DIContainer: ObservableObject {
         self.router = router
         
         // 서비스 초기화
-        self.authService = AuthService()
-        self.collectionService = CollectionService.shared
+//        self.authService = AuthService()
+//        self.collectionService = CollectionService.shared
     }
 }
 

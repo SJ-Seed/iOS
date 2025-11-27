@@ -17,7 +17,10 @@ final class DiagnosisListViewModel: ObservableObject {
     @Published var errorMessage: String? = nil
     
     private let service = HospitalService.shared
-    private let memberId = 1 // 임시 하드코딩
+//    private let memberId = 1 // 임시 하드코딩
+    private var memberId: Int {
+        return AuthManager.shared.currentMemberId
+    }
     
     func fetchRecords() {
         isLoading = true

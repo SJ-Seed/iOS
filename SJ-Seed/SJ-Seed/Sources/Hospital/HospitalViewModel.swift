@@ -37,7 +37,10 @@ final class HospitalViewModel: ObservableObject {
     private let myPlantService = MyPlantService.shared
     private let imageService = ImageService.shared
     private let hospitalService = HospitalService.shared
-    private let memberId = 1 // 임시 하드코딩 (로그인 연동 시 변경 필요)
+//    private let memberId = 1 // 임시 하드코딩
+    private var memberId: Int {
+        return AuthManager.shared.currentMemberId
+    }
     
     init() {
         self.selectedPlant = PlantProfile(id: UUID(), name: "식물을 불러오는 중...", iconName: "sprout")

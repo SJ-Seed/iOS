@@ -15,7 +15,15 @@ final class PlantListViewModel: ObservableObject {
     
     private let service = MyPlantService.shared
     
-    func fetchPlantList(memberId: Int) {
+    func fetchPlantList() {
+        let memberId = AuthManager.shared.currentMemberId
+        
+        guard memberId != 0 else {
+            print("❌ PlantListViewModel: 로그인된 멤버 ID가 없습니다.")
+            self.errorMessage = "로그인이 필요합니다."
+            return
+        }
+        
         isLoading = true
         errorMessage = nil
         

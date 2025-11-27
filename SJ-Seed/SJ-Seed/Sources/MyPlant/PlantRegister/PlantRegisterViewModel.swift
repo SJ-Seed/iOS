@@ -19,7 +19,10 @@ final class PlantRegisterViewModel: ObservableObject {
     @Published var registeredPlantSpeciesName: String = "" // 식물 종류 이름 (예: "토마토")
     
     private let service = MyPlantService.shared
-    private let memberId = 1 // 임시 하드코딩 (로그인 연동 후 교체)
+//    private let memberId = 1 // 임시 하드코딩
+    private var memberId: Int {
+        return AuthManager.shared.currentMemberId
+    }
     
     // API 호출 함수
     // 'completion' 핸들러로 뷰의 'step'을 변경할지 여부를 알림

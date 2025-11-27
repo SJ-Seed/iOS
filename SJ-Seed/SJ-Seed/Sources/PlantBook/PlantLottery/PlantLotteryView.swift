@@ -36,8 +36,7 @@ struct PlantLotteryView: View {
                     
                     HeaderButton(
                         icon: Image(.coin),
-                        text: "1200"
-                        // TODO: - 코인 api 연결해야함
+                        text: "\(viewModel.currentCoin)"
                     )
                     .padding(.trailing)
                 }
@@ -65,7 +64,6 @@ struct PlantLotteryView: View {
                     Button(action: {
                         withAnimation(.easeInOut) {
                             viewModel.drawPlant()
-                            // TODO: -1000코인 지불 api 연결 필요
                         }
                     }) {
                         Text("1000코인 지불 후 뽑기")
@@ -90,6 +88,14 @@ struct PlantLotteryView: View {
             }
         }
         .ignoresSafeArea(edges: .bottom)
+        .task {
+            viewModel.fetchCurrentCoin()
+        }
+        .alert("코인이 부족해요", isPresented: $viewModel.showCoinAlert) {
+            Button("확인", role: .cancel) { }
+        } message: {
+            Text("뽑기를 하려면 1000코인이 필요해요.\n현재 코인: \(viewModel.currentCoin)")
+        }
         .onChange(of: viewModel.resultName) {
             if let name = viewModel.resultName {
                 // 'name'을 이용해 'PlantAssets'에서 'speciesId'를 찾음

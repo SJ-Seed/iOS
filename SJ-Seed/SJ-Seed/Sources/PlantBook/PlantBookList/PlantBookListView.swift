@@ -45,7 +45,7 @@ struct PlantBookListView: View {
                         .font(Font.OwnglyphMeetme.regular.font(size: 24))
                         .foregroundColor(.red)
                     Button("다시 시도") {
-                        viewModel.fetchPlantList(memberId: 1)
+                        viewModel.fetchPlantList()
                     }
                     .buttonStyle(.borderedProminent)
                 }
@@ -85,7 +85,7 @@ struct PlantBookListView: View {
             }
         }
         .task {
-            viewModel.fetchPlantList(memberId: 1) // 예시로 memberId = 1
+            viewModel.fetchPlantList()
         }
     }
     

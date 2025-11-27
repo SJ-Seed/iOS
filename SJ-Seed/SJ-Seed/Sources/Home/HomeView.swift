@@ -15,7 +15,7 @@ struct HomeView: View {
         VStack {
             HeaderBarGroup(
                 coin: viewModel.coin,
-                onTapMy: { }
+                onTapMy: { di.router.push(.myPage) }
             )
             // 1. 로딩 중인지 가장 먼저 확인
             if viewModel.isLoading {
@@ -39,7 +39,7 @@ struct HomeView: View {
                         .foregroundStyle(.brown1)
                     Spacer()
                 }
-                .frame(height: 300) // Pager 높이만큼 확보
+                .frame(height: 350) // Pager 높이만큼 확보
                 
             } else {
                 // API로 받아온 ViewModel 목록 전달

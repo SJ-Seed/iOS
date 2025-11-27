@@ -21,14 +21,21 @@ final class HomeViewModel: ObservableObject {
     
     private let attendService = AttendService.shared
     private let plantService = PlantService.shared
-    private let memberId = 1 // 임시 하드코딩
+//    private let memberId = 1 // 임시 하드코딩
+    private var memberId: Int {
+        return AuthManager.shared.currentMemberId
+    }
     
     // 1. ‼️ 저장 키 추가 (날짜 저장용, 금액 저장용)
     private let lastRewardDateKey = "lastRewardDateV1"
     private let lastRewardAmountKey = "lastRewardAmountV1" // 👈 추가됨
     
     init() {
-        // 2. ‼️ 앱 켜자마자: 저장된 데이터가 "오늘" 것이면 불러오기
+        let isMusicOn = UserDefaults.standard.object(forKey: "isMusicOn") as? Bool ?? true
+        if isMusicOn {
+            MusicManager.shared.playMusic()
+        }
+        // 2. 앱 켜자마자: 저장된 데이터가 "오늘" 것이면 불러오기
         restoreTodayReward()
         
         // 3. API 호출
