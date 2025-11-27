@@ -15,7 +15,7 @@ struct HomeView: View {
         VStack {
             HeaderBarGroup(
                 coin: viewModel.coin,
-                onTapMy: { }
+                onTapMy: { di.router.push(.myPage) }
             )
             // 1. 로딩 중인지 가장 먼저 확인
             if viewModel.isLoading {

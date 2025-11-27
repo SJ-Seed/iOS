@@ -33,6 +33,12 @@ struct SJ_SeedApp: App {
                         case .loginInput:
                             LoginInputView()
                                 .navigationBarBackButtonHidden(true)
+                        case .signUp:
+                            SignUpView()
+                                .navigationBarBackButtonHidden(true)
+                        case .myPage:
+                            MyPageView()
+                                .navigationBarBackButtonHidden(true)
                         case .home:
                             HomeView()
                                 .navigationBarBackButtonHidden(true)

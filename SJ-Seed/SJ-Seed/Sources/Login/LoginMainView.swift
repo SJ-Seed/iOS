@@ -51,10 +51,7 @@ struct LoginMainView: View {
                     LoginButton(
                         iconName: "sproutIcon",
                         text: "쑥자씨는 처음이에요",
-                        action: {
-                            print("회원가입 버튼 클릭")
-                            // TODO: 회원가입 화면으로 이동
-                        }
+                        action: { di.router.push(.signUp) }
                     )
                 }
                 .padding(.horizontal, 60) // 버튼 좌우 여백
