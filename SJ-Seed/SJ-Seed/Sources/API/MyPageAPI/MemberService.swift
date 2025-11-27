@@ -44,4 +44,27 @@ final class MemberService {
             }
         }
     }
+    
+    // MARK: - 코인 조회 (GET /member/coin/{memberId})
+    func getCoin(memberId: Int, completion: @escaping (Result<Int, Error>) -> Void) {
+        provider.request(.getCoin(memberId: memberId)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    // ‼️ 수정됨: result가 단순 Int이므로 <Int> 사용
+                    let decoded = try JSONDecoder().decode(APIResponse<Int>.self, from: response.data)
+                    
+                    // decoded.result 자체가 Int 값 (예: 10)
+                    completion(.success(decoded.result))
+                    
+                } catch {
+                    print("❌ 코인 조회 디코딩 실패:", error)
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                print("❌ 코인 조회 요청 실패:", error)
+                completion(.failure(error))
+            }
+        }
+    }
 }

@@ -56,7 +56,6 @@ struct MyPageView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("식물 친구 \(viewModel.plantCount)그루")
                             Text("도감 조각 \(viewModel.pieceCount)개")
-                            Text("도감 배지 \(viewModel.badgeCount)개")
                         }
                         .font(Font.OwnglyphMeetme.regular.font(size: 20))
                         .foregroundStyle(.brown1)
@@ -116,7 +115,7 @@ struct MyPageView: View {
                     
                     // 프리미엄 멤버십 (Button)
                     Button(action: {
-                        print("프리미엄 멤버십 클릭")
+                        viewModel.showPremiumAlert = true
                     }) {
                         HStack {
                             Text("프리미엄 멤버십")
@@ -157,6 +156,11 @@ struct MyPageView: View {
                     }
                 )
             }
+        }
+        .alert("준비 중", isPresented: $viewModel.showPremiumAlert) {
+            Button("확인", role: .cancel) { }
+        } message: {
+            Text("아직 준비 중인 기능이에요.\n조금만 기다려주세요! 🚧")
         }
     }
 }

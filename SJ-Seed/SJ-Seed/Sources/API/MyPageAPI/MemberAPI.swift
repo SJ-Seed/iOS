@@ -11,6 +11,7 @@ import Moya
 
 enum MemberAPI {
     case getMemberDetail(memberId: Int)
+    case getCoin(memberId: Int)
 }
 
 extension MemberAPI: TargetType {
@@ -23,19 +24,21 @@ extension MemberAPI: TargetType {
         switch self {
         case .getMemberDetail(let memberId):
             return "/member/detail/\(memberId)"
+        case .getCoin(let memberId):
+            return "/member/coin/\(memberId)"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getMemberDetail:
+        case .getMemberDetail, .getCoin:
             return .get
         }
     }
     
     var task: Task {
         switch self {
-        case .getMemberDetail:
+        case .getMemberDetail, .getCoin:
             return .requestPlain
         }
     }

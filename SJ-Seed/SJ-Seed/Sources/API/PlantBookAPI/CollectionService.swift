@@ -19,9 +19,9 @@ final class CollectionService {
         provider.request(.random(memberId: memberId)) { result in
             switch result {
             case .success(let response):
-                if let responseString = String(data: response.data, encoding: .utf8) {
-                    print("📄 랜덤 뽑기 원본 데이터: \(responseString)")
-                }
+                let responseString = String(data: response.data, encoding: .utf8) ?? "데이터 없음"
+                print("📄 [랜덤뽑기] ID: \(memberId) | 상태코드: \(response.statusCode)")
+                print("📄 [랜덤뽑기] 응답 데이터: \(responseString)")
                 do {
                     let decoded = try JSONDecoder().decode(APIResponse<RandomResult>.self, from: response.data)
                     completion(.success(decoded.result))

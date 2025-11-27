@@ -12,8 +12,19 @@ import Combine
 final class MyPageViewModel: ObservableObject {
     // UI 바인딩용 프로퍼티
     @Published var phoneNumber: String = ""
-    @Published var isMusicOn: Bool = true
+    @Published var isMusicOn: Bool {
+        didSet {
+            // 상태 변경 시 음악 제어 및 저장
+            if isMusicOn {
+                MusicManager.shared.playMusic()
+            } else {
+                MusicManager.shared.stopMusic()
+            }
+            UserDefaults.standard.set(isMusicOn, forKey: "isMusicOn")
+        }
+    }
     @Published var showPhoneInputModal: Bool = false
+    @Published var showPremiumAlert: Bool = false
     
     // API에서 받아올 데이터 (초기값 설정)
     @Published var userName = "로딩 중..."
@@ -28,10 +39,16 @@ final class MyPageViewModel: ObservableObject {
     }
     
     init() {
-        // 저장된 전화번호 불러오기
         self.phoneNumber = UserDefaults.standard.string(forKey: "userPhoneNumber") ?? ""
         
-        // 데이터 로드
+        // 3. 저장된 음악 설정 불러오기 (기본값 true)
+        self.isMusicOn = UserDefaults.standard.object(forKey: "isMusicOn") as? Bool ?? true
+        
+        // 4. 초기 상태에 따라 음악 재생 (앱 켰을 때 자동 재생 원할 시)
+        if self.isMusicOn {
+            MusicManager.shared.playMusic()
+        }
+        
         fetchMemberDetail()
     }
     

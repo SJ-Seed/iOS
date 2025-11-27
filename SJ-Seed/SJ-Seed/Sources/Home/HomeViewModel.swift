@@ -31,7 +31,11 @@ final class HomeViewModel: ObservableObject {
     private let lastRewardAmountKey = "lastRewardAmountV1" // 👈 추가됨
     
     init() {
-        // 2. ‼️ 앱 켜자마자: 저장된 데이터가 "오늘" 것이면 불러오기
+        let isMusicOn = UserDefaults.standard.object(forKey: "isMusicOn") as? Bool ?? true
+        if isMusicOn {
+            MusicManager.shared.playMusic()
+        }
+        // 2. 앱 켜자마자: 저장된 데이터가 "오늘" 것이면 불러오기
         restoreTodayReward()
         
         // 3. API 호출
