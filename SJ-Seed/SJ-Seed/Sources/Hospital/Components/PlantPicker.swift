@@ -38,36 +38,42 @@ struct PlantPicker: View {
             // 옵션 리스트
             if isExpanded {
                 VStack(spacing: 6) {
-                    ForEach(plants) { p in
-                        Button {
-                            withAnimation(.easeInOut(duration: 0.15)) {
-                                selected = p
-                                isExpanded = false
-                            }
-                        } label: {
-                            HStack(spacing: 12) {
-                                p.icon
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 40, height: 40)
-                                
-                                Text(p.name)
-                                    .font(Font.OwnglyphMeetme.regular.font(size: 18))
-                                    .foregroundStyle(p.id == selected.id ? Color.brown1 : Color(.systemGray))
-                                
-                                Spacer()
-                                
-                                if p.id == selected.id {
-                                    Image(systemName: "checkmark")
-                                        .font(.system(size: 16, weight: .semibold))
-                                        .foregroundStyle(Color.brown1)
+                    ScrollView {
+                        LazyVStack(spacing: 6) {
+                            ForEach(plants) { p in
+                                Button {
+                                    withAnimation(.easeInOut(duration: 0.15)) {
+                                        selected = p
+                                        isExpanded = false
+                                    }
+                                } label: {
+                                    HStack(spacing: 12) {
+                                        p.icon
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 40, height: 40)
+                                        
+                                        Text(p.name)
+                                            .font(Font.OwnglyphMeetme.regular.font(size: 18))
+                                            .foregroundStyle(p.id == selected.id ? Color.brown1 : Color(.systemGray))
+                                        
+                                        Spacer()
+                                        
+                                        if p.id == selected.id {
+                                            Image(systemName: "checkmark")
+                                                .font(.system(size: 16, weight: .semibold))
+                                                .foregroundStyle(Color.brown1)
+                                        }
+                                    }
+                                    .padding(.vertical, 8)
+                                    .padding(.horizontal, 10)
                                 }
+                                .buttonStyle(.plain)
                             }
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 10)
                         }
-                        .buttonStyle(.plain)
+                        .padding(.vertical, 4)
                     }
+                    .frame(maxHeight: 200)
                 }
                 .padding(.top, 4)
                 .background(

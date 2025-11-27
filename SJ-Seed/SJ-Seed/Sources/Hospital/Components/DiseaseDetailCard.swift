@@ -34,6 +34,7 @@ struct DiseaseDetailCard: View {
                     .foregroundStyle(.green1)
                 Text(symptom)
                     .font(Font.OwnglyphMeetme.regular.font(size: 22))
+                    .foregroundStyle(.brown1)
                     .multilineTextAlignment(.center)
                     .lineSpacing(4)
             }
@@ -46,6 +47,7 @@ struct DiseaseDetailCard: View {
                     .foregroundStyle(.green1)
                 Text(cause)
                     .font(Font.OwnglyphMeetme.regular.font(size: 22))
+                    .foregroundStyle(.brown1)
                     .multilineTextAlignment(.center)
                     .lineSpacing(4)
             }
@@ -58,6 +60,7 @@ struct DiseaseDetailCard: View {
                     .foregroundStyle(.green1)
                 Text(treatment)
                     .font(Font.OwnglyphMeetme.regular.font(size: 22))
+                    .foregroundStyle(.brown1)
                     .multilineTextAlignment(.center)
                     .lineSpacing(4)
             }
