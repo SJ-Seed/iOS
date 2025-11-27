@@ -21,7 +21,10 @@ final class HomeViewModel: ObservableObject {
     
     private let attendService = AttendService.shared
     private let plantService = PlantService.shared
-    private let memberId = 1 // 임시 하드코딩
+//    private let memberId = 1 // 임시 하드코딩
+    private var memberId: Int {
+        return AuthManager.shared.currentMemberId
+    }
     
     // 1. ‼️ 저장 키 추가 (날짜 저장용, 금액 저장용)
     private let lastRewardDateKey = "lastRewardDateV1"

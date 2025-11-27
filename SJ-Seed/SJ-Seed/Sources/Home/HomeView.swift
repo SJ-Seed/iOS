@@ -39,7 +39,7 @@ struct HomeView: View {
                         .foregroundStyle(.brown1)
                     Spacer()
                 }
-                .frame(height: 300) // Pager 높이만큼 확보
+                .frame(height: 350) // Pager 높이만큼 확보
                 
             } else {
                 // API로 받아온 ViewModel 목록 전달

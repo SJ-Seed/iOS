@@ -14,7 +14,9 @@ final class PlantBookListViewModel: ObservableObject {
     @Published var errorMessage: String? = nil
     private let service = CollectionService.shared
     
-    func fetchPlantList(memberId: Int) {
+    func fetchPlantList() {
+        let memberId = AuthManager.shared.currentMemberId
+        
         DispatchQueue.main.async {
             self.isLoading = true
             self.errorMessage = nil

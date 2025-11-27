@@ -14,7 +14,10 @@ final class PlantLotteryViewModel: ObservableObject {
 //    @Published var resultPieceId: Int = 0
     
     private let service = CollectionService.shared
-    private let memberId = 1 // 임시 하드코딩 (로그인 연동 후 교체)
+//    private let memberId = 1 // 임시 하드코딩
+    private var memberId: Int {
+        return AuthManager.shared.currentMemberId
+    }
     
     // 랜덤 뽑기 요청
     func drawPlant() {
