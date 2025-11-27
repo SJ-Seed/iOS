@@ -37,7 +37,10 @@ struct HealthyResultView: View {
                 VStack {
                     BrownSpeechBubbleComponent(textString: result.message ?? "저 건강해요!")
                     CloudPlantComponent(bg: Image(.clearCircle), icon: plant.icon, size: 230)
-                    PlantInfoButton(name: plant.name, action: {di.router.push(.myPlantDetail(plantId: 1))})
+//                    PlantInfoButton(name: plant.name, action: {di.router.push(.myPlantDetail(plantId: 1))})
+                    Text(plant.name)
+                        .font(Font.OwnglyphMeetme.regular.font(size: 24))
+                        .foregroundStyle(Color.brown1)
                     CharacterSpeechComponent(
                         characterImage: .doctor1,
                         textString: "어머나,\n이렇게 튼튼하다니!"

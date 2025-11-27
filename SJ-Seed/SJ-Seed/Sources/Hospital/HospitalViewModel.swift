@@ -33,6 +33,7 @@ final class HospitalViewModel: ObservableObject {
     
     private var originalPlantItems: [PlantListItem] = []
     
+    private var plantIdMap: [UUID: Int] = [:]
     private let myPlantService = MyPlantService.shared
     private let imageService = ImageService.shared
     private let hospitalService = HospitalService.shared
@@ -59,9 +60,11 @@ final class HospitalViewModel: ObservableObject {
                     // 식물 종류(item.species)를 이용해 아이콘 찾기
                     let asset = PlantAssets.find(by: item.species)
                     let iconName = asset?.iconName ?? "sprout"
+                    let newUUID = UUID()
+                    self.plantIdMap[newUUID] = item.plantId
                     
                     return PlantProfile(
-                        id: UUID(), // UI 식별용 고유 ID 생성
+                        id: newUUID, // UI 식별용 고유 ID 생성
                         name: item.name, // 사용자가 지은 닉네임
                         iconName: iconName
                     )
@@ -87,7 +90,7 @@ final class HospitalViewModel: ObservableObject {
     func requestDiagnosis() {
         guard let image = selectedImage else { return }
         // 현재 선택된 식물의 실제 ID(Int) 찾기
-        guard let targetPlant = originalPlantItems.first(where: { $0.name == selectedPlant.name }) else {
+        guard let targetPlantId = plantIdMap[selectedPlant.id] else {
             self.errorMessage = "선택된 식물의 정보를 찾을 수 없습니다."
             return
         }
@@ -103,7 +106,7 @@ final class HospitalViewModel: ObservableObject {
             case .success(let imageUrl):
                 print("✅ 이미지 업로드 성공 URL: \(imageUrl)")
                 // B. 진료 API 호출 (업로드된 URL 사용)
-                self.performTreatment(plantId: targetPlant.id, imageUrl: imageUrl)
+                self.performTreatment(plantId: targetPlantId, imageUrl: imageUrl)
                 
             case .failure(let error):
                 print("❌ 이미지 업로드 실패:", error)

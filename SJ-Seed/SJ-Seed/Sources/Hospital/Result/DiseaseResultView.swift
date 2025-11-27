@@ -44,7 +44,10 @@ struct DiseaseResultView: View {
                     LazyVStack {
                         BrownSpeechBubbleComponent(textString: "병에 걸렸어요 . . .")
                         CloudPlantComponent(bg: Image(.cloudCircle), icon: plant.icon, size: 170)
-                        PlantInfoButton(name: plant.name, action: {})
+//                        PlantInfoButton(name: plant.name, action: {})
+                        Text(plant.name)
+                            .font(Font.OwnglyphMeetme.regular.font(size: 24))
+                            .foregroundStyle(Color.brown1)
                         DiseaseDetailCard(
                             diseaseName: result.state ?? "진단명 없음",
                             symptom: result.explain ?? "증상 정보가 없습니다.",
