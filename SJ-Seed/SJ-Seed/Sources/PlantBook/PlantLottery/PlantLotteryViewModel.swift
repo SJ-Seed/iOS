@@ -14,6 +14,8 @@ final class PlantLotteryViewModel: ObservableObject {
     @Published var currentCoin: Int = 0
 //    @Published var resultPieceId: Int = 0
     
+    @Published var showCoinAlert = false
+    
     private let service = CollectionService.shared
     private let memberService = MemberService.shared
 //    private let memberId = 1 // 임시 하드코딩
@@ -42,8 +44,14 @@ final class PlantLotteryViewModel: ObservableObject {
     
     // 랜덤 뽑기 요청
     func drawPlant() {
+        guard currentCoin >= 1000 else {
+            print("💸 코인 부족")
+            showCoinAlert = true
+            return
+        }
+        
         isAnimating = true
-        showText = true
+        showText = false
         resultName = nil
         
         // 3초 동안 애니메이션 후 결과 표시
@@ -67,8 +75,10 @@ final class PlantLotteryViewModel: ObservableObject {
                     } else { // 꽝인 경우 (ifNotLose가 false인 경우)
                         self?.resultName = "꽝"
                         self?.isAnimating = false
+                        self?.showText = true
                         // TODO: 꽝일 때의 UI 처리 (예: 알림창)
                     }
+                    self?.fetchCurrentCoin()
                 case .failure(let error):
                     print("❌ 랜덤 뽑기 실패:", error)
                     self?.resultName = nil
