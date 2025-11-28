@@ -54,6 +54,9 @@ struct DiseaseResultView: View {
                             cause: result.cause.map { $0 + "\n최근 일주일 동안의 높은 습도 때문에 이 병이 생겼을 가능성이 있어요" } ?? "원인 정보가 없습니다.",
                             treatment: result.cure ?? "치료법 정보가 없습니다."
                         )
+                        EnvironmentGraphView()
+                            .padding(.horizontal, 25)
+                            .padding(.top, 10)
                         
                         ZStack {
                             Image(.grassBG)
