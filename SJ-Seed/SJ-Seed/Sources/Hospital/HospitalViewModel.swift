@@ -60,9 +60,10 @@ final class HospitalViewModel: ObservableObject {
                 // 1. [PlantListItem] -> [PlantProfile] 변환
                 let profiles: [PlantProfile] = items.map { item in
                     
+                    let speciesName = item.species ?? ""
                     // 식물 종류(item.species)를 이용해 아이콘 찾기
-                    let asset = PlantAssets.find(by: item.species)
-                    let iconName = asset?.iconName ?? "sprout"
+                    let asset = PlantAssets.find(by: speciesName)
+                    let iconName = asset?.iconName ?? "questionmark"
                     let newUUID = UUID()
                     self.plantIdMap[newUUID] = item.plantId
                     
@@ -100,6 +101,10 @@ final class HospitalViewModel: ObservableObject {
         
         isDiagnosisLoading = true
         errorMessage = nil
+        
+        if let item = selectedItems.first {
+            print("📸 선택된 사진 ID: \(item.itemIdentifier ?? "알 수 없음")")
+        }
         
         // A. 이미지 업로드
         imageService.uploadImage(image: image) { [weak self] result in

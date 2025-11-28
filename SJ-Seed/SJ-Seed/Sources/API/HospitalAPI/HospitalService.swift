@@ -60,4 +60,24 @@ final class HospitalService {
             }
         }
     }
+    
+    // MARK: - 3. 진료 기록 상세 조회
+    func getTreatmentDetail(treatmentId: Int, completion: @escaping (Result<TreatmentDetailResult, Error>) -> Void) {
+        provider.request(.getTreatmentDetail(treatmentId: treatmentId)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    // APIResponse<TreatmentDetailResult>로 디코딩
+                    let decoded = try JSONDecoder().decode(APIResponse<TreatmentDetailResult>.self, from: response.data)
+                    completion(.success(decoded.result))
+                } catch {
+                    print("❌ 진료 상세 디코딩 실패:", error)
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                print("❌ 진료 상세 요청 실패:", error)
+                completion(.failure(error))
+            }
+        }
+    }
 }

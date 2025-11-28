@@ -73,7 +73,12 @@ struct PlantListView: View {
                                 }
                                     .padding(.bottom, 8)
                             }
-                            Spacer()
+                            if viewModel.plantList.isEmpty {
+                                Spacer()
+                                    .frame(height: 200) // 적절한 높이만큼 공간 확보 (또는 Spacer()만 써도 됨)
+                            } else {
+                                Spacer() // 리스트가 있을 때도 하단 여백 확보용
+                            }
                             
                             // 맨 밑 잔디 배경
                             ZStack {
@@ -84,6 +89,7 @@ struct PlantListView: View {
                                 CharacterSpeechComponent(characterImage: .grandma2, textString: "식물을 확인하거나\n등록할 수 있단다.")
                             }
                         }
+                        .frame(minHeight: UIScreen.main.bounds.height - 200)
                     }
                     .ignoresSafeArea(edges: .bottom)
                 }

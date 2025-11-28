@@ -73,7 +73,7 @@ struct PlantRegisterBubbleText: View {
                 }
                 
             case .complete:
-                Text("\(registeredPlantUserName) (\(registeredPlantSpeciesName)) 을/를\n\(userName)의 식물로 등록했단다.\n잘 돌봐주도록 해!")
+                Text("\(registeredPlantUserName)을/를 무사히 등록했단다.\n잘 돌봐주도록 해!")
                     .padding(.bottom, 8)
                     .frame(width: 240)
                 Button(action: onComplete) {

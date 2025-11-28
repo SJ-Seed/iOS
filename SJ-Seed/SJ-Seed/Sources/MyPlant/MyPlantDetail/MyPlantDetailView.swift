@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MyPlantDetailView: View {
     @Environment(\.diContainer) private var di
-    let plantId: Int // ‼️ 'speciesId'가 아닌 'plantId'를 받습니다.
+    let plantId: Int // 'speciesId'가 아닌 'plantId'를 받습니다.
     
     @StateObject private var viewModel = MyPlantDetailViewModel()
     
@@ -59,10 +59,13 @@ struct MyPlantDetailView: View {
                             Button("돌아가기") { di.router.pop() }
                         }
                         else if let detail = viewModel.detail {
-                            // ‼️ 'detail' (PlantDetailResult)을 성공적으로 로드
+                            // 'detail' (PlantDetailResult)을 성공적으로 로드
                             
                             // 1. 'detail.species' ("토마토")로 'PlantAssets'에서 정적 정보(아이콘, 희귀도) 찾기
                             let staticAsset = PlantAssets.find(by: detail.species)
+                            if staticAsset == nil {
+                                let _ = print("⚠️ 경고: '\(detail.species)'에 해당하는 식물을 PlantAssets에서 찾을 수 없습니다.")
+                            }
                             
                             // 2. 'PlantBookModel'을 동적으로 생성
                             let headerModel = PlantBookModel(
@@ -72,12 +75,12 @@ struct MyPlantDetailView: View {
                                     name: detail.name, // 👈 API 응답 (사용자 지정 이름)
                                     iconName: staticAsset?.iconName ?? "sprout" // 👈 PlantAssets
                                 ),
-                                rarity: staticAsset?.rarity ?? 1, // 👈 PlantAssets
+                                rarity: staticAsset?.rarity ?? 0, // 👈 PlantAssets
                                 speciesId: 0 // (이 뷰에서는 사용되지 않음)
                             )
                             
                             // MARK: - 상단 식물 정보
-                        PlantInfoDetailVerHeader(plant: headerModel, brougtDate: "♥ 등록 날짜: \(detail.broughtDate.replacingOccurrences(of: "-", with: ".")) ♥")
+                            PlantInfoDetailVerHeader(plant: headerModel, brougtDate: "♥ 등록 날짜: \(detail.broughtDate.replacingOccurrences(of: "-", with: ".")) ♥")
                             
                             // MARK: - 섹션별 정보 (PlantDetailResult 모델 기준)
                             VStack {
@@ -112,7 +115,7 @@ struct MyPlantDetailView: View {
             }
         }
         .task {
-            // ‼️ 'plantId'로 ViewModel의 함수 호출
+            // 'plantId'로 ViewModel의 함수 호출
             viewModel.fetchDetail(plantId: plantId)
         }
     }

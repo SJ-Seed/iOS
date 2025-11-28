@@ -42,11 +42,11 @@ final class PlantRegisterViewModel: ObservableObject {
                 self.registeredPlantUserName = data.name
                 
                 // 2. API가 반환한 'speciesId'로 'PlantAssets'에서 '종류 이름' 찾기
-                if let asset = PlantAssets.find(bySpeciesId: data.speciesId) {
-                    self.registeredPlantSpeciesName = asset.name
-                } else {
-                    self.registeredPlantSpeciesName = "알 수 없는 식물" // 예외 처리
-                }
+//                if let asset = PlantAssets.find(bySpeciesId: data.speciesId) {
+//                    self.registeredPlantSpeciesName = asset.name
+//                } else {
+//                    self.registeredPlantSpeciesName = "알 수 없는 식물" // 예외 처리
+//                }
                 
                 completion(true) // 성공
                 

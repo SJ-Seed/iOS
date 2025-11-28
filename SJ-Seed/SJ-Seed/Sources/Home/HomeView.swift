@@ -87,6 +87,9 @@ struct HomeView: View {
         ) { _ in
             viewModel.refreshData()
         }
+        .task {
+            viewModel.fetchCurrentCoin()
+        }
     }
 }
 

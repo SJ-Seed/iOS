@@ -38,14 +38,20 @@ final class WateringViewModel: ObservableObject {
         
         print("💧 물주기 확인 시작 (ID: \(plantId))")
         
-        // 즉시 한 번 체크하고 타이머 시작
-        checkIfWatered()
+        // 즉시 한 번 체크하고 타이머 시작 !!!!->원래 코드 (데모에서는 주석처리)
+//        checkIfWatered()
+//        
+//        pollingTimer = Timer.publish(every: 5.0, on: .main, in: .common)
+//            .autoconnect()
+//            .sink { [weak self] _ in
+//                self?.checkIfWatered()
+//            }
         
-        pollingTimer = Timer.publish(every: 5.0, on: .main, in: .common)
-            .autoconnect()
-            .sink { [weak self] _ in
-                self?.checkIfWatered()
-            }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 13.0) { [weak self] in
+            print("✅ [데모 모드] 13초 경과 -> 물주기 성공 처리!")
+            self?.stopPolling()
+            self?.currentStep = .complete
+        }
     }
     
     private func checkIfWatered() {

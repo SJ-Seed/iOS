@@ -21,6 +21,7 @@ final class HomeViewModel: ObservableObject {
     
     private let attendService = AttendService.shared
     private let plantService = PlantService.shared
+    private let memberService = MemberService.shared
 //    private let memberId = 1 // 임시 하드코딩
     private var memberId: Int {
         return AuthManager.shared.currentMemberId
@@ -41,6 +42,20 @@ final class HomeViewModel: ObservableObject {
         // 3. API 호출
         performCheckIn(isInitialLoad: true)
         fetchMemberPlants()
+    }
+    
+    // MARK: - 코인 조회
+    func fetchCurrentCoin() {
+        memberService.getCoin(memberId: memberId) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let coin):
+                self.coin = coin
+                print("💰 현재 코인: \(coin)")
+            case .failure(let error):
+                print("❌ 코인 조회 실패:", error)
+            }
+        }
     }
     
     func refreshData() {

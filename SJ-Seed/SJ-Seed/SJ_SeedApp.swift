@@ -48,6 +48,9 @@ struct SJ_SeedApp: App {
                         case .diagnosisResult(let plantProfile, let treatmentResult):
                             DiagnosisResultView(plant: plantProfile, result: treatmentResult)
                                 .navigationBarBackButtonHidden(true)
+                        case .treatmentDetail(let treatmentId):
+                            TreatmentDetailView(treatmentId: treatmentId)
+                                .navigationBarBackButtonHidden(true)
                         case .diagnosisList:
                             DiagnosisListView()
                                 .navigationBarBackButtonHidden(true)

@@ -27,6 +27,7 @@ struct TreatmentListItem: Codable, Identifiable {
     
     let plantId: Int
     let speciesId: Int
+    let treatmentId: Int
     
     // CodingKeys를 사용하여 id는 디코딩에서 제외
     enum CodingKeys: String, CodingKey {
@@ -35,5 +36,15 @@ struct TreatmentListItem: Codable, Identifiable {
         case disease
         case plantId
         case speciesId
+        case treatmentId
     }
+}
+
+struct TreatmentDetailResult: Codable {
+    let plantId: Int
+    let speciesId: Int
+    let disease: String?
+    let explain: String?
+    let cause: String?
+    let cure: String?
 }
