@@ -101,6 +101,10 @@ final class HospitalViewModel: ObservableObject {
         isDiagnosisLoading = true
         errorMessage = nil
         
+        if let item = selectedItems.first {
+            print("📸 선택된 사진 ID: \(item.itemIdentifier ?? "알 수 없음")")
+        }
+        
         // A. 이미지 업로드
         imageService.uploadImage(image: image) { [weak self] result in
             guard let self = self else { return }

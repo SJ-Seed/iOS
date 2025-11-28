@@ -41,13 +41,17 @@ struct HealthyResultView: View {
                     Text(plant.name)
                         .font(Font.OwnglyphMeetme.regular.font(size: 24))
                         .foregroundStyle(Color.brown1)
-                    CharacterSpeechComponent(
-                        characterImage: .doctor1,
-                        textString: "어머나,\n이렇게 튼튼하다니!"
-                    )
-                    .padding(.top, 10)
+                    if !(result.message?.contains("다시 촬영"))! {
+                        CharacterSpeechComponent(
+                            characterImage: .doctor1,
+                            textString: "어머나,\n이렇게 튼튼하다니!"
+                        )
+                        .padding(.top, 10)
+                    } else {
+                        Spacer().frame(height: 260)
+                    }
                 }
-//                .padding(.top, 100)
+                .padding(.top, 50)
             }
         }
     }
@@ -74,5 +78,5 @@ struct HealthyResultView: View {
 }
 
 #Preview {
-    HealthyResultView(plant: PlantProfile(id: UUID(), name: "토마토", iconName: "tomato"), result: TreatmentResult(photo: true, state: "", message: "", explain: "", cause: "", cure: ""))
+    HealthyResultView(plant: PlantProfile(id: UUID(), name: "토마토", iconName: "tomato"), result: TreatmentResult(photo: true, state: "", message: "다시 촬영", explain: "", cause: "", cure: ""))
 }
