@@ -23,6 +23,6 @@ struct PlantListItem: Codable, Identifiable {
     let name: String
     let broughtDate: String
     let diseased: Bool
-    let species: String
-    let speciesId: Int
+    let species: String?
+    let speciesId: Int?
 }

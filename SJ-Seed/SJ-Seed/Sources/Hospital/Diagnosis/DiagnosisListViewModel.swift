@@ -72,7 +72,8 @@ final class DiagnosisListViewModel: ObservableObject {
             dateText: dateText,
             diagnosis: diagnosis,
             plantId: item.plantId,
-            speciesId: item.speciesId
+            speciesId: item.speciesId,
+            treatmentId: item.treatmentId
         )
     }
 }

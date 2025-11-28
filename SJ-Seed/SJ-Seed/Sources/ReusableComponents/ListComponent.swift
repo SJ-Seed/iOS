@@ -52,7 +52,7 @@ struct ListComponent<T: PlantDisplayable>: View {
 
 #Preview {
     let sample = PlantProfile(id: UUID(), name: "똥맛토", iconName: "tomato")
-    let record = MedicalRecord(plantProfile: sample, dateText: "2025.09.03", diagnosis: .normal, plantId: 1, speciesId: 1)
+    let record = MedicalRecord(plantProfile: sample, dateText: "2025.09.03", diagnosis: .normal, plantId: 1, speciesId: 1, treatmentId: 1)
     ListComponent(item: record, onInfoTap: {
         print("Preview info tap")
     })

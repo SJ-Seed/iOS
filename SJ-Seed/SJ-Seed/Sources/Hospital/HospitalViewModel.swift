@@ -60,9 +60,10 @@ final class HospitalViewModel: ObservableObject {
                 // 1. [PlantListItem] -> [PlantProfile] 변환
                 let profiles: [PlantProfile] = items.map { item in
                     
+                    let speciesName = item.species ?? ""
                     // 식물 종류(item.species)를 이용해 아이콘 찾기
-                    let asset = PlantAssets.find(by: item.species)
-                    let iconName = asset?.iconName ?? "sprout"
+                    let asset = PlantAssets.find(by: speciesName)
+                    let iconName = asset?.iconName ?? "questionmark"
                     let newUUID = UUID()
                     self.plantIdMap[newUUID] = item.plantId
                     

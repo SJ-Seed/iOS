@@ -14,6 +14,9 @@ enum HospitalAPI {
     
     // 2. 진료 기록 조회 (GET /hospital/treatmentList/{memberId})
     case getTreatmentList(memberId: Int)
+    
+    // 3. 진료 기록 상세 조회 (GET /hospital/treatment/{treatmentId})
+    case getTreatmentDetail(treatmentId: Int)
 }
 
 struct TreatRequestBody: Encodable {
@@ -35,6 +38,9 @@ extension HospitalAPI: TargetType {
             
         case let .getTreatmentList(memberId):
             return "/hospital/treatmentList/\(memberId)"
+            
+        case let .getTreatmentDetail(treatmentId):
+            return "/hospital/treatment/\(treatmentId)"
         }
     }
     
@@ -43,7 +49,7 @@ extension HospitalAPI: TargetType {
         switch self {
         case .treat:
             return .post
-        case .getTreatmentList:
+        case .getTreatmentList, .getTreatmentDetail:
             return .get
         }
     }
@@ -56,7 +62,7 @@ extension HospitalAPI: TargetType {
             let body = TreatRequestBody(url: imageUrl)
             return .requestJSONEncodable(body)
             
-        case .getTreatmentList:
+        case .getTreatmentList, .getTreatmentDetail:
             // GET 요청은 Body 없음
             return .requestPlain
         }

@@ -15,6 +15,7 @@ struct MedicalRecord: Identifiable {
     let diagnosis: DiagnosisType
     let plantId: Int
     let speciesId: Int
+    let treatmentId: Int
 }
 
 enum DiagnosisType {

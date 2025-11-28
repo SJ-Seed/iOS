@@ -15,6 +15,7 @@ enum Route: Hashable {
     case home
     case hospital
     case diagnosisResult(plant: PlantProfile, result: TreatmentResult)
+    case treatmentDetail(treatmentId: Int)
     case diagnosisList
     case myPlant
     case letsWater(plantId: Int)

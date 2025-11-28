@@ -31,33 +31,34 @@ final class PlantListViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self?.isLoading = false
                 switch result {
-                case .success(let items): // 'items'는 [PlantListItem] 타입
-                    
-                    // [PlantListItem]을 [PlantInfo]로 변환 (매핑)
+                case .success(let items):
                     self?.plantList = items.map { item in
                         
-                        // 'species' ("토마토", "바질" 등)로 'iconName' ("tomato", "basil")을 찾습니다.
-                        // (이전에 작업한 PlantAssets 헬퍼 함수를 사용)
-                        let asset = PlantAssets.find(by: item.species)
-                        let iconName = asset?.iconName ?? "sprout" // 기본 아이콘
+                        // 1. ‼️ species가 있으면 찾고, 없으면(nil) 기본 아이콘 사용
+                        let iconName: String
+                        if let speciesName = item.species,
+                           let asset = PlantAssets.find(by: speciesName) {
+                            iconName = asset.iconName
+                        } else {
+                            iconName = "questionmark" // ❓ 알 수 없음 아이콘
+                        }
                         
+                        // 2. PlantProfile 생성
                         let profile = PlantProfile(
-                            id: UUID(), // View에서만 사용할 임시 ID
-                            name: item.name, // 사용자가 지은 식물 이름
+                            id: UUID(),
+                            name: item.name,
                             iconName: iconName
                         )
                         
-                        // API 날짜 형식을 View 형식으로 변환 (예: "YYYY-MM-DD" -> "YYYY.MM.DD ~")
                         let dateText = (item.broughtDate.replacingOccurrences(of: "-", with: ".") + " ~")
-                        
-                        // 'diseased' (Bool)를 'DiagnosisType'으로 변환
                         let diagnosis: DiagnosisType = item.diseased ? .disease("질병이 의심돼요") : .normal
                         
+                        // 3. ‼️ speciesId가 nil이면 0 등으로 처리
                         return PlantInfo(
                             plantProfile: profile,
                             dateText: dateText,
                             diagnosis: diagnosis,
-                            speciesId: item.speciesId,
+                            speciesId: item.speciesId ?? 0, // 0 = 알 수 없음
                             plantId: item.id
                         )
                     }
