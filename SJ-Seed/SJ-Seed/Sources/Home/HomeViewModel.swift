@@ -162,7 +162,8 @@ final class HomeViewModel: ObservableObject {
         
         // 1. 아이콘 찾기
         // (speciesId나 이름으로 PlantAssets에서 찾음)
-        let asset = PlantAssets.find(bySpeciesId: data.speciesId)
+        let speciesId = data.speciesId ?? 0
+        let asset = PlantAssets.find(bySpeciesId: speciesId)
         let iconName = asset?.iconName ?? "sprout"
         
         // 2. 토양 상태 변환 (0~100 수분량 -> SoilMoistureLevel)

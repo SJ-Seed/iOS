@@ -24,7 +24,7 @@ struct MemberPlantResult: Codable, Identifiable {
     let temperature: Double // 센서 값은 소수점일 수 있으므로 Double 추천
     let humidity: Double
     let soilWater: Double   // 0~100 사이의 수분량일 것으로 추정
-    let speciesId: Int
+    let speciesId: Int?
     
     // Identifiable 채택 (ForEach에서 사용하기 위함)
     var id: Int { plantId }
