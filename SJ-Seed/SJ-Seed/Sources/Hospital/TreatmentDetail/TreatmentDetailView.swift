@@ -55,7 +55,38 @@ struct TreatmentDetailView: View {
                             // 상태 메시지는 API에 없으므로 진단명 사용하거나 기본값
                             BrownSpeechBubbleComponent(textString: "병에 걸렸어요...")
                             
-                            CloudPlantComponent(bg: Image(.cloudCircle), icon: plant.icon, size: 170)
+                            if let imageUrl = detail.imageUrl, let url = URL(string: imageUrl) {
+                                AsyncImage(url: url) { phase in
+                                    switch phase {
+                                    case .empty:
+                                        // 로딩 중일 때 표시할 뷰
+                                        ZStack {
+                                            Circle().fill(Color.gray.opacity(0.1))
+                                            ProgressView()
+                                        }
+                                        .frame(width: 170, height: 170)
+                                        
+                                    case .success(let image):
+                                        // 이미지 로드 성공
+                                        image
+                                            .resizable()
+                                            .scaledToFill() // 꽉 차게
+                                            .frame(width: 210, height: 210)
+                                            .clipShape(RoundedRectangle(cornerRadius: 20)) // 둥근 사각형 모양
+                                            .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
+                                            
+                                    case .failure:
+                                        // 로드 실패 시 기존 아이콘 보여주기 (Fallback)
+                                        CloudPlantComponent(bg: Image(.cloudCircle), icon: plant.icon, size: 170)
+                                        
+                                    @unknown default:
+                                        EmptyView()
+                                    }
+                                }
+                            } else {
+                                // 이미지 URL이 없는 경우 (기존 코드)
+                                CloudPlantComponent(bg: Image(.cloudCircle), icon: plant.icon, size: 170)
+                            }
                             
                             Text(plant.name)
                                 .font(Font.OwnglyphMeetme.regular.font(size: 24))

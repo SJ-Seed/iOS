@@ -8,23 +8,40 @@
 import SwiftUI
 
 struct PlantStateComponent: View {
-    @StateObject var viewModel: PlantStateViewModel
+//    @StateObject var viewModel: PlantStateViewModel
+    @ObservedObject var viewModel: PlantStateViewModel
     var onInfoTap: () -> Void
     var onWaterTap: () -> Void/* = {}*/
     
     init(
-        viewModel: PlantStateViewModel = PlantStateViewModel(),
+//        viewModel: PlantStateViewModel = PlantStateViewModel(),
+        viewModel: PlantStateViewModel,
         onInfoTap: @escaping () -> Void = {},
         onWaterTap: @escaping () -> Void = {}
     ) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+//        _viewModel = StateObject(wrappedValue: viewModel)
+        self.viewModel = viewModel
         self.onInfoTap = onInfoTap
         self.onWaterTap = onWaterTap
     }
 
     var body: some View {
-        VStack(alignment: .leading) {
-            BrownSpeechBubbleComponent(textString: viewModel.statusMessage)
+        VStack/*(alignment: .leading)*/ {
+//            BrownSpeechBubbleComponent(textString: viewModel.statusMessage)
+            
+            ZStack {
+                Image(.brownSpeechBubble)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity)
+                    
+                Text(viewModel.statusMessage)
+                    .font(Font.OwnglyphMeetme.regular.font(size: 20))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.ivory1)
+                    .padding(.horizontal, 15)
+                    .offset(y: -16)
+            }
             
             HStack(alignment: .top, spacing: 12) {
                 PlantAvatarView(
@@ -34,10 +51,12 @@ struct PlantStateComponent: View {
                 )
                 VStack {
                     PlantVitalsView(vitals: viewModel.plant.vitals)
-                    WaterActionButton(needsWater: viewModel.shouldWater) {
-                        if viewModel.shouldWater {
-                            onWaterTap()
-                        }
+                    WaterActionButton(
+                        needsWater: viewModel.shouldWater,
+                        isDisabled: viewModel.isWateringButtonDisabled
+                    ) {
+                        onWaterTap()
+                        viewModel.markAsWatered()
                     }
                 }
             }
@@ -96,6 +115,7 @@ struct VitalRow: View {
 
 struct WaterActionButton: View {
     var needsWater: Bool
+    var isDisabled: Bool = false
     var action: () -> Void = { }
 
     var body: some View {
@@ -107,6 +127,7 @@ struct WaterActionButton: View {
                 .padding(.bottom)
         }
         .buttonStyle(.plain)
+        .disabled(isDisabled)
     }
 }
 
@@ -116,7 +137,7 @@ struct WaterActionButton: View {
         viewModel: PlantStateViewModel(
             plant: PlantHomeInfo(
                 plantProfile: .init(id: UUID(), name: "토마토", iconName: "tomato"),
-                vitals: PlantVitals(temperature: 33, humidity: 65, soil: .dry)
+                vitals: PlantVitals(temperature: 19, humidity: 38, soil: .dry)
             ),
             statusMessage: "덥고 목말라요 😣",
             shouldWater: true

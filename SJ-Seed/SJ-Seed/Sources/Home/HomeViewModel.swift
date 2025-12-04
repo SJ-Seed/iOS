@@ -29,10 +29,19 @@ final class HomeViewModel: ObservableObject {
     
     // 1. ‼️ 저장 키 추가 (날짜 저장용, 금액 저장용)
     private let lastRewardDateKey = "lastRewardDateV1"
-    private let lastRewardAmountKey = "lastRewardAmountV1" // 👈 추가됨
+    private let lastRewardAmountKey = "lastRewardAmountV1"
+    
+    private var koreaCalendar: Calendar {
+        var calendar = Calendar(identifier: .gregorian)
+        // "Asia/Seoul" 타임존 설정 (GMT+9)
+        if let timeZone = TimeZone(identifier: "Asia/Seoul") {
+            calendar.timeZone = timeZone
+        }
+        return calendar
+    }
     
     init() {
-        let isMusicOn = UserDefaults.standard.object(forKey: "isMusicOn") as? Bool ?? true
+        let isMusicOn = UserDefaults.standard.object(forKey: "isMusicOn") as? Bool ?? false
         if isMusicOn {
             MusicManager.shared.playMusic()
         }
@@ -64,6 +73,7 @@ final class HomeViewModel: ObservableObject {
         
         guard !isLoading else { return }
         performCheckIn(isInitialLoad: false)
+        fetchMemberPlants()
     }
     
     func performCheckIn(isInitialLoad: Bool) {
@@ -110,17 +120,16 @@ final class HomeViewModel: ObservableObject {
     
     // 5. ‼️ 오늘 받은 보상을 저장하는 함수
     private func saveTodayReward(amount: Int) {
-        let today = Calendar.current.startOfDay(for: Date())
+        let today = koreaCalendar.startOfDay(for: Date())
         UserDefaults.standard.set(today, forKey: lastRewardDateKey)
         UserDefaults.standard.set(amount, forKey: lastRewardAmountKey)
     }
     
     // 6. ‼️ 저장된 보상을 복구하거나 초기화하는 함수
     private func restoreTodayReward() {
-        let today = Calendar.current.startOfDay(for: Date())
-        
+        let today = koreaCalendar.startOfDay(for: Date())
         if let lastDate = UserDefaults.standard.object(forKey: lastRewardDateKey) as? Date {
-            if Calendar.current.isDate(lastDate, inSameDayAs: today) {
+            if koreaCalendar.isDate(lastDate, inSameDayAs: today) {
                 // 날짜가 오늘과 같음 -> 저장된 금액 불러오기 (예: 20)
                 let savedAmount = UserDefaults.standard.integer(forKey: lastRewardAmountKey)
                 self.attendance.todayRewardCoin = savedAmount
@@ -198,7 +207,7 @@ final class HomeViewModel: ObservableObject {
                 case .success(let needWater):
                     viewModel.shouldWater = needWater
                     // 물주기 필요 여부에 따라 상태 메시지 업데이트
-                    viewModel.statusMessage = needWater ? "목말라요 💦" : "기분이 좋아요 🌿"
+//                    viewModel.statusMessage = needWater ? "목말라요 💦" : "기분이 좋아요 🌿"
                     
                 case .failure:
                     viewModel.statusMessage = "상태를 알 수 없어요 😢"

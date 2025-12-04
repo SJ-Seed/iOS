@@ -47,8 +47,8 @@ final class WateringViewModel: ObservableObject {
 //                self?.checkIfWatered()
 //            }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 13.0) { [weak self] in
-            print("✅ [데모 모드] 13초 경과 -> 물주기 성공 처리!")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) { [weak self] in
+            print("✅ [데모 모드] 10초 경과 -> 물주기 성공 처리!")
             self?.stopPolling()
             self?.currentStep = .complete
         }

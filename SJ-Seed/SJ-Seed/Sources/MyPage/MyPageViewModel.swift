@@ -42,7 +42,7 @@ final class MyPageViewModel: ObservableObject {
         self.phoneNumber = UserDefaults.standard.string(forKey: "userPhoneNumber") ?? ""
         
         // 3. 저장된 음악 설정 불러오기 (기본값 true)
-        self.isMusicOn = UserDefaults.standard.object(forKey: "isMusicOn") as? Bool ?? true
+        self.isMusicOn = UserDefaults.standard.object(forKey: "isMusicOn") as? Bool ?? false
         
         // 4. 초기 상태에 따라 음악 재생 (앱 켰을 때 자동 재생 원할 시)
         if self.isMusicOn {

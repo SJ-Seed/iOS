@@ -47,4 +47,5 @@ struct TreatmentDetailResult: Codable {
     let explain: String?
     let cause: String?
     let cure: String?
+    let imageUrl: String?
 }

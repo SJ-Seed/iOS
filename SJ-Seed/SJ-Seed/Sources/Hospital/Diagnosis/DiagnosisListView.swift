@@ -10,11 +10,10 @@ import SwiftUI
 struct DiagnosisListView: View {
     @Environment(\.diContainer) private var di
     @StateObject private var viewModel = DiagnosisListViewModel()
-//    let records: [MedicalRecord]
     
     var body: some View {
         ZStack(alignment: .top) {
-            // MARK: - 반복되는 구름 배경
+            // MARK: - 반복되는 구름 배경 (고정)
             GeometryReader { geometry in
                 VStack(spacing: 0) {
                     ForEach(0..<2) { _ in
@@ -27,9 +26,10 @@ struct DiagnosisListView: View {
             }
             .ignoresSafeArea()
             
-            VStack {
+            VStack(spacing: 0) {
+                // 헤더는 스크롤되지 않고 상단 고정
                 headerView
-                // MARK: - ScrollView 콘텐츠
+                
                 // MARK: - 로딩 및 에러 처리
                 if viewModel.isLoading {
                     VStack {
@@ -57,29 +57,40 @@ struct DiagnosisListView: View {
                         Spacer()
                     }
                 } else {
-                    ScrollView {
-                        LazyVStack {
-        //                    Spacer().padding(.top, 80)
-                            ForEach(viewModel.records.reversed()) { record in
-                                ListComponent(item: record, onInfoTap: { di.router.push(.treatmentDetail(treatmentId: record.treatmentId)) })
-                                    .padding(.bottom, 8)
+                    // MARK: - 기록이 있을 때 (수정된 부분)
+                    // ScrollView 영역의 크기를 구하기 위해 GeometryReader 사용
+                    GeometryReader { scrollProxy in
+                        ScrollView {
+                            // Spacer()가 작동하려면 LazyVStack이 아닌 VStack이어야 함
+                            VStack(spacing: 0) {
+                                
+                                // 리스트 아이템들
+                                ForEach(viewModel.records.reversed()) { record in
+                                    ListComponent(item: record, onInfoTap: { di.router.push(.treatmentDetail(treatmentId: record.treatmentId)) })
+                                        .padding(.bottom, 8)
+                                }
+                                
+                                // [핵심] 내용이 짧으면 잔디를 바닥으로 밀어버리는 역할
+                                Spacer(minLength: 0)
+                                
+                                // 맨 밑 잔디 배경 (ScrollView 안에 포함됨)
+                                ZStack(alignment: .bottom) {
+                                    Image(.grassBG)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .padding(.top, 40)
+                                    
+                                    CharacterSpeechComponent(characterImage: .doctor1, textString: "지금까지의\n진료기록이란다.")
+                                        .offset(y: -30)
+                                }
                             }
-                            Spacer()
-                            
-                            // 맨 밑 잔디 배경
-                            ZStack {
-                                Image(.grassBG)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .padding(.top, 40)
-                                CharacterSpeechComponent(characterImage: .doctor1, textString: "지금까지의\n진료기록이란다.")
-                            }
+                            // [핵심] VStack의 최소 높이를 화면(ScrollView) 높이만큼 강제 설정
+                            .frame(minHeight: scrollProxy.size.height)
                         }
-        //                .padding(.vertical, 20)
                     }
-                    .ignoresSafeArea(edges: .bottom)
                 }
             }
+            .ignoresSafeArea(edges: .bottom) // 잔디가 바닥까지 꽉 차게
         }
         .task {
             viewModel.fetchRecords()
@@ -99,7 +110,6 @@ struct DiagnosisListView: View {
                 Spacer()
             }
             
-            // 인덱스 중앙
             Text("진료 기록")
                 .font(Font.OwnglyphMeetme.regular.font(size: 28))
                 .foregroundStyle(.brown1)
@@ -108,16 +118,5 @@ struct DiagnosisListView: View {
 }
 
 #Preview {
-//    let sampleProfiles = [
-//        PlantProfile(id: UUID(), name: "똥맛토", iconName: "tomato"),
-//        PlantProfile(id: UUID(), name: "토맛똥", iconName: "tomato"),
-//        PlantProfile(id: UUID(), name: "고추", iconName: "basil")
-//    ]
-//    
-//    let sampleRecords = [
-//        MedicalRecord(plantProfile: sampleProfiles[0], dateText: "2025.09.03", diagnosis: .normal),
-//        MedicalRecord(plantProfile: sampleProfiles[1], dateText: "2025.09.07", diagnosis: .disease("점무늬병")),
-//        MedicalRecord(plantProfile: sampleProfiles[2], dateText: "2025.09.10", diagnosis: .normal)
-//    ]
     DiagnosisListView()
 }

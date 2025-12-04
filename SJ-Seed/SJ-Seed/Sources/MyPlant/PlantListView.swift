@@ -13,7 +13,7 @@ struct PlantListView: View {
     @StateObject private var viewModel = PlantListViewModel()
     
     var body: some View {
-        ZStack(alignment: .top) {
+        ZStack(alignment: .bottom) {
             // MARK: - 반복되는 구름 배경
             GeometryReader { geometry in
                 VStack(spacing: 0) {
@@ -47,56 +47,63 @@ struct PlantListView: View {
                 
             } else {
                 // MARK: - ScrollView 콘텐츠
-                VStack {
+                VStack(spacing: 0) {
                     headerView
-                    ScrollView {
-                        LazyVStack {
-                            Button(action: { di.router.push(.plantRegister) }) {
-                                Text("식물을 추가하려면 누르세요")
-                                    .font(Font.OwnglyphMeetme.regular.font(size: 30))
-                                    .foregroundStyle(Color.green1)
-                                    .frame(width: 350, height: 80)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .fill(Color.ivory1)
-                                            .opacity(0.3)
-                                            .overlay(
+                    
+                    GeometryReader { geometry in
+                        ScrollView {
+                            VStack(spacing: 0) {
+                                
+                                // --- 상단 콘텐츠 (버튼 + 리스트) ---
+                                LazyVStack(spacing: 0) {
+                                    Button(action: { di.router.push(.plantRegister) }) {
+                                        Text("식물을 추가하려면 누르세요")
+                                            .font(Font.OwnglyphMeetme.regular.font(size: 30))
+                                            .foregroundStyle(Color.green1)
+                                            .frame(width: 350, height: 80)
+                                            .background(
                                                 RoundedRectangle(cornerRadius: 20)
-                                                    .stroke(Color.green1, lineWidth: 4)
+                                                    .fill(Color.ivory1)
+                                                    .opacity(0.3)
+                                                    .overlay(
+                                                        RoundedRectangle(cornerRadius: 20)
+                                                            .stroke(Color.green1, lineWidth: 4)
+                                                    )
                                             )
-                                    )
-                            }
-                            .padding(.vertical, 8)
-                            ForEach(viewModel.plantList) { record in
-                                ListComponent(item: record) {
-                                    di.router.push(.myPlantDetail(plantId: record.plantId))
+                                    }
+                                    .padding(.vertical, 8)
+                                    
+                                    ForEach(viewModel.plantList) { record in
+                                        ListComponent(item: record) {
+                                            di.router.push(.myPlantDetail(plantId: record.plantId))
+                                        }
+                                        .padding(.bottom, 8)
+                                    }
                                 }
-                                    .padding(.bottom, 8)
-                            }
-                            if viewModel.plantList.isEmpty {
+                                
                                 Spacer()
-                                    .frame(height: 200) // 적절한 높이만큼 공간 확보 (또는 Spacer()만 써도 됨)
-                            } else {
-                                Spacer() // 리스트가 있을 때도 하단 여백 확보용
+                                
+                                ZStack(alignment: .bottom) {
+                                    Image(.grassBG)
+                                        .resizable()
+                                        .scaledToFit()
+                                    
+                                    CharacterSpeechComponent(
+                                        characterImage: .grandma2,
+                                        textString: "식물을 확인하거나\n등록할 수 있단다."
+                                    )
+                                    .offset(y: -30)
+                                }
                             }
-                            
-                            // 맨 밑 잔디 배경
-                            ZStack {
-                                Image(.grassBG)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .padding(.top, 40)
-                                CharacterSpeechComponent(characterImage: .grandma2, textString: "식물을 확인하거나\n등록할 수 있단다.")
-                            }
+                            .frame(minHeight: geometry.size.height)
                         }
-                        .frame(minHeight: UIScreen.main.bounds.height - 200)
                     }
-                    .ignoresSafeArea(edges: .bottom)
                 }
+                .ignoresSafeArea(edges: .bottom)
             }
         }
         .task {
-            viewModel.fetchPlantList() // 예시 memberId (로그인 ID로 교체 필요)
+            viewModel.fetchPlantList()
         }
     }
     
