@@ -57,7 +57,11 @@ struct PlantStateComponent: View {
                     ) {
                         onWaterTap()
                         viewModel.markAsWatered()
+                        viewModel.shouldWater = false
+                        let _ = print("component괄호에서: \(viewModel.shouldWater)")
                     }
+                    let _ = print("component괄호밖에서: \(viewModel.shouldWater)")
+
                 }
             }
         }

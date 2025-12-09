@@ -201,19 +201,19 @@ final class HomeViewModel: ObservableObject {
         )
         
         // 5. ‼️ 물주기 필요 여부 API 호출 (비동기 업데이트)
-        plantService.checkIfNeedWater(plantId: data.plantId) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let needWater):
-                    viewModel.shouldWater = needWater
-                    // 물주기 필요 여부에 따라 상태 메시지 업데이트
-//                    viewModel.statusMessage = needWater ? "목말라요 💦" : "기분이 좋아요 🌿"
-                    
-                case .failure:
-                    viewModel.statusMessage = "상태를 알 수 없어요 😢"
-                }
-            }
-        }
+//        plantService.checkIfNeedWater(plantId: data.plantId) { result in
+//            DispatchQueue.main.async {
+//                switch result {
+//                case .success(let needWater):
+//                    viewModel.shouldWater = needWater
+//                    // 물주기 필요 여부에 따라 상태 메시지 업데이트
+////                    viewModel.statusMessage = needWater ? "목말라요 💦" : "기분이 좋아요 🌿"
+//                    
+//                case .failure:
+//                    viewModel.statusMessage = "상태를 알 수 없어요 😢"
+//                }
+//            }
+//        }
         
         return viewModel
     }

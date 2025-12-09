@@ -13,13 +13,29 @@ final class PlantStateViewModel: ObservableObject {
     let plantId: Int
     @Published var plant: PlantHomeInfo
     @Published var statusMessage: String
-    @Published var shouldWater: Bool // 물주기 필요 여부
+//    @Published var shouldWater: Bool // 물주기 필요 여부
+    private static var wateredSessionIds: Set<Int> = []
+    
+    @Published var shouldWater: Bool {
+        didSet {
+            // 만약 로컬에서 이미 물을 줬고(flag is true),
+            // 외부(API)에서 다시 '물 줘야 함(true)'으로 바꾸려 한다면?
+            if hasWateredLocally && shouldWater == true {
+                // 강제로 false로 고정하고 버튼도 비활성화 유지
+                shouldWater = false
+                isWateringButtonDisabled = true
+                print("🔒 로컬 물주기 완료 상태여서 API 데이터를 무시했습니다.")
+            }
+        }
+    }
+    
+    private var hasWateredLocally: Bool = false
     
     @Published var isWateringButtonDisabled: Bool = false
     
-    private var storageKey: String {
-        "watered_status_\(plant.plantProfile.id.uuidString)"
-    }
+//    private var storageKey: String {
+//        "watered_status_\(plant.plantProfile.id.uuidString)"
+//    }
     
     private let plantService = PlantService.shared
     private var pollingTimer: AnyCancellable?
@@ -53,9 +69,9 @@ final class PlantStateViewModel: ObservableObject {
         self.plant = plant ?? defaultPlant
         
         if let shouldWater {                      // 주입 우선
-            self.shouldWater = shouldWater
+            self.shouldWater = true
         } else {
-            self.shouldWater = (plant?.vitals.soil == .dry)   // 기본 휴리스틱
+            self.shouldWater = true
         }
         
         self.statusMessage = statusMessage
@@ -69,26 +85,43 @@ final class PlantStateViewModel: ObservableObject {
     
     // 로컬 저장소 확인
     func checkLocalStatus() {
-        // UserDefaults에 true라고 저장되어 있다면 물을 준 상태임
-        let isAlreadyWatered = UserDefaults.standard.bool(forKey: storageKey)
-        
-        if isAlreadyWatered {
-            print("🔒 [로컬] 이미 물을 준 기록이 있습니다.")
+        // 현재 세션(앱 실행 중)에 이 식물(plantId)에게 물을 줬는지 확인
+        if Self.wateredSessionIds.contains(plantId) {
+            print("🔒 [세션] 방금 물을 준 식물입니다. (ID: \(plantId))")
             self.shouldWater = false
             self.isWateringButtonDisabled = true
+            
+            // API 방어용 플래그 설정
+            self.hasWateredLocally = true
         }
     }
     
-    // [핵심] 물주기 버튼 눌렀을 때 호출할 함수
+//    // MARK: - [추가] 물주기 버튼 클릭 시 호출되는 함수
+//    func markAsWatered() {
+//        // API 통신 결과와 무관하게 즉시 UI를 업데이트하여 버튼을 비활성화
+//        withAnimation {
+//            self.isWateringButtonDisabled = true
+//            print("stateviewmodel 괄호안:\(shouldWater)")
+//        }
+//        self.hasWateredLocally = true
+//        // (선택 사항) 물을 줬으니 아이콘도 '물 주기 전' 상태가 아니라면 변경이 필요할 수 있습니다.
+//        self.shouldWater = false
+//        print("stateviewmodel 괄호밖:\(shouldWater)")
+//    }
+//    
     func markAsWatered() {
-        print("💧 [로컬] 물주기 완료 처리 -> 저장소에 기록")
+        withAnimation {
+            self.isWateringButtonDisabled = true
+            print("stateviewmodel 괄호안:\(shouldWater)")
+        }
         
-        // 1. UserDefaults에 'true' 저장 (영구 저장)
-        UserDefaults.standard.set(true, forKey: storageKey)
+        self.hasWateredLocally = true
         
-        // 2. 화면 즉시 갱신
+        // UserDefaults 대신 static Set에 ID 추가
+        Self.wateredSessionIds.insert(plantId)
+        
         self.shouldWater = false
-        self.isWateringButtonDisabled = true
+        print("stateviewmodel 괄호밖:\(shouldWater)")
     }
     
     // MARK: - 온습도 상태 메시지 결정 로직
