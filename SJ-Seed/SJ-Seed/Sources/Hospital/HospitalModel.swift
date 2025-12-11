@@ -26,8 +26,12 @@ enum DiagnosisType {
         switch self {
         case .normal:
             return .ivory1
-        case .disease:
-            return .red1
+        case .disease(let name):
+            if name == "정상" || name.isEmpty {
+                return .ivory1
+            } else {
+                return .red1
+            }
         }
     }
     

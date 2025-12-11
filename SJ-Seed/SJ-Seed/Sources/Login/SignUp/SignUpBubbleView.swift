@@ -190,6 +190,7 @@ struct CustomTextField: View {
                 Text(placeholder)
                     .foregroundColor(.gray.opacity(0.5))
                     .padding(.leading, 16)
+                    .allowsHitTesting(false)
             }
             
             if isSecure {
@@ -200,6 +201,7 @@ struct CustomTextField: View {
                     .padding(16)
             }
         }
+        .contentShape(Rectangle())
         .font(Font.OwnglyphMeetme.regular.font(size: 18))
         .background(
             RoundedRectangle(cornerRadius: 25)

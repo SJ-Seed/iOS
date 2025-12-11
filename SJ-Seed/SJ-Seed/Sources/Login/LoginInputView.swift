@@ -165,6 +165,7 @@ struct LoginTextField: View {
                     .font(Font.OwnglyphMeetme.regular.font(size: 20))
                     .foregroundStyle(Color.gray.opacity(0.5))
                     .padding(.leading, 20)
+                    .allowsHitTesting(false)
             }
             
             if isSecure {
@@ -177,6 +178,7 @@ struct LoginTextField: View {
                     .frame(height: 60)
             }
         }
+        .contentShape(Rectangle())
         .background(
             RoundedRectangle(cornerRadius: 30)
                 .fill(Color.white)
